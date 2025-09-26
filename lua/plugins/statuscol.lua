@@ -19,7 +19,6 @@ return {
         },
     },
 
-    -- nvim-ufo for pretty fold text + peek
     { "kevinhwang91/promise-async" },
     {
         "kevinhwang91/nvim-ufo",
@@ -63,7 +62,6 @@ return {
             vim.opt.foldlevelstart = 99
             vim.opt.foldcolumn = "1"
 
-            -- Nice gutter icons
             vim.opt.fillchars:append({ foldopen = "", foldclose = "", foldsep = " " })
 
             require("ufo").setup(opts)
@@ -71,73 +69,81 @@ return {
             -- Handy mappings that keep foldlevel stable
             vim.keymap.set("n", "zR", require("ufo").openAllFolds, { desc = "Open all folds (UFO)" })
             vim.keymap.set("n", "zM", require("ufo").closeAllFolds, { desc = "Close all folds (UFO)" })
-
-            -- Peek folded lines (fallback to LSP hover)
-            vim.keymap.set("n", "K", function()
-                local winid = require("ufo").peekFoldedLinesUnderCursor()
-                if not winid then
-                    pcall(vim.lsp.buf.hover)
-                end
-            end, { desc = "Peek fold / LSP hover" })
         end,
     },
 
-    -- statuscol.nvim: pretty fold gutter + gitsigns-only click
     {
         "luukvbaal/statuscol.nvim",
         opts = function()
             local builtin = require("statuscol.builtin")
+
+            -- helper: run a function with the cursor temporarily at a specific line
+            local function at_line(line, fn)
+                local win = vim.api.nvim_get_current_win()
+                local cur = vim.api.nvim_win_get_cursor(win)
+                pcall(vim.api.nvim_win_set_cursor, win, { line, 0 })
+                local ok, err = pcall(fn)
+                pcall(vim.api.nvim_win_set_cursor, win, cur)
+                return ok, err
+            end
+
             return {
                 setopt = true,
-
-                -- order: folds | (optional) diagnostics on the far-left | LINE NUMBER | GITSIGNS (right of lnum)
                 segments = {
                     { text = { builtin.foldfunc }, click = "v:lua.ScFa" }, -- fold column
-
-                    -- OPTIONAL: keep diagnostics on the far left (no clicks)
-                    -- remove this block if you don't want diagnostics signs shown
-                    {
-                        sign = { namespace = { "diagnostic/signs" }, maxwidth = 1, colwidth = 1, auto = true },
-                        click = "v:lua.ScSa",
-                    },
-
-                    { text = { builtin.lnumfunc, " " } }, -- line numbers + a space
-
+                    { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" }, -- line numbers
                     {
                         sign = {
                             namespace = { "gitsigns" },
                             name = { "GitSigns.*" },
-                            -- maxwidth = 1,
-                            -- colwidth = 1,
-                            auto = true,
+                            maxwidth = 1,
+                            colwidth = 1,
+                            auto = false,
+                            fillchar = " ",
                         },
                         click = "v:lua.ScSa",
                     },
                 },
 
                 clickhandlers = {
-                    -- fold clicks
+                    -- FOLD CLICKS
                     FoldClose = builtin.foldclose_click,
                     FoldOpen = builtin.foldopen_click,
                     FoldOther = builtin.foldother_click,
 
-                    -- disable other clicks
-                    Lnum = false,
+                    -- LINE NUMBER CLICKS
+                    Lnum = function(args)
+                        local gs = require("gitsigns")
+                        local line = args.mousepos.line
+                        if args.button == "l" then
+                            -- preview hunk (floating)
+                            return at_line(line, gs.preview_hunk)
+                        elseif args.button == "r" then
+                            -- stage the hunk under the clicked line
+                            return at_line(line, gs.stage_hunk)
+                        elseif args.button == "m" then
+                            -- RESET the hunk under the clicked line (destructive)
+                            return at_line(line, gs.reset_hunk)
+                        end
+                    end,
+
+                    -- GITSIGNS CLICKS
+                    gitsigns = function(args)
+                        local gs = require("gitsigns")
+                        if args.button == "l" then
+                            return gs.preview_hunk()
+                        elseif args.button == "r" then
+                            return gs.stage_hunk()
+                        elseif args.button == "m" then
+                            return gs.reset_hunk()
+                        end
+                    end,
+
+                    -- DISABLED DAP CLICKS
                     DapBreakpointRejected = false,
                     DapBreakpoint = false,
                     DapBreakpointCondition = false,
-                    ["diagnostic/signs"] = false,
-
-                    -- left-click a git sign → preview hunk
-                    gitsigns = function(args)
-                        if args.button == "l" then
-                            require("gitsigns").preview_hunk()
-                        end
-                    end,
                 },
-
-                -- optional polish
-                -- relculright = true,  -- right-align current line when 'relativenumber' is on
             }
         end,
     },
