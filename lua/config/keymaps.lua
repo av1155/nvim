@@ -11,16 +11,29 @@ local wk = require("which-key")
 
 -- ───────────────────────── Unmapping ─────────────────────────
 
+-- Diagnostics
 unmap("n", "<leader>K")
+
+-- Buffers
 unmap("n", "<leader>bb")
 unmap("n", "<leader>bo")
 unmap("n", "<leader>bd")
 unmap("n", "<leader>bD")
+unmap("n", "<leader>fn")
 
 -- ───────────────────── Which-key Groups ─────────────────────
 wk.add({
-    { "<leader>bs", group = "Sort buffers", mode = "n" },
-    { "<leader>cp", group = "Codesnap", mode = "v" },
+    { "<leader>bs", group = "sort buffers", mode = "n" },
+    { "<leader>a", group = "AI", mode = "n" },
+    { "<leader>a", group = "AI", mode = "v" },
+    { "<leader>cp", group = "codesnap", mode = "v" },
+})
+
+-- ───────────────────── Which-key Icons ─────────────────────
+wk.add({
+    { "<leader>z", desc = "Open Alpha Dashboard", icon = "󰋜", mode = "n" },
+    -- or with a color:
+    -- { "<leader>z", desc = "Open Alpha Dashboard", icon = { icon = "󰕮", color = "blue" }, mode = "n" },
 })
 
 -- stylua: ignore start
@@ -42,7 +55,10 @@ map("n", "<A-9>",   "<Cmd>BufferGoto 9<CR>",   vim.tbl_extend("force", opts, { d
 map("n", "<A-0>",   "<Cmd>BufferGoto 0<CR>",   vim.tbl_extend("force", opts, { desc = "Goto buffer 0" }))
 map("n", "<A-p>",   "<Cmd>BufferPin<CR>",      vim.tbl_extend("force", opts, { desc = "Pin/unpin buffer" }))
 map("n", "<A-c>",   "<Cmd>BufferClose<CR>",    vim.tbl_extend("force", opts, { desc = "Close buffer" }))
-map("n", "<leader>a",   "<Cmd>Alpha<CR>",      vim.tbl_extend("force", opts, { desc = "Open Alpha" }))
+map("n", "<leader>z",   "<Cmd>Alpha<CR>",      vim.tbl_extend("force", opts, { desc = "Open Alpha Dashboard" }))
+
+-- Buffers
+map("n", "<leader>bn", "<Cmd>enew<CR>", vim.tbl_extend("force", opts, { desc = "New File" }))
 
 -- Close commands
 map("n", "<leader>ba", "<Cmd>BufferCloseAllButCurrent<CR>",            vim.tbl_extend("force", opts, { desc = "Close others (keep current)" }))
@@ -68,6 +84,7 @@ end, vim.tbl_extend("force", opts, { desc = "Exit terminal mode and close floati
 -- Toggle floating terminal
 map("n", "<A-z>", "<cmd>ToggleTerm direction=float<CR>", vim.tbl_extend("force", opts, { desc = "Toggle Terminal" }))
 map("n", "<leader>f/", "<cmd>Telescope current_buffer_fuzzy_find<cr>", vim.tbl_extend("force", opts, { desc = "Find words in current buffer" }))
+map("n", "<leader>bA", "<cmd>AddProject<cr>", vim.tbl_extend("force", opts, { desc = "Add Project" }))
 
 
 -- Open yazi in a floating terminal

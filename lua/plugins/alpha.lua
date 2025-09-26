@@ -1,7 +1,9 @@
 vim.api.nvim_set_hl(0, "MyHeaderHighlight", { fg = "#88C0D0", bg = "" })
 vim.api.nvim_set_hl(0, "MyGreetingHighlight", { fg = "#81A1C1", bg = "" })
-vim.api.nvim_set_hl(0, "MyButtonsHighlight", { fg = "#ECEFF4", bg = "" })
+vim.api.nvim_set_hl(0, "MyButtonsHighlight", { fg = "#D8DEE9", bg = "" })
+vim.api.nvim_set_hl(0, "MyAlphaShortcut", { fg = "#A3BE8C", bold = true })
 vim.api.nvim_set_hl(0, "MyFooterHighlight", { fg = "#EBCB8B", bg = "" })
+vim.api.nvim_set_hl(0, "MyQuoteText", { fg = "#8FBCBB", italic = true })
 
 return {
     {
@@ -61,12 +63,29 @@ return {
             }
             for _, b in ipairs(dashboard.section.buttons.val) do
                 b.opts.hl = "MyButtonsHighlight"
-                b.opts.hl_shortcut = "AlphaShortcut"
+                b.opts.hl_shortcut = "MyAlphaShortcut"
             end
 
             dashboard.section.header.opts.hl = "MyHeaderHighlight"
             dashboard.section.buttons.opts.hl = "MyButtonsHighlight"
             dashboard.section.footer.opts.hl = "MyFooterHighlight"
+
+            -- configure fortune width/format
+            pcall(function()
+                require("fortune").setup({
+                    max_width = 60,
+                    display_format = "mixed", -- "short" | "long" | "mixed"
+                    content_type = "quotes", -- "quotes" | "tips" | "mixed"
+                })
+            end)
+
+            -- quotes section
+            local fortune = require("fortune")
+            dashboard.section.fortune = {
+                type = "text",
+                val = fortune.get_fortune(),
+                opts = { position = "center", hl = "MyQuoteText" },
+            }
 
             -- layout
             local function pad(p)
@@ -75,13 +94,15 @@ return {
             dashboard.opts.layout = {
                 { type = "padding", val = pad(0.07) },
                 dashboard.section.header,
-                { type = "padding", val = pad(0.02) },
+                { type = "padding", val = pad(0.03) },
                 dashboard.section.greeting,
                 { type = "padding", val = pad(0.04) },
                 dashboard.section.buttons,
-                { type = "padding", val = pad(0.03) },
-                dashboard.section.footer,
                 { type = "padding", val = pad(0.02) },
+                dashboard.section.footer,
+                { type = "padding", val = pad(0.03) },
+                dashboard.section.fortune,
+                { type = "padding", val = pad(0.03) },
             }
 
             return dashboard
@@ -144,7 +165,9 @@ return {
                     recentering = true
                     vim.schedule(function()
                         if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == "alpha" then
-                            pcall(vim.cmd, "normal! zz")
+                            pcall(function()
+                                vim.cmd("normal! zz")
+                            end)
                         end
                         recentering = false
                     end)
@@ -224,6 +247,13 @@ return {
                         s.count,
                         ms
                     )
+
+                    -- refresh the fortune at the same time
+                    local ok, fortune = pcall(require, "fortune")
+                    if ok then
+                        dashboard.section.fortune.val = fortune.get_fortune()
+                    end
+
                     pcall(vim.cmd.AlphaRedraw)
                 end,
             })

@@ -9,6 +9,10 @@ return {
         opts = {
             transparent_background = true,
             float = { transparent = true, solid = false },
+            auto_integrations = true,
+            integrations = {
+                barbar = false,
+            },
         },
     },
 
