@@ -21,6 +21,9 @@ unmap("n", "<leader>bd")
 unmap("n", "<leader>bD")
 unmap("n", "<leader>fn")
 
+-- Find
+unmap("n", "<leader>fp")
+
 -- ───────────────────── Which-key Groups ─────────────────────
 wk.add({
     { "<leader>bs", group = "sort buffers", mode = "n" },
@@ -84,6 +87,7 @@ end, vim.tbl_extend("force", opts, { desc = "Exit terminal mode and close floati
 -- Toggle floating terminal
 map("n", "<A-z>", "<cmd>ToggleTerm direction=float<CR>", vim.tbl_extend("force", opts, { desc = "Toggle Terminal" }))
 map("n", "<leader>f/", "<cmd>Telescope current_buffer_fuzzy_find<cr>", vim.tbl_extend("force", opts, { desc = "Find words in current buffer" }))
+map("n", "<leader>fp", "<cmd>Telescope projects<cr>", vim.tbl_extend("force", opts, { desc = "Projects" }))
 map("n", "<leader>bA", "<cmd>AddProject<cr>", vim.tbl_extend("force", opts, { desc = "Add Project" }))
 
 
