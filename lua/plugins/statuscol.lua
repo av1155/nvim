@@ -89,6 +89,7 @@ return {
 
             return {
                 setopt = true,
+                ft_ignore = { "alpha" },
                 segments = {
                     { text = { builtin.foldfunc }, click = "v:lua.ScFa" }, -- fold column
                     { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" }, -- line numbers

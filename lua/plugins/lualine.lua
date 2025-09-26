@@ -130,6 +130,13 @@ local function open_trouble_diag()
     end
 end
 
+-- helper: hide components on narrow windows
+local function wide(min)
+    return function()
+        return vim.o.columns >= (min or 100)
+    end
+end
+
 return {
     {
         "nvim-lualine/lualine.nvim",
@@ -228,10 +235,12 @@ return {
                                     and {
                                         LazyVim.lualine.pretty_path(),
                                         color = { fg = "#c6c6c6" },
+                                        cond = wide(105),
                                     }
                                 or {
                                     "filename",
                                     color = { fg = "#c6c6c6" },
+                                    cond = wide(105),
                                 },
                         }
                     end)(),

@@ -7,7 +7,7 @@
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 
--- ───────────────────────── Color Highlight ─────────────────────────
+-- ──────────────────Global Color Highlight ───────────────────────
 
 -- === Global highlight overrides (work for ANY theme) ===
 do
@@ -24,7 +24,6 @@ do
         return spec
     end
 
-    -- Paste your groups from above here:
     local overrides = {
         -- =============== NVIM-DAP-VIRTUAL-TEXT ====================
         NvimDapVirtualText = fix({ fg = "#b58900", italic = true }),
@@ -175,7 +174,7 @@ do
         end
     end
 
-    -- Apply once now (this file loads on VeryLazy, so theme is already set)
+    -- Apply once now
     vim.schedule(apply_overrides)
 
     -- Re-apply after ANY future :colorscheme
