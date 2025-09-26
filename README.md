@@ -36,10 +36,15 @@ UI, sane LSP/completion defaults, and practical quality-of-life plugins.
 
 ```bash
 # backup any existing config
-mv ~/.config/nvim ~/.config/nvim.bak
+mv ~/.config/nvim{,.bak}
+
+# optional but recommended
+mv ~/.local/share/nvim{,.bak}
+mv ~/.local/state/nvim{,.bak}
+mv ~/.cache/nvim{,.bak}
 
 # clone this repo as your Neovim config
-git clone <your-fork-or-url> ~/.config/nvim
+git clone https://github.com/av1155/nvim ~/.config/nvim
 
 # start nvim (plugins bootstrap automatically)
 nvim
