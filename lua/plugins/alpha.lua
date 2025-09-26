@@ -10,40 +10,6 @@ return {
         "goolord/alpha-nvim",
         event = "VimEnter",
         dependencies = { "rubiin/fortune.nvim" },
-        keys = {
-            {
-                "<A-c>",
-                function()
-                    if vim.bo.filetype == "alpha" then
-                        return
-                    end
-
-                    -- if we had only one listed buffer before closing, we’ll open Alpha after
-                    local before = #vim.fn.getbufinfo({ buflisted = 1 })
-
-                    -- close current buffer (prompt to save if modified)
-                    local ok = pcall(function()
-                        vim.cmd("confirm bdelete")
-                    end)
-                    if not ok then
-                        return
-                    end
-
-                    if before == 1 then
-                        local has_alpha, alpha = pcall(require, "alpha")
-                        if has_alpha then
-                            -- defer to ensure the deletion fully completes
-                            vim.schedule(function()
-                                alpha.start()
-                            end)
-                        else
-                            vim.cmd.enew()
-                        end
-                    end
-                end,
-                desc = "Close buffer (open Alpha if last)",
-            },
-        },
 
         opts = function()
             local dashboard = require("alpha.themes.dashboard")
