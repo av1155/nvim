@@ -24,11 +24,19 @@ unmap("n", "<leader>fn")
 -- Find
 unmap("n", "<leader>fp")
 
+-- CopilotChat
+unmap({ "n", "v" }, "<leader>aa")
+unmap({ "n", "v" }, "<leader>ax")
+unmap({ "n", "v" }, "<leader>aq")
+unmap({ "n", "v" }, "<leader>ap")
+
 -- ───────────────────── Which-key Groups ─────────────────────
 wk.add({
     { "<leader>bs", group = "sort buffers", mode = "n" },
     { "<leader>a", group = "AI", mode = "n" },
     { "<leader>a", group = "AI", mode = "v" },
+    { "<leader>ac", group = "CopilotChat", mode = "n" },
+    { "<leader>ac", group = "CopilotChat", mode = "v" },
     { "<leader>cp", group = "codesnap", mode = "v" },
 })
 
@@ -57,7 +65,7 @@ map("n", "<A-8>",   "<Cmd>BufferGoto 8<CR>",   vim.tbl_extend("force", opts, { d
 map("n", "<A-9>",   "<Cmd>BufferGoto 9<CR>",   vim.tbl_extend("force", opts, { desc = "Goto buffer 9" }))
 map("n", "<A-0>",   "<Cmd>BufferGoto 0<CR>",   vim.tbl_extend("force", opts, { desc = "Goto buffer 0" }))
 map("n", "<A-p>",   "<Cmd>BufferPin<CR>",      vim.tbl_extend("force", opts, { desc = "Pin/unpin buffer" }))
-map("n", "<A-c>",   "<Cmd>BufferClose<CR>",    vim.tbl_extend("force", opts, { desc = "Close buffer" }))
+-- map("n", "<A-c>",   "<Cmd>BufferClose<CR>",    vim.tbl_extend("force", opts, { desc = "Close buffer" }))
 map("n", "<leader>z",   "<Cmd>Alpha<CR>",      vim.tbl_extend("force", opts, { desc = "Open Alpha Dashboard" }))
 
 -- Buffers

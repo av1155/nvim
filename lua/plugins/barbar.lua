@@ -1,8 +1,17 @@
 return {
-    { "akinsho/bufferline.nvim", enabled = false, version = "*", dependencies = "nvim-tree/nvim-web-devicons" },
+    { "akinsho/bufferline.nvim", enabled = false, dependencies = "nvim-tree/nvim-web-devicons" },
 
     {
         "romgrk/barbar.nvim",
+        event = { "BufReadPost", "BufNewFile" },
+
+        -- Barbar recommends this when lazy-loading
+        init = function()
+            vim.g.barbar_auto_setup = false
+            vim.g._barbar_prev_showtabline = vim.o.showtabline
+            vim.o.showtabline = 0
+        end,
+
         dependencies = {
             "nvim-tree/nvim-web-devicons",
             "lewis6991/gitsigns.nvim",
@@ -11,7 +20,7 @@ return {
             -- configurations go here
             animation = true,
             insert_at_start = false,
-            auto_hide = false,
+            auto_hide = 1,
             icons = {
                 -- Configure the base icons on the bufferline.
                 -- Valid options to display the buffer index and -number are `true`, 'superscript' and 'subscript'

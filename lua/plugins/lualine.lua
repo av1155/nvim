@@ -2,17 +2,17 @@
 
 -- stylua: ignore
 local colors = {
-    blue       = '#80a0ff',
-    cyan       = '#79dac8',
     -- black  = '#080808', -- transparent
     black      = '',
     white      = '#c6c6c6',
+    blue       = '#80a0ff',
+    cyan       = '#79dac8',
     red        = '#ff5189',
     pink     = '#F4B8E4',
     grey       = '#303030',
-    muted_blue = '#5f87af', -- A muted blue color
-    dark_grey  = '#262626', -- A new dark grey color for better contrast
-
+    muted_blue = '#5f87af',
+    dark_grey  = '#262626',
+    purple  = '#B4BEFF',
 }
 
 local bubbles_theme = {
@@ -27,12 +27,20 @@ local bubbles_theme = {
         a = { fg = colors.dark_grey, bg = colors.blue, gui = "bold" },
         z = { fg = colors.white, bg = colors.muted_blue },
     },
+
     visual = {
         a = { fg = colors.dark_grey, bg = colors.cyan, gui = "bold" },
         z = { fg = colors.white, bg = colors.muted_blue },
     },
     replace = {
         a = { fg = colors.dark_grey, bg = colors.red, gui = "bold" },
+        z = { fg = colors.white, bg = colors.muted_blue },
+    },
+
+    command = {
+        a = { fg = colors.dark_grey, bg = colors.purple, gui = "bold" },
+        b = { fg = colors.white, bg = colors.grey },
+        c = { fg = colors.black, bg = colors.black },
         z = { fg = colors.white, bg = colors.muted_blue },
     },
 
@@ -75,10 +83,22 @@ local function lsp_status()
     if not clients or #clients == 0 then
         return ""
     end
-    local names = {}
+
+    local hide = { copilot = true } -- add more like `['lazydev']=true` if desired
+    local seen, names = {}, {}
     for _, c in ipairs(clients) do
-        names[#names + 1] = c.name
+        local name = c.name or ""
+        local lower = name:lower()
+        if not hide[lower] and not seen[lower] then
+            names[#names + 1] = name
+            seen[lower] = true
+        end
     end
+
+    if #names == 0 then
+        return ""
+    end
+    table.sort(names)
     return table.concat(names, ", ")
 end
 
@@ -203,9 +223,16 @@ return {
                                 end,
                             },
 
-                            -- filetype icon + pretty path
-                            { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-                            has_lazyvim and LazyVim.lualine.pretty_path() or "filename",
+                            -- filename
+                            has_lazyvim
+                                    and {
+                                        LazyVim.lualine.pretty_path(),
+                                        color = { fg = "#c6c6c6" },
+                                    }
+                                or {
+                                    "filename",
+                                    color = { fg = "#c6c6c6" },
+                                },
                         }
                     end)(),
 
@@ -258,40 +285,7 @@ return {
                     },
 
                     lualine_y = {
-                        -- {
-                        --     "copilot",
-                        --     show_colors = true,
-                        --     show_loading = true,
-                        --     symbols = {
-                        --         status = {
-                        --             icons = {
-                        --                 enabled = "",
-                        --                 sleep = "",
-                        --                 disabled = "",
-                        --                 warning = "",
-                        --                 unknown = "",
-                        --             },
-                        --             hl = {
-                        --                 enabled = "#50FA7B",
-                        --                 sleep = "#50FA7B",
-                        --                 disabled = "#6272A4",
-                        --                 warning = "#FFB86C",
-                        --                 unknown = "#FF5555",
-                        --             },
-                        --         },
-                        --         spinners = "dots",
-                        --         spinner_color = "#6272A4",
-                        --     },
-                        --     on_click = function()
-                        --         if vim.bo.buftype ~= "" then
-                        --             return
-                        --         end
-                        --         pcall(function()
-                        --             vim.cmd("Copilot panel")
-                        --         end)
-                        --     end,
-                        -- },
-                        { "fileformat" },
+                        { "filetype", icon_only = true, padding = { left = 1, right = 0 } },
                         {
                             "progress",
                             color = { fg = "#e06c75", gui = "bold" },

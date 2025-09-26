@@ -6,7 +6,13 @@ return {
                 enabled = true,
                 view = "cmdline_popup",
                 opts = {
-                    position = "50%", -- Center the cmdline vertically and horizontally
+                    position = "50%",
+                },
+            },
+            routes = {
+                { -- skip img-clip warning when using cmd+v
+                    filter = { event = "notify", find = "Content is not an image" },
+                    opts = { skip = true },
                 },
             },
         },
