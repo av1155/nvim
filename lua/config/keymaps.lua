@@ -67,6 +67,7 @@ wk.add({
     -- { "<leader>z", desc = "Open Alpha Dashboard", icon = "󰋜", mode = "n" },
     -- or with a color:
     -- { "<leader>z", desc = "Open Alpha Dashboard", icon = { icon = "󰕮", color = "blue" }, mode = "n" },
+    { "<leader>aa", desc = "avante: Ask", icon = { icon = "", color = "green" }, mode = { "n", "v" } },
 })
 
 -- stylua: ignore start
@@ -199,5 +200,12 @@ map("n", "<leader>qQ", "<cmd>confirm qall<CR>",  vim.tbl_extend("force", opts, {
 
 map("v", "<leader>cpc", "<cmd>CodeSnap<cr>",     vim.tbl_extend("force", opts, { desc = "Save code snapshot into clipboard" }))
 map("v", "<leader>cps", "<cmd>CodeSnapSave<cr>", vim.tbl_extend("force", opts, { desc = "Save code snapshot in ~/Downloads" }))
+
+--------------------------------------------------------------------------------
+-- 10) Avante
+--     Requires: Avante plugin
+--------------------------------------------------------------------------------
+
+map({"n", "v"}, "<leader>aa", "<cmd>AvanteAsk<cr>",     vim.tbl_extend("force", opts, { desc = "avante: ask" }))
 
 -- stylua: ignore end

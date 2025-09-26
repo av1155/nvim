@@ -36,6 +36,22 @@ return {
                     },
                 },
             },
+            selector = {
+                -- one of: "native" | "telescope" | "fzf_lua" | "mini_pick" | "snacks"
+                provider = "snacks",
+                provider_opts = {
+                    title = "Avante Picker",
+                },
+            },
+
+            input = {
+                -- one of: "native" | "dressing" | "snacks" | "nui"
+                provider = "snacks",
+                provider_opts = {
+                    title = "Avante Input",
+                    icon = "",
+                },
+            },
         },
         dependencies = {
             "nvim-lua/plenary.nvim",
