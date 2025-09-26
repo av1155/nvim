@@ -7,6 +7,7 @@ return {
     {
         "goolord/alpha-nvim",
         event = "VimEnter",
+        dependencies = { "rubiin/fortune.nvim" },
         opts = function()
             local dashboard = require("alpha.themes.dashboard")
 
@@ -97,6 +98,121 @@ return {
                 })
             end
             require("alpha").setup(dashboard.opts)
+
+            -- Choose behavior: "lock" to freeze the viewport, or "follow" to keep it centered
+            local ALPHA_CENTER_MODE = "lock"
+
+            local function apply_lock(buf)
+                -- giant margins keep cursor centered; neutralize scroll actions
+                vim.wo[0].scrolloff = 999
+                vim.wo[0].sidescrolloff = 999
+                local opts = { buffer = buf, silent = true, nowait = true }
+                for _, lhs in ipairs({
+                    "<ScrollWheelUp>",
+                    "<ScrollWheelDown>",
+                    "<S-ScrollWheelUp>",
+                    "<S-ScrollWheelDown>",
+                    "<ScrollWheelLeft>",
+                    "<ScrollWheelRight>",
+                    "<C-y>",
+                    "<C-e>",
+                    "<C-u>",
+                    "<C-d>",
+                    "<C-b>",
+                    "<C-f>",
+                    "zh",
+                    "zl",
+                    "zH",
+                    "zL",
+                    "zt",
+                    "zb",
+                    "gg",
+                    "G",
+                }) do
+                    vim.keymap.set("n", lhs, "<nop>", opts)
+                end
+            end
+
+            local function apply_follow(buf)
+                vim.wo[0].scrolloff = 999
+                vim.wo[0].sidescrolloff = 999
+                local recentering = false
+                local function recenter()
+                    if recentering then
+                        return
+                    end
+                    recentering = true
+                    vim.schedule(function()
+                        if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == "alpha" then
+                            pcall(vim.cmd, "normal! zz")
+                        end
+                        recentering = false
+                    end)
+                end
+                -- recenters on cursor move / scroll / resize, but scoped to this buffer
+                vim.api.nvim_create_autocmd({ "CursorMoved", "WinScrolled", "VimResized" }, {
+                    buffer = buf,
+                    callback = recenter,
+                })
+                -- optional: neutralize pure scrolling so it doesn't fight the recenter
+                local opts = { buffer = buf, silent = true, nowait = true }
+                for _, lhs in ipairs({
+                    "<ScrollWheelUp>",
+                    "<ScrollWheelDown>",
+                    "<S-ScrollWheelUp>",
+                    "<S-ScrollWheelDown>",
+                    "<ScrollWheelLeft>",
+                    "<ScrollWheelRight>",
+                    "<C-y>",
+                    "<C-e>",
+                    "<C-u>",
+                    "<C-d>",
+                    "<C-b>",
+                    "<C-f>",
+                    "zh",
+                    "zl",
+                    "zH",
+                    "zL",
+                }) do
+                    vim.keymap.set("n", lhs, "<nop>", opts)
+                end
+            end
+
+            -- Run when Alpha has actually drawn its buffer
+            vim.api.nvim_create_autocmd("User", {
+                pattern = "AlphaReady",
+                callback = function()
+                    local buf = vim.api.nvim_get_current_buf()
+                    if vim.bo[buf].filetype ~= "alpha" then
+                        return
+                    end
+                    if ALPHA_CENTER_MODE == "lock" then
+                        apply_lock(buf)
+                    else
+                        apply_follow(buf)
+                    end
+                end,
+            })
+
+            -- Safety net: if Alpha is already open before AlphaReady fired (rare), catch on BufEnter
+            vim.api.nvim_create_autocmd("BufEnter", {
+                callback = function(args)
+                    if vim.bo[args.buf].filetype ~= "alpha" then
+                        return
+                    end
+                    -- avoid double-setup by setting a buffer var
+                    if vim.b[args.buf].__alpha_center_applied then
+                        return
+                    end
+                    vim.b[args.buf].__alpha_center_applied = true
+                    if ALPHA_CENTER_MODE == "lock" then
+                        apply_lock(args.buf)
+                    else
+                        apply_follow(args.buf)
+                    end
+                end,
+            })
+
             vim.api.nvim_create_autocmd("User", {
                 once = true,
                 pattern = "LazyVimStarted",

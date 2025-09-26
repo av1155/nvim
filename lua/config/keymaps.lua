@@ -42,6 +42,7 @@ map("n", "<A-9>",   "<Cmd>BufferGoto 9<CR>",   vim.tbl_extend("force", opts, { d
 map("n", "<A-0>",   "<Cmd>BufferGoto 0<CR>",   vim.tbl_extend("force", opts, { desc = "Goto buffer 0" }))
 map("n", "<A-p>",   "<Cmd>BufferPin<CR>",      vim.tbl_extend("force", opts, { desc = "Pin/unpin buffer" }))
 map("n", "<A-c>",   "<Cmd>BufferClose<CR>",    vim.tbl_extend("force", opts, { desc = "Close buffer" }))
+map("n", "<leader>a",   "<Cmd>Alpha<CR>",      vim.tbl_extend("force", opts, { desc = "Open Alpha" }))
 
 -- Close commands
 map("n", "<leader>ba", "<Cmd>BufferCloseAllButCurrent<CR>",            vim.tbl_extend("force", opts, { desc = "Close others (keep current)" }))
