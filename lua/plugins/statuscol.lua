@@ -22,6 +22,7 @@ return {
     { "kevinhwang91/promise-async" },
     {
         "kevinhwang91/nvim-ufo",
+        -- enabled = false,
         opts = {
             provider_selector = function()
                 return { "treesitter", "indent" }
@@ -74,6 +75,7 @@ return {
 
     {
         "luukvbaal/statuscol.nvim",
+        -- dependencies = { "rachartier/tiny-inline-diagnostic.nvim" },
         opts = function()
             local builtin = require("statuscol.builtin")
 
@@ -91,8 +93,27 @@ return {
                 setopt = true,
                 ft_ignore = { "alpha" },
                 segments = {
-                    { text = { builtin.foldfunc }, click = "v:lua.ScFa" }, -- fold column
-                    { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" }, -- line numbers
+
+                    -- Diagnostic signs
+                    -- {
+                    --     sign = {
+                    --         namespace = { "diagnostic" },
+                    --         name = { "Diagnostic.*" },
+                    --         maxwidth = 1,
+                    --         colwidth = 1,
+                    --         auto = false,
+                    --         fillchar = " ",
+                    --     },
+                    --     click = "v:lua.ScSa",
+                    -- },
+
+                    -- Fold column
+                    { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
+
+                    -- Line numbers
+                    { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
+
+                    -- Git signs
                     {
                         sign = {
                             namespace = { "gitsigns" },
@@ -111,6 +132,9 @@ return {
                     FoldClose = builtin.foldclose_click,
                     FoldOpen = builtin.foldopen_click,
                     FoldOther = builtin.foldother_click,
+                    -- FoldClose = false,
+                    -- FoldOpen = false,
+                    -- FoldOther = false,
 
                     -- LINE NUMBER CLICKS
                     Lnum = function(args)

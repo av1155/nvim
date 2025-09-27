@@ -230,15 +230,18 @@ return {
                                 end,
                             },
 
-                            -- filename
+                            -- filepath
                             has_lazyvim
-                                    and {
-                                        LazyVim.lualine.pretty_path(),
-                                        color = { fg = "#c6c6c6" },
-                                        cond = wide(105),
-                                    }
-                                or {
-                                    "filename",
+                                and {
+                                    LazyVim.lualine.pretty_path(),
+                                    fmt = function(str)
+                                        if type(str) ~= "string" then
+                                            return ""
+                                        end
+                                        -- show only when there is a directory component (e.g. "lua/plugins/lualine.lua")
+                                        -- and hide when it's just a single filename (e.g. "lualine.lua")
+                                        return (str:find("[/\\]") and str) or ""
+                                    end,
                                     color = { fg = "#c6c6c6" },
                                     cond = wide(105),
                                 },

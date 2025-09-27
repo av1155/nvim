@@ -20,13 +20,14 @@ return {
             -- configurations go here
             animation = true,
             insert_at_start = false,
-            auto_hide = 1,
+            auto_hide = false,
             icons = {
                 -- Configure the base icons on the bufferline.
                 -- Valid options to display the buffer index and -number are `true`, 'superscript' and 'subscript'
                 buffer_index = false,
                 buffer_number = false,
-                button = "",
+                -- button = "",
+                button = "",
                 -- Enables / disables diagnostic symbols
                 diagnostics = {
                     [vim.diagnostic.severity.ERROR] = { enabled = true, icon = " " },

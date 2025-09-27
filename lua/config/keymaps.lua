@@ -16,15 +16,18 @@
 --   5) Normal mode helpers (Telescope, Projects, ToggleTerm)
 --   6) External tools (Yazi)
 --   7) Editing helpers (Search/Replace, Save w/o format)
---   8) Clipboard & Cut
+--   8) Clipboard / Cut & Text objects
 --   9) Quit & Sessions
 --  10) Codesnap
+--  11) Avante
 --------------------------------------------------------------------------------
 
 -- Standard locals
 local map, unmap = vim.keymap.set, vim.keymap.del
+local remap = { silent = true, remap = true }
 local opts = { noremap = true, silent = true }
 local wk = require("which-key")
+local api = require("Comment.api")
 
 --------------------------------------------------------------------------------
 -- 1) Unmaps ─ Free built-in or plugin defaults so we can reassign cleanly
@@ -68,6 +71,8 @@ wk.add({
     -- or with a color:
     -- { "<leader>z", desc = "Open Alpha Dashboard", icon = { icon = "󰕮", color = "blue" }, mode = "n" },
     { "<leader>aa", desc = "avante: Ask", icon = { icon = "", color = "green" }, mode = { "n", "v" } },
+    { "<leader>/", desc = "Comments: toggle line", icon = { icon = "", color = "orange" }, mode = { "n" } },
+    { "<leader>'", desc = "Comments: toggle block", icon = { icon = "", color = "orange" }, mode = { "n" } },
 })
 
 -- stylua: ignore start
@@ -172,7 +177,7 @@ map("n", "<leader>s.", ":SearchBoxReplace<CR>",  vim.tbl_extend("force", opts, {
 map("n", "<leader>W",  ":noautocmd w<CR>",       vim.tbl_extend("force", opts, { desc = "Save without formatting" }))
 
 --------------------------------------------------------------------------------
--- 8) Clipboard / Cut (system clipboard-friendly)
+-- 8) Clipboard / Cut / Text objects
 --------------------------------------------------------------------------------
 
 -- Copy entire file / selection
@@ -182,6 +187,18 @@ map("v", "<C-c>", '"+y',                         vim.tbl_extend("force", opts, {
 -- Cut entire file / selection
 map("n", "<C-x>", ":%d<CR>",                     vim.tbl_extend("force", opts, { desc = "Delete entire file" }))
 map("v", "<C-x>", '"+d',                         vim.tbl_extend("force", opts, { desc = "Cut selection to clipboard" }))
+
+-- Visual mode: Tab = indent right, Shift-Tab = indent left (keep selection)
+map('v', '<Tab>',    '>gv', vim.tbl_extend('force', opts, { desc = 'Indent right' }))
+map('v', '<S-Tab>',  '<gv', vim.tbl_extend('force', opts, { desc = 'Indent left' }))
+
+-- Linewise toggle
+map('n', '<leader>/', 'gcc', vim.tbl_extend('force', remap, { desc = 'Comments: toggle line' }))
+map('x', '<leader>/', 'gc',  vim.tbl_extend('force', remap, { desc = 'Comments: toggle line (visual)' }))
+
+-- Blockwise toggle
+map('n', '<leader>\'', 'gbc', vim.tbl_extend('force', remap, { desc = 'Comments: toggle block' }))
+map('x', '<leader>\'', 'gb',  vim.tbl_extend('force', remap, { desc = 'Comments: toggle block (visual)' }))
 
 --------------------------------------------------------------------------------
 -- 9) Quit & Sessions remap (confirming)
@@ -202,7 +219,7 @@ map("v", "<leader>cpc", "<cmd>CodeSnap<cr>",     vim.tbl_extend("force", opts, {
 map("v", "<leader>cps", "<cmd>CodeSnapSave<cr>", vim.tbl_extend("force", opts, { desc = "Save code snapshot in ~/Downloads" }))
 
 --------------------------------------------------------------------------------
--- 10) Avante
+-- 11) Avante
 --     Requires: Avante plugin
 --------------------------------------------------------------------------------
 
