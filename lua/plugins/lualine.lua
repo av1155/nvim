@@ -1,18 +1,16 @@
--- Bubbles config for lualine:
-
 -- stylua: ignore
 local colors = {
-    -- black  = '#080808', -- transparent
+    -- black      = '#080808', -- transparent
     black      = '',
     white      = '#c6c6c6',
     blue       = '#80a0ff',
     cyan       = '#79dac8',
     red        = '#ff5189',
-    pink     = '#F4B8E4',
+    pink       = '#F4B8E4',
     grey       = '#303030',
     muted_blue = '#5f87af',
     dark_grey  = '#262626',
-    purple  = '#B4BEFF',
+    purple     = '#B4BEFF',
 }
 
 local bubbles_theme = {

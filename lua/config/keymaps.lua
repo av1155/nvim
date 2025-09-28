@@ -1,6 +1,15 @@
 --------------------------------------------------------------------------------
 -- Keymaps (LazyVim)
--- This file is auto-loaded by `lazyvim.config.init` on the VeryLazy event.
+--
+-- Keymaps are automatically loaded on the VeryLazy event
+-- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+-- Add any additional keymaps here
+--
+-- Plugin Keymaps: https://www.lazyvim.org/configuration/plugins#%EF%B8%8F-adding--disabling-plugin-keymaps
+--   • In the plugin .lua file use `keys = {}`
+--
+-- For LSP Keymaps: https://www.lazyvim.org/plugins/lsp#%EF%B8%8F-customizing-lsp-keymaps
+--   • Same as for plugin keymaps, but you need to configure it using the `opts()` method.
 --
 -- ❖ Conventions
 --   • Always use `vim.keymap.set` (not LazyVim.safe_keymap_set).
@@ -11,15 +20,16 @@
 -- ❖ Quick Index
 --   1) Unmaps (free up defaults)
 --   2) Which-Key: Groups & Icons
---   3) Plugin: Barbar (buffers)
---   4) Terminal mode mappings
---   5) Normal mode helpers (Telescope, Projects, ToggleTerm)
---   6) External tools (Yazi)
---   7) Editing helpers (Search/Replace, Save w/o format)
---   8) Clipboard / Cut & Text objects
---   9) Quit & Sessions
---  10) Codesnap
---  11) Avante
+--   3) Kitty Terminal Behavior Matching
+--   4) Plugin: Barbar (buffers)
+--   5) Terminal mode mappings
+--   6) Normal mode helpers (Telescope, Projects, ToggleTerm)
+--   7) External tools (Yazi)
+--   8) Editing helpers (Search/Replace, Save w/o format)
+--   9) Clipboard / Cut & Text objects
+--   10) Quit & Sessions
+--   11) Codesnap
+--   12) Avante
 --------------------------------------------------------------------------------
 
 -- Standard locals
@@ -27,7 +37,6 @@ local map, unmap = vim.keymap.set, vim.keymap.del
 local remap = { silent = true, remap = true }
 local opts = { noremap = true, silent = true }
 local wk = require("which-key")
-local api = require("Comment.api")
 
 --------------------------------------------------------------------------------
 -- 1) Unmaps ─ Free built-in or plugin defaults so we can reassign cleanly
@@ -44,7 +53,7 @@ unmap("n", "<leader>bD")
 unmap("n", "<leader>fn")
 
 -- Find
-unmap("n", "<leader>fp") -- later re-bound to Telescope projects
+unmap("n", "<leader>fp")
 
 -- CopilotChat
 unmap({ "n", "v" }, "<leader>aa")
@@ -53,7 +62,7 @@ unmap({ "n", "v" }, "<leader>aq")
 unmap({ "n", "v" }, "<leader>ap")
 
 --------------------------------------------------------------------------------
--- 2) Which-Key: Groups & Icons (kept separate for easy additions)
+-- 2) Which-Key: Groups & Icons
 --------------------------------------------------------------------------------
 
 wk.add({
@@ -66,10 +75,9 @@ wk.add({
 })
 
 wk.add({
-    -- Examples: uncomment to show icons in Which-Key
+    -- show icons in Which-Key
     -- { "<leader>z", desc = "Open Alpha Dashboard", icon = "󰋜", mode = "n" },
-    -- or with a color:
-    -- { "<leader>z", desc = "Open Alpha Dashboard", icon = { icon = "󰕮", color = "blue" }, mode = "n" },
+    -- show icons in Which-Key with a color:
     { "<leader>aa", desc = "avante: Ask", icon = { icon = "", color = "green" }, mode = { "n", "v" } },
     { "<leader>/", desc = "Comments: toggle line", icon = { icon = "", color = "orange" }, mode = { "n" } },
     { "<leader>'", desc = "Comments: toggle block", icon = { icon = "", color = "orange" }, mode = { "n" } },
@@ -78,7 +86,62 @@ wk.add({
 -- stylua: ignore start
 
 --------------------------------------------------------------------------------
--- 3) Plugin: BARBAR — Buffer navigation & management
+-- 3) Kitty Terminal Behavior Matching
+--------------------------------------------------------------------------------
+
+--[[
+`kitty.conf`
+map alt+left      send_text all \x1b\x62
+map alt+right     send_text all \x1b\x66
+map alt+backspace send_text all \x1b\x7f
+map alt+up        send_text all \x1b[F
+map alt+down      send_text all \x1b[H
+
+--------------------------------------------------------------------------------
+Shell-like Alt word/line motions
+kitty sends:
+    ⌥← -> M-b, ⌥→ -> M-f, ⌥⌫ -> M-BS
+    ⌥↑ -> <End>, ⌥↓ -> <Home>
+ ]]
+--------------------------------------------------------------------------------
+
+-- NORMAL mode: Alt-word + Home/End
+map("n", "<M-b>", "b", vim.tbl_extend("force", opts, { desc = "Alt: word left" }))
+map("n", "<M-f>", "w", vim.tbl_extend("force", opts, { desc = "Alt: word right" }))
+map("n", "<End>", "$", vim.tbl_extend("force", opts, { desc = "Alt: end of line (via End)" }))
+map("n", "<Home>", "0", vim.tbl_extend("force", opts, { desc = "Alt: beginning of line (via Home)" }))
+
+-- VISUAL mode: Alt-word + Home/End (adjust selection by words/line)
+map("v", "<M-b>", "b", vim.tbl_extend("force", opts, { desc = "Alt: word left (visual)" }))
+map("v", "<M-f>", "w", vim.tbl_extend("force", opts, { desc = "Alt: word right (visual)" }))
+map("v", "<End>", "$", vim.tbl_extend("force", opts, { desc = "Alt: end of line (visual)" }))
+map("v", "<Home>", "0", vim.tbl_extend("force", opts, { desc = "Alt: beginning of line (visual)" }))
+
+-- INSERT mode: stay in insert while moving/deleting by word
+-- Use <C-o>{motion} so we don't leave insert-mode
+map("i", "<M-b>", "<C-o>b", vim.tbl_extend("force", opts, { desc = "Alt: word left (insert)" }))
+map("i", "<M-f>", "<C-o>w", vim.tbl_extend("force", opts, { desc = "Alt: word right (insert)" }))
+
+-- ⌥⌫ deletes previous word; kitty sends ESC 0x7f (M-BS). Cover both notations.
+map("i", "<M-BS>", "<C-w>", vim.tbl_extend("force", opts, { desc = "Alt: delete previous word (insert)" }))
+map("i", "<M-Backspace>", "<C-w>", vim.tbl_extend("force", opts, { desc = "Alt: delete previous word (insert, alt name)" }))
+
+-- ⌥↑ / ⌥↓ are End/Home from kitty
+-- insert-mode already handles <End>/<Home>, but we add explicit maps
+-- for clarity (and to keep WhichKey descriptions consistent).
+map("i", "<End>", "<End>", vim.tbl_extend("force", opts, { desc = "Alt: end of line (insert)" }))
+map("i", "<Home>", "<Home>", vim.tbl_extend("force", opts, { desc = "Alt: beginning of line (insert)" }))
+
+-- COMMAND-LINE mode: word-jump/delete + Home/End
+map("c", "<M-b>", "<S-Left>", vim.tbl_extend("force", opts, { desc = "Alt: word left (cmdline)" }))
+map("c", "<M-f>", "<S-Right>", vim.tbl_extend("force", opts, { desc = "Alt: word right (cmdline)" }))
+map("c", "<M-BS>", "<C-w>", vim.tbl_extend("force", opts, { desc = "Alt: delete previous word (cmdline)" }))
+map("c", "<M-Backspace>", "<C-w>", vim.tbl_extend("force", opts, { desc = "Alt: delete previous word (cmdline, alt name)" }))
+map("c", "<End>", "<End>", vim.tbl_extend("force", opts, { desc = "Alt: end of line (cmdline)" }))
+map("c", "<Home>", "<Home>", vim.tbl_extend("force", opts, { desc = "Alt: beginning of line (cmdline)" }))
+
+--------------------------------------------------------------------------------
+-- 4) Plugin: BARBAR — Buffer navigation & management
 --    Requires: 'romgrk/barbar.nvim'
 --------------------------------------------------------------------------------
 
@@ -123,7 +186,7 @@ map("n", "<leader>bsl", "<Cmd>BufferOrderByLanguage<CR>",     vim.tbl_extend("fo
 map("n", "<leader>bsw", "<Cmd>BufferOrderByWindowNumber<CR>", vim.tbl_extend("force", opts, { desc = "Sort buffers by window number" }))
 
 --------------------------------------------------------------------------------
--- 4) Terminal mode mappings
+-- 5) Terminal mode mappings
 --    Alt+z: exit terminal-mode and close all ToggleTerm windows
 --    Requires: 'akinsho/toggleterm.nvim'
 --------------------------------------------------------------------------------
@@ -136,7 +199,7 @@ map("t", "<A-z>", function()
 end, vim.tbl_extend("force", opts, { desc = "Exit terminal mode and close floating terminal" }))
 
 --------------------------------------------------------------------------------
--- 5) Normal mode helpers (Telescope, Projects, ToggleTerm)
+-- 6) Normal mode helpers (Telescope, Projects, ToggleTerm)
 --    Requires: telescope.nvim, toggleterm.nvim, project plugin providing :AddProject
 --------------------------------------------------------------------------------
 
@@ -153,7 +216,7 @@ map("n", "<leader>fp", "<cmd>Telescope projects<cr>",                   vim.tbl_
 map("n", "<leader>bA", "<cmd>AddProject<cr>",                           vim.tbl_extend("force", opts, { desc = "Add Project" }))
 
 --------------------------------------------------------------------------------
--- 6) External tools: Yazi file manager (in a floating terminal)
+-- 7) External tools: Yazi file manager (in a floating terminal)
 --    Requires: toggleterm.nvim and `yazi` installed on PATH
 --------------------------------------------------------------------------------
 
@@ -169,7 +232,7 @@ do
 end
 
 --------------------------------------------------------------------------------
--- 7) Editing helpers
+-- 8) Editing helpers
 --------------------------------------------------------------------------------
 
 -- Search & replace (current buffer) and Save without formatting
@@ -177,7 +240,7 @@ map("n", "<leader>s.", ":SearchBoxReplace<CR>",  vim.tbl_extend("force", opts, {
 map("n", "<leader>W",  ":noautocmd w<CR>",       vim.tbl_extend("force", opts, { desc = "Save without formatting" }))
 
 --------------------------------------------------------------------------------
--- 8) Clipboard / Cut / Text objects
+-- 9) Clipboard / Cut / Text objects
 --------------------------------------------------------------------------------
 
 -- Copy entire file / selection
@@ -201,7 +264,14 @@ map('n', '<leader>\'', 'gbc', vim.tbl_extend('force', remap, { desc = 'Comments:
 map('x', '<leader>\'', 'gb',  vim.tbl_extend('force', remap, { desc = 'Comments: toggle block (visual)' }))
 
 --------------------------------------------------------------------------------
--- 9) Quit & Sessions remap (confirming)
+-- Numbers: + increment / = decrement
+--------------------------------------------------------------------------------
+
+map({ "n", "v" }, "+", "<C-a>", vim.tbl_extend("force", opts, { desc = "Increment number" }))
+map({ "n", "v" }, "=", "<C-x>", vim.tbl_extend("force", opts, { desc = "Decrement number" }))
+
+--------------------------------------------------------------------------------
+-- 10) Quit & Sessions remap (confirming)
 --------------------------------------------------------------------------------
 
 -- Simple quit on <leader>q
@@ -211,7 +281,7 @@ map("n", "<leader>qq", "<cmd>confirm q<CR>",     vim.tbl_extend("force", opts, {
 map("n", "<leader>qQ", "<cmd>confirm qall<CR>",  vim.tbl_extend("force", opts, { desc = "Quit All" }))
 
 --------------------------------------------------------------------------------
--- 10) Codesnap
+-- 11) Codesnap
 --     Requires: CodeSnap plugin
 --------------------------------------------------------------------------------
 
@@ -219,7 +289,7 @@ map("v", "<leader>cpc", "<cmd>CodeSnap<cr>",     vim.tbl_extend("force", opts, {
 map("v", "<leader>cps", "<cmd>CodeSnapSave<cr>", vim.tbl_extend("force", opts, { desc = "Save code snapshot in ~/Downloads" }))
 
 --------------------------------------------------------------------------------
--- 11) Avante
+-- 12) Avante
 --     Requires: Avante plugin
 --------------------------------------------------------------------------------
 
