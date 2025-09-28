@@ -36,7 +36,7 @@ return {
             completion = {
                 list = {
                     selection = {
-                        preselect = true,
+                        preselect = false,
                         auto_insert = false,
                     },
                     cycle = { from_top = true, from_bottom = true },

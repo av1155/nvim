@@ -22,7 +22,6 @@ return {
     { "kevinhwang91/promise-async" },
     {
         "kevinhwang91/nvim-ufo",
-        -- enabled = false,
         opts = {
             provider_selector = function()
                 return { "treesitter", "indent" }
@@ -57,7 +56,6 @@ return {
             end,
         },
         config = function(_, opts)
-            -- Fold basics
             vim.opt.foldenable = true
             vim.opt.foldlevel = 99
             vim.opt.foldlevelstart = 99
@@ -67,7 +65,6 @@ return {
 
             require("ufo").setup(opts)
 
-            -- Handy mappings that keep foldlevel stable
             vim.keymap.set("n", "zR", require("ufo").openAllFolds, { desc = "Open all folds (UFO)" })
             vim.keymap.set("n", "zM", require("ufo").closeAllFolds, { desc = "Close all folds (UFO)" })
         end,
@@ -75,11 +72,10 @@ return {
 
     {
         "luukvbaal/statuscol.nvim",
-        -- dependencies = { "rachartier/tiny-inline-diagnostic.nvim" },
         opts = function()
             local builtin = require("statuscol.builtin")
 
-            -- helper: run a function with the cursor temporarily at a specific line
+            -- run a function as if the cursor were on `line`
             local function at_line(line, fn)
                 local win = vim.api.nvim_get_current_win()
                 local cur = vim.api.nvim_win_get_cursor(win)
@@ -89,31 +85,31 @@ return {
                 return ok, err
             end
 
+            -- Handle clicks on gitsigns and line number segments
+            local function git_click(args)
+                local gs = require("gitsigns")
+                local line = args.mousepos.line
+                local mods = args.mods or ""
+
+                if args.button == "l" then
+                    if mods:find("c") then
+                        return at_line(line, gs.reset_hunk) -- Ctrl+Left: reset
+                    else
+                        return at_line(line, gs.preview_hunk) -- Left: preview
+                    end
+                elseif args.button == "r" then
+                    return at_line(line, gs.stage_hunk) -- Right: stage
+                elseif args.button == "m" then
+                    return at_line(line, gs.reset_hunk) -- Middle: reset
+                end
+            end
+
             return {
                 setopt = true,
                 ft_ignore = { "alpha" },
                 segments = {
-
-                    -- Diagnostic signs
-                    -- {
-                    --     sign = {
-                    --         namespace = { "diagnostic" },
-                    --         name = { "Diagnostic.*" },
-                    --         maxwidth = 1,
-                    --         colwidth = 1,
-                    --         auto = false,
-                    --         fillchar = " ",
-                    --     },
-                    --     click = "v:lua.ScSa",
-                    -- },
-
-                    -- Fold column
                     { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
-
-                    -- Line numbers
                     { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
-
-                    -- Git signs
                     {
                         sign = {
                             namespace = { "gitsigns" },
@@ -126,43 +122,14 @@ return {
                         click = "v:lua.ScSa",
                     },
                 },
-
                 clickhandlers = {
-                    -- FOLD CLICKS
                     FoldClose = builtin.foldclose_click,
                     FoldOpen = builtin.foldopen_click,
                     FoldOther = builtin.foldother_click,
-                    -- FoldClose = false,
-                    -- FoldOpen = false,
-                    -- FoldOther = false,
 
-                    -- LINE NUMBER CLICKS
-                    Lnum = function(args)
-                        local gs = require("gitsigns")
-                        local line = args.mousepos.line
-                        if args.button == "l" then
-                            -- preview hunk (floating)
-                            return at_line(line, gs.preview_hunk)
-                        elseif args.button == "r" then
-                            -- stage the hunk under the clicked line
-                            return at_line(line, gs.stage_hunk)
-                        elseif args.button == "m" then
-                            -- RESET the hunk under the clicked line (destructive)
-                            return at_line(line, gs.reset_hunk)
-                        end
-                    end,
-
-                    -- GITSIGNS CLICKS
-                    gitsigns = function(args)
-                        local gs = require("gitsigns")
-                        if args.button == "l" then
-                            return gs.preview_hunk()
-                        elseif args.button == "r" then
-                            return gs.stage_hunk()
-                        elseif args.button == "m" then
-                            return gs.reset_hunk()
-                        end
-                    end,
+                    -- Handle clicks on both Lnum and gitsigns segments
+                    Lnum = git_click,
+                    gitsigns = git_click,
 
                     -- DISABLED DAP CLICKS
                     DapBreakpointRejected = false,
