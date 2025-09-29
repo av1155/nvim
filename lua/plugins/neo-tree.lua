@@ -15,12 +15,10 @@ return {
                 local modify = vim.fn.fnamemodify
 
                 local vals = {
-                    ["BASENAME"] = modify(filename, ":r"),
-                    ["EXTENSION"] = modify(filename, ":e"),
                     ["FILENAME"] = filename,
+                    ["PATH"] = filepath,
                     ["PATH (CWD)"] = modify(filepath, ":."),
                     ["PATH (HOME)"] = modify(filepath, ":~"),
-                    ["PATH"] = filepath,
                     ["URI"] = vim.uri_from_fname(filepath),
                 }
 

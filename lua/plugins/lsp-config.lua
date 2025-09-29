@@ -1,7 +1,6 @@
 return {
     {
         "neovim/nvim-lspconfig",
-        dependencies = { "aznhe21/actions-preview.nvim" },
         opts = function(_, opts)
             opts.diagnostics = vim.tbl_deep_extend("force", opts.diagnostics or {}, {
                 signs = {
@@ -13,7 +12,6 @@ return {
                     },
                 },
                 virtual_text = false,
-                -- virtual_text = { prefix = "" },
                 underline = true,
                 severity_sort = true,
             })
@@ -21,7 +19,8 @@ return {
             local keys = require("lazyvim.plugins.lsp.keymaps").get()
 
             -- UNMAP LSP KEYBINDS
-            keys[#keys + 1] = { "<leader>ca", false }
+            keys[#keys + 1] = { "<leader>ca", false, mode = "n" }
+            keys[#keys + 1] = { "<leader>ca", false, mode = "v" }
 
             -- MAP LSP KEYBINDS
             keys[#keys + 1] = {
