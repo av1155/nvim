@@ -58,9 +58,9 @@ nvim
 - `:Lazy` to manage plugins; `:Mason` to install language tools if needed.
 - If using Python plugins, export:
 
-  ```bash
-  export NVIM_PYTHON_PATH="$(pyenv which python || which python3)"
-  ```
+    ```bash
+    export NVIM_PYTHON_PATH="$(pyenv which python || which python3)"
+    ```
 
 ---
 
@@ -112,7 +112,7 @@ nvim
 
 **Clipboard / Numbers**
 
-- `<C-c>` copy file/selection · `<C-x>` cut file/selection  
+- `<C-c>` copy file/selection · `<C-x>` cut file/selection
 - `+`/`=` increment/decrement number (also visual variants keep selection)
 
 ---
@@ -158,12 +158,12 @@ nvim
 
 ## ⚙️ Options & Autocmds
 
-- `lua/config/options.lua`  
-  - spaces: 4 · wrap with `showbreak` (`↪`)  
-  - `relativenumber = false`  
+- `lua/config/options.lua`
+  - spaces: 4 · wrap with `showbreak` (`↪`)
+  - `relativenumber = false`
   - Python host from `NVIM_PYTHON_PATH`
 
-- `lua/config/autocmds.lua`  
+- `lua/config/autocmds.lua`
   - Re-applies global highlight overrides on any colorscheme change.
 
 ---

@@ -12,3 +12,4 @@ opt.wrap = true -- Line wrapping
 opt.showbreak = "↪ "
 
 g.python3_host_prog = os.getenv("NVIM_PYTHON_PATH")
+g.lazyvim_prettier_needs_config = true

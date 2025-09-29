@@ -21,6 +21,7 @@ return {
             -- UNMAP LSP KEYBINDS
             keys[#keys + 1] = { "<leader>ca", false, mode = "n" }
             keys[#keys + 1] = { "<leader>ca", false, mode = "v" }
+            keys[#keys + 1] = { "<leader>cA", false, mode = "n" }
 
             -- MAP LSP KEYBINDS
             keys[#keys + 1] = {
@@ -30,6 +31,17 @@ return {
                 end,
                 desc = "Code Action (preview)",
                 mode = { "n", "v" },
+            }
+
+            keys[#keys + 1] = {
+                "<leader>cA",
+                function()
+                    require("tiny-code-action").code_action({
+                        context = { only = { "source" } },
+                    })
+                end,
+                desc = "Source Action (preview)",
+                mode = { "n" },
             }
 
             opts.keys = keys
