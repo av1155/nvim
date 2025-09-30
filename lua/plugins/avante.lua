@@ -53,6 +53,10 @@ return {
                 },
             },
         },
+        -- stylua: ignore
+        keys = {
+            {"<leader>aa", "<cmd>AvanteAsk<cr>", desc = "avante: ask", mode = {"n","v"}, silent = true, noremap = true},
+        },
         dependencies = {
             "nvim-lua/plenary.nvim",
             "MunifTanjim/nui.nvim",
@@ -69,6 +73,19 @@ return {
                 -- support for image pasting
                 "HakonHarnes/img-clip.nvim",
                 event = "VeryLazy",
+                init = function()
+                    local ok, wk = pcall(require, "which-key")
+                    if ok then
+                        wk.add({
+                            {
+                                "<leader>aa",
+                                desc = "avante: Ask",
+                                icon = { icon = "", color = "green" },
+                                mode = { "n", "v" },
+                            },
+                        })
+                    end
+                end,
                 opts = {
                     -- recommended settings
                     default = {

@@ -19,69 +19,43 @@
 --
 -- ❖ Quick Index
 --   1) Unmaps (free up defaults)
---   2) Which-Key: Groups & Icons
---   3) Kitty Terminal Behavior Matching
---   4) Plugin: Barbar (buffers)
---   5) Terminal mode mappings
---   6) Normal mode helpers (Telescope, Projects, ToggleTerm)
---   7) External tools (Yazi)
---   8) Editing helpers (Search/Replace, Save w/o format)
---   9) Clipboard / Cut & Text objects
---   10) Quit & Sessions
---   11) Codesnap
---   12) Avante
+--   2) Kitty Terminal Behavior Matching
+--   3) Buffers
+--   4) External tools (Yazi)
+--   5) Editing helpers (Search/Replace, Save w/o format)
+--   6) Clipboard / Cut & Text objects
+--   7) Quit & Sessions
 --------------------------------------------------------------------------------
 
 -- Standard locals
 local map, unmap = vim.keymap.set, vim.keymap.del
-local remap = { silent = true, remap = true }
 local opts = { noremap = true, silent = true }
-local wk = require("which-key")
+-- local remap = { silent = true, remap = true }
 
 --------------------------------------------------------------------------------
--- 1) Unmaps ─ Free built-in or plugin defaults so we can reassign cleanly
+-- 1) Unmaps ─ Free built-in or LazyVim defaults so we can reassign cleanly
 --------------------------------------------------------------------------------
 
--- Diagnostics
-unmap("n", "<leader>K")
-
--- Buffers
+-- LazyVim defaults
 unmap("n", "<leader>bb")
 unmap("n", "<leader>bo")
 unmap("n", "<leader>bd")
 unmap("n", "<leader>bD")
 unmap("n", "<leader>fn")
-
--- Find
 unmap("n", "<leader>fp")
+unmap("n", "<leader>K")
 
--- CopilotChat
+--[[ -- CopilotChat defaults (disabled in plugin spec, but unmap for safety)
 unmap({ "n", "v" }, "<leader>aa")
 unmap({ "n", "v" }, "<leader>ax")
 unmap({ "n", "v" }, "<leader>aq")
 unmap({ "n", "v" }, "<leader>ap")
-
---------------------------------------------------------------------------------
--- 2) Which-Key: Groups & Icons
---------------------------------------------------------------------------------
-
-wk.add({
-    { "<leader>bs", group = "sort buffers", mode = "n" },
-    { "<leader>a", group = "AI", mode = { "n", "v" } },
-    { "<leader>ac", group = "CopilotChat", mode = { "n", "v" } },
-    { "<leader>cp", group = "codesnap", mode = "v" },
-})
-
-wk.add({
-    { "<leader>aa", desc = "avante: Ask", icon = { icon = "", color = "green" }, mode = { "n", "v" } },
-    { "<leader>/", desc = "Comments: toggle line", icon = { icon = "", color = "orange" }, mode = { "n" } },
-    { "<leader>'", desc = "Comments: toggle block", icon = { icon = "", color = "orange" }, mode = { "n" } },
-})
+ ]]
 
 -- stylua: ignore start
 
 --------------------------------------------------------------------------------
--- 3) Kitty Terminal Behavior Matching
+-- 2) Kitty Terminal Behavior Matching
 --------------------------------------------------------------------------------
 
 --[[
@@ -136,25 +110,8 @@ map("c", "<End>", "<End>", vim.tbl_extend("force", opts, { desc = "Alt: end of l
 map("c", "<Home>", "<Home>", vim.tbl_extend("force", opts, { desc = "Alt: beginning of line (cmdline)" }))
 
 --------------------------------------------------------------------------------
--- 4) Plugin: BARBAR — Buffer navigation & management
---    Requires: 'romgrk/barbar.nvim'
+-- 3) Buffer navigation & management
 --------------------------------------------------------------------------------
-
-map("n", "<S-Tab>", "<Cmd>BufferPrevious<CR>",     vim.tbl_extend("force", opts, { desc = "Move to previous buffer" }))
-map("n", "<Tab>",   "<Cmd>BufferNext<CR>",         vim.tbl_extend("force", opts, { desc = "Move to next buffer" }))
-map("n", "<A-<>",   "<Cmd>BufferMovePrevious<CR>", vim.tbl_extend("force", opts, { desc = "Re-order to previous buffer" }))
-map("n", "<A->>",   "<Cmd>BufferMoveNext<CR>",     vim.tbl_extend("force", opts, { desc = "Re-order to next buffer" }))
-map("n", "<A-1>",   "<Cmd>BufferGoto 1<CR>",       vim.tbl_extend("force", opts, { desc = "Goto buffer 1" }))
-map("n", "<A-2>",   "<Cmd>BufferGoto 2<CR>",       vim.tbl_extend("force", opts, { desc = "Goto buffer 2" }))
-map("n", "<A-3>",   "<Cmd>BufferGoto 3<CR>",       vim.tbl_extend("force", opts, { desc = "Goto buffer 3" }))
-map("n", "<A-4>",   "<Cmd>BufferGoto 4<CR>",       vim.tbl_extend("force", opts, { desc = "Goto buffer 4" }))
-map("n", "<A-5>",   "<Cmd>BufferGoto 5<CR>",       vim.tbl_extend("force", opts, { desc = "Goto buffer 5" }))
-map("n", "<A-6>",   "<Cmd>BufferGoto 6<CR>",       vim.tbl_extend("force", opts, { desc = "Goto buffer 6" }))
-map("n", "<A-7>",   "<Cmd>BufferGoto 7<CR>",       vim.tbl_extend("force", opts, { desc = "Goto buffer 7" }))
-map("n", "<A-8>",   "<Cmd>BufferGoto 8<CR>",       vim.tbl_extend("force", opts, { desc = "Goto buffer 8" }))
-map("n", "<A-9>",   "<Cmd>BufferGoto 9<CR>",       vim.tbl_extend("force", opts, { desc = "Goto buffer 9" }))
-map("n", "<A-0>",   "<Cmd>BufferGoto 0<CR>",       vim.tbl_extend("force", opts, { desc = "Goto buffer 0" }))
-map("n", "<A-p>",   "<Cmd>BufferPin<CR>",          vim.tbl_extend("force", opts, { desc = "Pin/unpin buffer" }))
 
 -- Replace the default close with a helper that falls back to Alpha if last window
 map("n", "<A-c>", function()
@@ -167,51 +124,13 @@ map("n", "<A-C>", function()
 end, vim.tbl_extend("force", opts, { desc = "Force close (Alpha if last)" }))
 
 -- Buffers
-map("n", "<leader>bn", "<Cmd>enew<CR>",                       vim.tbl_extend("force", opts, { desc = "New File" }))
-
--- Close commands
-map("n", "<leader>ba", "<Cmd>BufferCloseAllButCurrent<CR>",   vim.tbl_extend("force", opts, { desc = "Close others (keep current)" }))
-map("n", "<leader>bp", "<Cmd>BufferCloseAllButPinned<CR>",    vim.tbl_extend("force", opts, { desc = "Close unpinned buffers" }))
-map("n", "<leader>bP", "<Cmd>BufferCloseAllButCurrentOrPinned<CR>", vim.tbl_extend("force", opts, { desc = "Close others (keep current & pinned)" }))
-
--- Sort buffers
-map("n", "<leader>bsb", "<Cmd>BufferOrderByBufferNumber<CR>", vim.tbl_extend("force", opts, { desc = "Sort buffers by buffer number" }))
-map("n", "<leader>bsd", "<Cmd>BufferOrderByDirectory<CR>",    vim.tbl_extend("force", opts, { desc = "Sort buffers by directory" }))
-map("n", "<leader>bsl", "<Cmd>BufferOrderByLanguage<CR>",     vim.tbl_extend("force", opts, { desc = "Sort buffers by language" }))
-map("n", "<leader>bsw", "<Cmd>BufferOrderByWindowNumber<CR>", vim.tbl_extend("force", opts, { desc = "Sort buffers by window number" }))
-
---------------------------------------------------------------------------------
--- 5) Terminal mode mappings
---    Alt+z: exit terminal-mode and close all ToggleTerm windows
---    Requires: 'akinsho/toggleterm.nvim'
---------------------------------------------------------------------------------
-
-map("t", "<A-z>", function()
-  -- exit to normal mode
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-\\><C-n>", true, false, true), "n", false)
-  -- close all toggleterm terminals
-  vim.cmd("ToggleTermToggleAll")
-end, vim.tbl_extend("force", opts, { desc = "Exit terminal mode and close floating terminal" }))
-
---------------------------------------------------------------------------------
--- 6) Normal mode helpers (Telescope, Projects, ToggleTerm)
---    Requires: telescope.nvim, toggleterm.nvim, project plugin providing :AddProject
---------------------------------------------------------------------------------
-
--- Toggle floating terminal
-map("n", "<A-z>",     "<cmd>ToggleTerm direction=float<CR>",            vim.tbl_extend("force", opts, { desc = "Toggle Terminal" }))
-
--- Telescope helpers
-map("n", "<leader>f/", "<cmd>Telescope current_buffer_fuzzy_find<cr>",  vim.tbl_extend("force", opts, { desc = "Find words in current buffer" }))
-
--- Rebound after unmap above: projects picker
-map("n", "<leader>fp", "<cmd>Telescope projects<cr>",                   vim.tbl_extend("force", opts, { desc = "Projects" }))
+map("n", "<leader>bn", "<Cmd>enew<CR>", vim.tbl_extend("force", opts, { desc = "New File" }))
 
 -- Project add
-map("n", "<leader>bA", "<cmd>AddProject<cr>",                           vim.tbl_extend("force", opts, { desc = "Add Project" }))
+map("n", "<leader>bA", "<cmd>AddProject<cr>", vim.tbl_extend("force", opts, { desc = "Add Project" }))
 
 --------------------------------------------------------------------------------
--- 7) External tools: Yazi file manager (in a floating terminal)
+-- 4) External tools: Yazi file manager (in a floating terminal)
 --    Requires: toggleterm.nvim and `yazi` installed on PATH
 --------------------------------------------------------------------------------
 
@@ -227,15 +146,14 @@ do
 end
 
 --------------------------------------------------------------------------------
--- 8) Editing helpers
+-- 5) Editing helpers
 --------------------------------------------------------------------------------
 
 -- Search & replace (current buffer) and Save without formatting
-map("n", "<leader>s.", ":SearchBoxReplace<CR>",  vim.tbl_extend("force", opts, { desc = "Search and Replace on Current Buffer" }))
 map("n", "<leader>W",  ":noautocmd w<CR>",       vim.tbl_extend("force", opts, { desc = "Save without formatting" }))
 
 --------------------------------------------------------------------------------
--- 9) Clipboard / Cut / Text objects
+-- 6) Clipboard / Cut / Text objects
 --------------------------------------------------------------------------------
 
 -- Copy entire file / selection
@@ -250,14 +168,6 @@ map("v", "<C-x>", '"+d',                         vim.tbl_extend("force", opts, {
 map('v', '<Tab>',    '>gv', vim.tbl_extend('force', opts, { desc = 'Indent right' }))
 map('v', '<S-Tab>',  '<gv', vim.tbl_extend('force', opts, { desc = 'Indent left' }))
 
--- Linewise toggle
-map('n', '<leader>/', 'gcc', vim.tbl_extend('force', remap, { desc = 'Comments: toggle line' }))
-map('x', '<leader>/', 'gc',  vim.tbl_extend('force', remap, { desc = 'Comments: toggle line (visual)' }))
-
--- Blockwise toggle
-map('n', '<leader>\'', 'gbc', vim.tbl_extend('force', remap, { desc = 'Comments: toggle block' }))
-map('x', '<leader>\'', 'gb',  vim.tbl_extend('force', remap, { desc = 'Comments: toggle block (visual)' }))
-
 --------------------------------------------------------------------------------
 -- Numbers: + increment / = decrement
 --------------------------------------------------------------------------------
@@ -266,7 +176,7 @@ map({ "n", "v" }, "+", "<C-a>", vim.tbl_extend("force", opts, { desc = "Incremen
 map({ "n", "v" }, "=", "<C-x>", vim.tbl_extend("force", opts, { desc = "Decrement number" }))
 
 --------------------------------------------------------------------------------
--- 10) Quit & Sessions remap (confirming)
+-- 7) Quit & Sessions remap (confirming)
 --------------------------------------------------------------------------------
 
 -- Simple quit on <leader>q
@@ -274,20 +184,5 @@ map("n", "<leader>qq", "<cmd>confirm q<CR>",     vim.tbl_extend("force", opts, {
 
 -- Quit ALL on <leader>QQ
 map("n", "<leader>qQ", "<cmd>confirm qall<CR>",  vim.tbl_extend("force", opts, { desc = "Quit All" }))
-
---------------------------------------------------------------------------------
--- 11) Codesnap
---     Requires: CodeSnap plugin
---------------------------------------------------------------------------------
-
-map("v", "<leader>cpc", "<cmd>CodeSnap<cr>",     vim.tbl_extend("force", opts, { desc = "Save code snapshot into clipboard" }))
-map("v", "<leader>cps", "<cmd>CodeSnapSave<cr>", vim.tbl_extend("force", opts, { desc = "Save code snapshot in ~/Downloads" }))
-
---------------------------------------------------------------------------------
--- 12) Avante
---     Requires: Avante plugin
---------------------------------------------------------------------------------
-
-map({"n", "v"}, "<leader>aa", "<cmd>AvanteAsk<cr>",     vim.tbl_extend("force", opts, { desc = "avante: ask" }))
 
 -- stylua: ignore end

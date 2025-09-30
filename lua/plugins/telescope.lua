@@ -9,6 +9,7 @@ return {
                 winblend = 0,
             },
         },
+        -- stylua: ignore
         keys = {
             { -- Browse plugin files
                 "<leader>fP",
@@ -17,6 +18,8 @@ return {
                 end,
                 desc = "Find Plugin File",
             },
+            { "<leader>f/", "<cmd>Telescope current_buffer_fuzzy_find<cr>", desc = "Find words in current buffer", mode = "n" },
+            { "<leader>fp", "<cmd>Telescope projects<cr>",                  desc = "Projects",                     mode = "n" },
         },
     },
 }
