@@ -31,6 +31,10 @@ return {
                 end
                 table.sort(options)
 
+                local neo_tree_winid = vim.api.nvim_get_current_win()
+                local saved_view = vim.fn.winsaveview()
+                local saved_line = vim.api.nvim_win_get_cursor(neo_tree_winid)[1]
+
                 vim.ui.select(options, {
                     prompt = "Choose to copy to clipboard:",
                     format_item = function(item)
@@ -39,9 +43,17 @@ return {
                 }, function(choice)
                     local result = choice and vals[choice]
                     if result then
-                        vim.fn.setreg("+", result) -- system clipboard if `unnamedplus` available
+                        vim.fn.setreg("+", result)
                         vim.notify(("Copied: %s"):format(result))
                     end
+
+                    vim.schedule(function()
+                        if vim.api.nvim_win_is_valid(neo_tree_winid) then
+                            vim.api.nvim_set_current_win(neo_tree_winid)
+                            vim.api.nvim_win_set_cursor(neo_tree_winid, { saved_line, 0 })
+                            vim.fn.winrestview(saved_view)
+                        end
+                    end)
                 end)
             end,
         },

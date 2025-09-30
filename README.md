@@ -177,9 +177,10 @@ Enhanced file finder with custom layout and additional pickers.
 
 #### neo-tree.nvim (`lua/plugins/neo-tree.lua`)
 
-File explorer with custom copy command and auto-close behavior.
+File explorer with custom copy command, focus restore, and auto-close behavior.
 
 - `Y` key: Smart copy selector (filename, path, CWD path, HOME path, URI)
+- Copy selector restores Neo-tree focus and cursor after picking option
 - `P` key: Floating preview with image support (uses snacks)
 - `e` key: Disabled (unmapped)
 - `close_if_last_window = true`: Closes with last buffer
@@ -448,6 +449,7 @@ The following LazyVim defaults have been unmapped:
 | `<leader>fn` | New file              | Moved to `<leader>bn`           |
 | `<leader>fp` | Find config files     | Reassigned to projects          |
 | `<leader>K`  | Keywordprg            | Not needed                      |
+| `<Space>`    | Move right            | Prevent leader race conditions  |
 
 ### Kitty Terminal Integration
 

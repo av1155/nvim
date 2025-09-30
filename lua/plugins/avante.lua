@@ -19,7 +19,7 @@ return {
                     {
                         "<leader>aa",
                         desc = "avante: Ask",
-                        icon = { icon = "", color = "green" },
+                        icon = { icon = "", color = "green" },
                         mode = { "n", "v" },
                     },
                 })

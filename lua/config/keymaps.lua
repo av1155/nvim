@@ -32,6 +32,9 @@ local map, unmap = vim.keymap.set, vim.keymap.del
 local opts = { noremap = true, silent = true }
 -- local remap = { silent = true, remap = true }
 
+-- Disable Space's default behavior (move right) to prevent race conditions with leader key
+map({ "n", "v" }, "<Space>", "<Nop>", opts)
+
 --------------------------------------------------------------------------------
 -- 1) Unmaps ─ Free built-in or LazyVim defaults so we can reassign cleanly
 --------------------------------------------------------------------------------
