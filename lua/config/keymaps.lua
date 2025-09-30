@@ -67,20 +67,15 @@ unmap({ "n", "v" }, "<leader>ap")
 
 wk.add({
     { "<leader>bs", group = "sort buffers", mode = "n" },
-    { "<leader>a", group = "AI", mode = "n" },
-    { "<leader>a", group = "AI", mode = "v" },
-    { "<leader>ac", group = "CopilotChat", mode = "n" },
-    { "<leader>ac", group = "CopilotChat", mode = "v" },
+    { "<leader>a", group = "AI", mode = { "n", "v" } },
+    { "<leader>ac", group = "CopilotChat", mode = { "n", "v" } },
     { "<leader>cp", group = "codesnap", mode = "v" },
 })
 
 wk.add({
-    -- show icons in Which-Key
-    -- { "<leader>z", desc = "Open Alpha Dashboard", icon = "󰋜", mode = "n" },
-    -- show icons in Which-Key with a color:
-    { "<leader>aa", desc = "avante: Ask", icon = { icon = "", color = "green" }, mode = { "n", "v" } },
-    { "<leader>/", desc = "Comments: toggle line", icon = { icon = "", color = "orange" }, mode = { "n" } },
-    { "<leader>'", desc = "Comments: toggle block", icon = { icon = "", color = "orange" }, mode = { "n" } },
+    { "<leader>aa", desc = "avante: Ask", icon = { icon = "", color = "green" }, mode = { "n", "v" } },
+    { "<leader>/", desc = "Comments: toggle line", icon = { icon = "", color = "orange" }, mode = { "n" } },
+    { "<leader>'", desc = "Comments: toggle block", icon = { icon = "", color = "orange" }, mode = { "n" } },
 })
 
 -- stylua: ignore start
