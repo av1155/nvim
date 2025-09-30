@@ -284,11 +284,13 @@ AI-powered code assistant using Claude or Moonshot.
 
 GitHub Copilot chat interface with custom keybinds.
 
-- `<leader>aca`: Toggle CopilotChat
-- `<leader>acx`: Clear chat history
-- `<leader>acq`: Quick chat prompt
-- `<leader>acp`: Prompt actions
+- `<leader>aa`: Toggle CopilotChat
+- `<leader>ax`: Clear chat history
+- `<leader>aq`: Quick chat prompt
+- `<leader>ap`: Prompt actions
 - Unmaps default `<leader>a[a|x|q|p]` to avoid conflicts with Avante
+- Grouped under `<leader>a` in which-key with icon
+- Overrides plugin defaults to enforce these `<leader>a` mappings
 
 ### UI Enhancements
 
@@ -357,7 +359,6 @@ Colorscheme configuration with transparency.
 Keybind helper with helix preset.
 
 - Preset: helix
-- Custom groups: `<leader>a` (AI), `<leader>o` (OpenCode)
 
 ### Plugin Utilities
 
@@ -580,13 +581,12 @@ map alt+down      send_text all \x1b[H      # ⌥ + ↓ (start of line)
 
 ### AI/Copilot
 
-| Key           | Mode          | Action             |
-| ------------- | ------------- | ------------------ |
-| `<leader>aa`  | Normal/Visual | Ask Avante         |
-| `<leader>aca` | Normal/Visual | Toggle CopilotChat |
-| `<leader>acx` | Normal/Visual | Clear CopilotChat  |
-| `<leader>acq` | Normal/Visual | Quick chat         |
-| `<leader>acp` | Normal/Visual | Prompt actions     |
+| Key          | Mode          | Action             |
+| ------------ | ------------- | ------------------ |
+| `<leader>aa` | Normal/Visual | Toggle CopilotChat |
+| `<leader>ax` | Normal/Visual | Clear CopilotChat  |
+| `<leader>aq` | Normal/Visual | Quick chat         |
+| `<leader>ap` | Normal/Visual | Prompt actions     |
 
 ### OpenCode
 
