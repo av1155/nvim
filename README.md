@@ -1,6 +1,17 @@
 # 💤 LazyVim Configuration
 
 <!-- prettier-ignore-start -->
+
+An opinionated Neovim setup built on top of [LazyVim](https://github.com/LazyVim/LazyVim).
+
+It focuses on great UX out of the box: a slick dashboard, discoverable keymaps, modern
+UI, sane LSP/completion defaults, and practical quality-of-life plugins.
+
+This configuration extends LazyVim with custom plugins, keybinds, and workflow
+optimizations. For LazyVim's base features, refer to the [official documentation](https://www.lazyvim.org).
+
+---
+
 <!--toc:start-->
 
 - [💤 LazyVim Configuration](#💤-lazyvim-configuration)
@@ -40,6 +51,7 @@
       - [guess-indent.lua (`lua/plugins/guess-indent.lua`)](#guess-indentlua-luapluginsguess-indentlua)
       - [mini-animate.lua (`lua/plugins/mini-animate.lua`)](#mini-animatelua-luapluginsmini-animatelua)
       - [codesnap.lua (`lua/plugins/codesnap.lua`)](#codesnaplua-luapluginscodesnaplua)
+      - [markdown-preview.nvim (`lua/plugins/markdown-preview.lua`)](#markdown-previewnvim-luapluginsmarkdown-previewlua)
       - [opencode-nvim.lua (`lua/plugins/opencode-nvim.lua`)](#opencode-nvimlua-luapluginsopencode-nvimlua)
       - [opencode-terminal.lua (`lua/plugins/opencode-terminal.lua`)](#opencode-terminallua-luapluginsopencode-terminallua)
   - [Keymaps](#keymaps)
@@ -51,6 +63,7 @@
     - [File Navigation](#file-navigation)
     - [LSP/Code](#lspcode)
     - [Comments/Snapshots](#commentssnapshots)
+    - [Markdown](#markdown)
     - [Yanky](#yanky)
     - [Search](#search)
     - [AI/Copilot](#aicopilot)
@@ -59,6 +72,7 @@
   - [Options](#options)
   - [Autocmds](#autocmds)
     - [Global Color Overrides](#global-color-overrides)
+    - [Disable Spell Check in Markdown](#disable-spell-check-in-markdown)
   - [Custom Utilities](#custom-utilities)
     - [close_or_alpha.lua (`lua/util/close_or_alpha.lua`)](#closeoralphalua-luautilcloseoralphalua)
   - [License](#license)
@@ -66,16 +80,6 @@
 
 <!--toc:end-->
 <!-- prettier-ignore-end -->
-
----
-
-An opinionated Neovim setup built on top of [LazyVim](https://github.com/LazyVim/LazyVim).
-
-It focuses on great UX out of the box: a slick dashboard, discoverable keymaps, modern
-UI, sane LSP/completion defaults, and practical quality-of-life plugins.
-
-This configuration extends LazyVim with custom plugins, keybinds, and workflow
-optimizations. For LazyVim's base features, refer to the [official documentation](https://www.lazyvim.org).
 
 ---
 
@@ -322,16 +326,16 @@ Custom status column with folding, line numbers, and git signs.
 - **Fold column**: UFO integration with custom icons
 - **Line numbers**: Absolute numbering
 - **Git signs**: Gitsigns integration with click handlers
-    - Left click: Preview hunk
-    - Ctrl + Left click: Reset hunk
-    - Right click: Stage hunk
-    - Middle click: Reset hunk
+  - Left click: Preview hunk
+  - Ctrl + Left click: Reset hunk
+  - Right click: Stage hunk
+  - Middle click: Reset hunk
 - **UFO folding**: nvim-ufo for improved fold handling
-    - Custom fold virtual text showing line count
-    - Providers: treesitter, indent
-    - `zR`: Open all folds
-    - `zM`: Close all folds
-    - Custom fold icons: foldopen , foldclose
+  - Custom fold virtual text showing line count
+  - Providers: treesitter, indent
+  - `zR`: Open all folds
+  - `zM`: Close all folds
+  - Custom fold icons: foldopen , foldclose
 - **Gitsigns**: Rounded border preview
 - Disabled for alpha filetype
 
@@ -398,6 +402,13 @@ Code screenshot generator with macOS window bar.
 - Watermark font: Pacifico (disabled by default)
 - Theme: default with custom padding
 
+#### markdown-preview.nvim (`lua/plugins/markdown-preview.lua`)
+
+Live Markdown preview in your web browser.
+
+- `<leader>cp`: Open Markdown preview (Markdown buffers only)
+- Command: `:MarkdownPreview`
+
 #### opencode-nvim.lua (`lua/plugins/opencode-nvim.lua`)
 
 SST OpenCode integration for AI-powered development.
@@ -406,36 +417,36 @@ SST OpenCode integration for AI-powered development.
 - Preferred completion: blink
 - Default global keymaps disabled (custom keymaps defined)
 - **Core commands**:
-    - `<leader>og`: Toggle OpenCode
-    - `<leader>oi`: Open input
-    - `<leader>oI`: Open input (new session)
-    - `<leader>oo`: Open output
-    - `<leader>ot`: Toggle focus
-    - `<leader>oq`: Close
-    - `<leader>ox`: Swap position
+  - `<leader>og`: Toggle OpenCode
+  - `<leader>oi`: Open input
+  - `<leader>oI`: Open input (new session)
+  - `<leader>oo`: Open output
+  - `<leader>ot`: Toggle focus
+  - `<leader>oq`: Close
+  - `<leader>ox`: Swap position
 - **Session management** (`<leader>os`):
-    - `<leader>oss`: Select session
-    - `<leader>osS`: Select child session
+  - `<leader>oss`: Select session
+  - `<leader>osS`: Select child session
 - **Mode switching** (`<leader>om`):
-    - `<leader>omb`: Build mode
-    - `<leader>omp`: Plan mode
-    - `<leader>oms`: Select agent
+  - `<leader>omb`: Build mode
+  - `<leader>omp`: Plan mode
+  - `<leader>oms`: Select agent
 - **Provider**: `<leader>op` configure provider
 - **Diff operations** (`<leader>od`):
-    - `<leader>odo`: Open diff
-    - `<leader>odn`: Next file
-    - `<leader>odp`: Previous file
-    - `<leader>odc`: Close diff
+  - `<leader>odo`: Open diff
+  - `<leader>odn`: Next file
+  - `<leader>odp`: Previous file
+  - `<leader>odc`: Close diff
 - **Revert operations** (`<leader>or`):
-    - `<leader>ora`: Revert all (last prompt)
-    - `<leader>ort`: Revert this file (last prompt)
-    - `<leader>orA`: Revert all (session)
-    - `<leader>orT`: Revert this file (session)
+  - `<leader>ora`: Revert all (last prompt)
+  - `<leader>ort`: Revert this file (last prompt)
+  - `<leader>orA`: Revert all (session)
+  - `<leader>orT`: Revert this file (session)
 - **Utility** (`<leader>ou`):
-    - `<leader>oui`: Initialize AGENTS.md
-    - `<leader>oum`: List MCP servers
-    - `<leader>ouc`: Run user command
-    - `<leader>ous`: Stop execution
+  - `<leader>oui`: Initialize AGENTS.md
+  - `<leader>oum`: List MCP servers
+  - `<leader>ouc`: Run user command
+  - `<leader>ous`: Stop execution
 - Render-markdown integration for opencode_output filetype
 
 #### opencode-terminal.lua (`lua/plugins/opencode-terminal.lua`)
@@ -573,6 +584,12 @@ map alt+down      send_text all \x1b[H      # ⌥ + ↓ (start of line)
 | `<leader>cpc` | Visual | Save code snapshot to clipboard  |
 | `<leader>cps` | Visual | Save code snapshot to Downloads  |
 
+### Markdown
+
+| Key          | Mode   | Action                |
+| ------------ | ------ | --------------------- |
+| `<leader>cp` | Normal | Open Markdown preview |
+
 ### Yanky
 
 | Key  | Mode   | Action                 |
@@ -639,21 +656,21 @@ consistent colors across themes. These overrides affect:
 - **nvim-dap-virtual-text**: Custom colors for debug virtual text (error, info,
   changed states)
 - **barbar**: All buffer states with custom colors
-    - Current buffer: Orange foreground (#ef9e76)
-    - Current index: Pink (#ff5189)
-    - Inactive buffers: Muted gray (#6c7087)
-    - Alternate buffers: Orange (#ef9e76)
-    - Visible buffers: Blue (#8caaee)
-    - Git status: Green (added), Pink (deleted), Yellow (changed)
-    - Diagnostics: Error (pink), Warn (yellow), Info (cyan), Hint (teal)
+  - Current buffer: Orange foreground (#ef9e76)
+  - Current index: Pink (#ff5189)
+  - Inactive buffers: Muted gray (#6c7087)
+  - Alternate buffers: Orange (#ef9e76)
+  - Visible buffers: Blue (#8caaee)
+  - Git status: Green (added), Pink (deleted), Yellow (changed)
+  - Diagnostics: Error (pink), Warn (yellow), Info (cyan), Hint (teal)
 - **cursor**: CursorLine (#3a3c47) and Visual selection (#775d46)
 - **neo-tree**: Tab separators, dotfile colors (#A8A8A8)
 - **completion (blink.cmp)**: VS Code-inspired colors
-    - Constructor/Class: Orange (#f28b25)
-    - Method/Function: Purple (#C586C0)
-    - Variables/Fields: Blue (#9CDCFE)
-    - Match text: Bright blue (#18a2fe, bold)
-    - Menu: Gray (#777d86)
+  - Constructor/Class: Orange (#f28b25)
+  - Method/Function: Purple (#C586C0)
+  - Variables/Fields: Blue (#9CDCFE)
+  - Match text: Bright blue (#18a2fe, bold)
+  - Menu: Gray (#777d86)
 - **aerial**: Symbol outline colors matching VS Code theme
 - **spelling**: Undercurl with salmon color (#ffbba6)
 - **LSP inlay hints**: Subtle gray (#8f939b)
@@ -664,6 +681,14 @@ them theme-agnostic.
 **Implementation**: Uses `ColorScheme` autocmd with `vim.schedule()` to run
 after theme's own callbacks. A helper function normalizes empty strings to
 "NONE" for proper transparency.
+
+### Disable Spell Check in Markdown
+
+Spell checking is disabled for Markdown files to prevent highlighting of
+technical terms, code snippets, and special syntax.
+
+- **Event**: `FileType` for `markdown` pattern
+- **Action**: Sets `spell = false` locally for the buffer
 
 ---
 

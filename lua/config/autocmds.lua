@@ -189,11 +189,11 @@ do
 end
 
 --- ============================================================= ---
---[[ 
+
+-- Disable spell check in markdown files
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = { "opencode_output", "opencode_input" },
-    callback = function(ev)
-        pcall(vim.keymap.del, "n", "<leader>oS", { buffer = ev.buf })
+    pattern = { "markdown" },
+    callback = function()
+        vim.opt_local.spell = false
     end,
 })
- ]]
