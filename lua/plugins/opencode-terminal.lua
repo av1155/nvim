@@ -2,7 +2,7 @@ if true then
     return {}
 end
 
---[[ return {
+return {
     "NickvanDyke/opencode.nvim",
     dependencies = {
         { "folke/snacks.nvim", opts = { input = { enabled = true } } },
@@ -43,4 +43,4 @@ end
         { "<S-C-d>",    function() require("opencode").command("messages_half_page_down") end, desc = "Messages half page down", mode = "n" },
         { "<leader>os", function() require("opencode").select() end, desc = "Select prompt", mode = { "n", "v" } },
     },
-} ]]
+}

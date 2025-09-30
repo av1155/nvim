@@ -76,6 +76,8 @@ return {
 
         dependencies = {
             "nvim-lua/plenary.nvim",
+            "folke/snacks.nvim",
+            "saghen/blink.cmp",
             {
                 "MeanderingProgrammer/render-markdown.nvim",
                 opts = {
@@ -84,8 +86,6 @@ return {
                 },
                 ft = { "markdown", "Avante", "copilot-chat", "opencode_output" },
             },
-            "folke/snacks.nvim",
-            "saghen/blink.cmp",
         },
     },
 }
