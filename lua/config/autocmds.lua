@@ -187,3 +187,13 @@ do
         desc = "Apply global highlight overrides after colorscheme",
     })
 end
+
+--- ============================================================= ---
+--[[ 
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "opencode_output", "opencode_input" },
+    callback = function(ev)
+        pcall(vim.keymap.del, "n", "<leader>oS", { buffer = ev.buf })
+    end,
+})
+ ]]
