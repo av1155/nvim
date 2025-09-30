@@ -197,3 +197,17 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.opt_local.spell = false
     end,
 })
+
+--- ============================================================= ---
+
+-- Run Mason updates after Lazy finishes syncing
+vim.api.nvim_create_autocmd("User", {
+    group = vim.api.nvim_create_augroup("AlphaLazyThenMason", { clear = true }),
+    pattern = "LazySync",
+    callback = function()
+        vim.schedule(function()
+            vim.cmd("MasonUpdate")
+            vim.cmd("MasonUpdateAll")
+        end)
+    end,
+})

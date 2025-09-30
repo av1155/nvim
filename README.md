@@ -14,7 +14,7 @@ optimizations. For LazyVim's base features, refer to the [official documentation
 
 <!--toc:start-->
 
-- [💤 LazyVim Configuration](#💤-lazyvim-configuration)
+- [💤 LazyVim Configuration](#-lazyvim-configuration)
   - [Quick Start](#quick-start)
     - [Post-install tips](#post-install-tips)
   - [Configuration Overview](#configuration-overview)
@@ -67,14 +67,15 @@ optimizations. For LazyVim's base features, refer to the [official documentation
     - [Yanky](#yanky)
     - [Search](#search)
     - [AI/Copilot](#aicopilot)
-    - [OpenCode (detailed in Custom Plugins section)](#opencode-detailed-in-custom-plugins-section)
+    - [OpenCode](#opencode)
     - [Quit/Session](#quitsession)
   - [Options](#options)
   - [Autocmds](#autocmds)
     - [Global Color Overrides](#global-color-overrides)
     - [Disable Spell Check in Markdown](#disable-spell-check-in-markdown)
+    - [Auto-Update Mason After Lazy Sync](#auto-update-mason-after-lazy-sync)
   - [Custom Utilities](#custom-utilities)
-    - [close_or_alpha.lua (`lua/util/close_or_alpha.lua`)](#closeoralphalua-luautilcloseoralphalua)
+    - [close_or_alpha.lua (`lua/util/close_or_alpha.lua`)](#close_or_alphalua-luautilclose_or_alphalua)
   - [License](#license)
   - [Credits](#credits)
 
@@ -120,13 +121,13 @@ optimal keybind support.
 
 ## Configuration Overview
 
-| Category      | Status             | Location                  |
-| ------------- | ------------------ | ------------------------- |
-| **Options**   | Modified           | `lua/config/options.lua`  |
-| **Keymaps**   | Heavily customized | `lua/config/keymaps.lua`  |
-| **Autocmds**  | Custom highlights  | `lua/config/autocmds.lua` |
-| **Plugins**   | Extended           | `lua/plugins/*.lua`       |
-| **Utilities** | Custom             | `lua/util/*.lua`          |
+| Category      | Location                  |
+| ------------- | ------------------------- |
+| **Options**   | `lua/config/options.lua`  |
+| **Keymaps**   | `lua/config/keymaps.lua`  |
+| **Autocmds**  | `lua/config/autocmds.lua` |
+| **Plugins**   | `lua/plugins/*.lua`       |
+| **Utilities** | `lua/util/*.lua`          |
 
 ---
 
@@ -265,6 +266,8 @@ Enhanced hover documentation with enter-to-focus capability.
 
 #### avante.nvim (`lua/plugins/avante.lua`)
 
+> [**DISABLED**]
+
 AI-powered code assistant using Claude or Moonshot.
 
 - Primary provider: Claude (sonnet-4-20250514)
@@ -310,8 +313,9 @@ Custom statusline with bubbles theme and interactive click handlers.
 
 Enhanced UI for messages, cmdline, and popups.
 
-- Cmdline: popup view centered at 50%
+- Cmdline: popup view positioned at 30% vertical, 50% horizontal
 - Routes: Filters out img-clip "Content is not an image" warnings
+  and Mason update notifications
 
 #### edgy.nvim (`lua/plugins/edgy.lua`)
 
@@ -415,45 +419,14 @@ SST OpenCode integration for AI-powered development.
 
 - Preferred picker: snacks
 - Preferred completion: blink
-- Default global keymaps disabled (custom keymaps defined)
-- **Core commands**:
-  - `<leader>og`: Toggle OpenCode
-  - `<leader>oi`: Open input
-  - `<leader>oI`: Open input (new session)
-  - `<leader>oo`: Open output
-  - `<leader>ot`: Toggle focus
-  - `<leader>oq`: Close
-  - `<leader>ox`: Swap position
-- **Session management** (`<leader>os`):
-  - `<leader>oss`: Select session
-  - `<leader>osS`: Select child session
-- **Mode switching** (`<leader>om`):
-  - `<leader>omb`: Build mode
-  - `<leader>omp`: Plan mode
-  - `<leader>oms`: Select agent
-- **Provider**: `<leader>op` configure provider
-- **Diff operations** (`<leader>od`):
-  - `<leader>odo`: Open diff
-  - `<leader>odn`: Next file
-  - `<leader>odp`: Previous file
-  - `<leader>odc`: Close diff
-- **Revert operations** (`<leader>or`):
-  - `<leader>ora`: Revert all (last prompt)
-  - `<leader>ort`: Revert this file (last prompt)
-  - `<leader>orA`: Revert all (session)
-  - `<leader>orT`: Revert this file (session)
-- **Utility** (`<leader>ou`):
-  - `<leader>oui`: Initialize AGENTS.md
-  - `<leader>oum`: List MCP servers
-  - `<leader>ouc`: Run user command
-  - `<leader>ous`: Stop execution
+- Default global keymaps disabled (custom keymaps defined in keymaps section)
 - Render-markdown integration for opencode_output filetype
 
 #### opencode-terminal.lua (`lua/plugins/opencode-terminal.lua`)
 
-Alternative OpenCode integration (currently disabled).
+> [**DISABLED**]
 
-- Disabled with early return in config
+Alternative OpenCode integration.
 
 ---
 
@@ -613,10 +586,37 @@ map alt+down      send_text all \x1b[H      # ⌥ + ↓ (start of line)
 | `<leader>acq` | Normal/Visual | Quick chat         |
 | `<leader>acp` | Normal/Visual | Prompt actions     |
 
-### OpenCode (detailed in Custom Plugins section)
+### OpenCode
 
-All OpenCode keybinds are under `<leader>o` prefix. See
-`lua/plugins/opencode-nvim.lua` for the complete list.
+All OpenCode keybinds are under `<leader>o` prefix.
+
+| Key           | Mode   | Action                     |
+| ------------- | ------ | -------------------------- |
+| `<leader>og`  | Normal | Toggle OpenCode            |
+| `<leader>oi`  | Normal | Open input                 |
+| `<leader>oI`  | Normal | Open input (new session)   |
+| `<leader>oo`  | Normal | Open output                |
+| `<leader>ot`  | Normal | Toggle focus               |
+| `<leader>oq`  | Normal | Close                      |
+| `<leader>ox`  | Normal | Swap position              |
+| `<leader>oss` | Normal | Select session             |
+| `<leader>osS` | Normal | Select child session       |
+| `<leader>omb` | Normal | Build mode                 |
+| `<leader>omp` | Normal | Plan mode                  |
+| `<leader>oms` | Normal | Select agent               |
+| `<leader>op`  | Normal | Configure provider         |
+| `<leader>odo` | Normal | Open diff                  |
+| `<leader>odn` | Normal | Next file                  |
+| `<leader>odp` | Normal | Previous file              |
+| `<leader>odc` | Normal | Close diff                 |
+| `<leader>ora` | Normal | Revert all (last prompt)   |
+| `<leader>ort` | Normal | Revert this file (last)    |
+| `<leader>orA` | Normal | Revert all (session)       |
+| `<leader>orT` | Normal | Revert this file (session) |
+| `<leader>oui` | Normal | Initialize AGENTS.md       |
+| `<leader>oum` | Normal | List MCP servers           |
+| `<leader>ouc` | Normal | Run user command           |
+| `<leader>ous` | Normal | Stop execution             |
 
 ### Quit/Session
 
@@ -689,6 +689,14 @@ technical terms, code snippets, and special syntax.
 
 - **Event**: `FileType` for `markdown` pattern
 - **Action**: Sets `spell = false` locally for the buffer
+
+### Auto-Update Mason After Lazy Sync
+
+Automatically runs Mason updates after Lazy plugin sync completes.
+
+- **Event**: `User` pattern `LazySync`
+- **Action**: Schedules `MasonUpdate` and `MasonUpdateAll` commands
+- Ensures language tools stay up-to-date with plugin updates
 
 ---
 
