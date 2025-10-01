@@ -1,39 +1,52 @@
-# Agent Guidelines for Neovim Configuration
+# AGENTS.md - Neovim Configuration Guide
 
-## Build/Test Commands
+## Build/Lint/Test Commands
 
-- **Format code**: `stylua .` (4-space indent, 120 column width)
-- **Health check**: `:checkhealth` in Neovim
-- **Validate config**: `nvim --headless -c "Lazy! sync" -c "qa"` (headless plugin sync)
-- **Plugin management**: `:Lazy check` and `:Lazy sync` in Neovim
-- **LSP tools**: `:Mason` to manage language servers
-- No automated test suite; verify changes manually in Neovim
+- **Lint**: `stylua --check lua/` (4 spaces, 120 cols, double quotes)
+- **Format**: `stylua lua/`
+- **Test**: `nvim --headless +checkhealth +qa` or launch `nvim`
+- **Plugin management**: `:Lazy` (install/update/clean), `:Mason` (LSP/tools)
+- **Reload config**: `:Lazy reload {plugin}` or restart Neovim
+
+## Project Structure (LazyVim-based)
+
+- `init.lua`: Bootstrap entry point (loads lazy.nvim)
+- `lua/config/`: Core config (options.lua, keymaps.lua, autocmds.lua, lazy.lua)
+- `lua/plugins/*.lua`: Plugin specs (auto-loaded by lazy.nvim)
+- `lua/util/*.lua`: Custom helper functions
+- `lazyvim.json`: LazyVim extras (AI, LSP, lang support) - edit with `:LazyExtras`
 
 ## Code Style
 
-- **Language**: Lua (Neovim configuration)
-- **Indentation**: 4 spaces (enforced in stylua.toml and lua/config/options.lua)
-- **Line length**: 120 characters max
-- **Imports**: Use `require()` with lazy-loading patterns; check existing plugins for integration patterns (e.g., `require("snacks")`, `require("telescope.builtin")`)
-- **Plugin structure**: One plugin per file in `lua/plugins/`; return table with lazy.nvim spec
-- **Naming**: snake_case for files/functions/variables, PascalCase for plugin names
-- **Tables**: Merge with `vim.tbl_deep_extend("force", base, override)` or `vim.tbl_extend()`
-- **Options**: Access via `vim.opt` or `vim.g` (never `vim.o`)
-- **Keymaps**: Define in plugin specs or `lua/config/keymaps.lua`; always include `desc` field for WhichKey
-  - Use `vim.keymap.set()` (not LazyVim.safe_keymap_set)
-  - Standard opts: `{ noremap = true, silent = true }`
-  - Extend opts: `vim.tbl_extend("force", opts, { desc = "..." })`
-- **Error handling**: Wrap risky operations in `pcall()`; notify via `vim.notify()` with severity levels
-- **Comments**: Minimal; self-documenting code preferred; use descriptive names
-- **UI borders**: Use "rounded" for consistency across floating windows/menus
-- **Unmapping**: Check README "Unmapped LazyVim Defaults" section before adding keybinds that may conflict
+- **Plugin specs**: `return { "author/plugin", opts = {}, config = function() end }`
+- **Extend opts**: Use `opts = function(_, opts) ... return opts end` to modify defaults
+- **Keymaps in plugins**: Define in `keys = {}` table for lazy-loading
+- **LSP keymaps**: Modify via `opts.keys` in lsp-config.lua (see existing pattern)
+- **Naming**: snake_case vars/funcs, PascalCase classes, `local` over globals
 
-## Conventions
+## Development Workflow
 
-- **LazyVim-based**: Extend via `opts` function; don't override base config unless necessary
-- **Integrations**: Maintain existing patterns (Snacks picker, Blink completion, Catppuccin theme)
-- **Plugin additions**: Add to `lua/plugins/` (lazy-lock.json is auto-generated, never edit manually)
-- **Config structure**: Options in `lua/config/options.lua`, keymaps in `lua/config/keymaps.lua`, autocmds in `lua/config/autocmds.lua`
-- **LSP setup**: Configure in `lua/plugins/lsp-config.lua` using `opts` function pattern
-- **Custom utilities**: Place in `lua/util/` directory
-- **Stylua ignore**: Use `-- stylua: ignore start/end` blocks for complex tables or alignment-sensitive code
+1. **Add plugin**: Create `lua/plugins/name.lua` with spec, run `:Lazy install`
+2. **Modify LSP**: Edit `lua/plugins/lsp-config.lua` opts function (see tiny-code-action example)
+3. **Custom keymaps**: Add to `lua/config/keymaps.lua` (unmap defaults first to avoid conflicts)
+4. **Disable LazyVim plugin**: Set `{ "plugin-name", enabled = false }` in any plugin file
+5. **Test changes**: `:Lazy reload {plugin}` or `:source %` for Lua files, check `:checkhealth`
+6. **Debug**: `:Lazy profile`, `:messages`, `:LspInfo`, `:Mason` for tooling issues
+7. **Global highlights**: Use autocmd pattern in autocmds.lua (works across all themes)
+
+## Key Patterns
+
+- **opts function**: `opts = function(_, opts) vim.tbl_deep_extend("force", opts, {...}) end`
+- **Keymap unmapping**: `keys[#keys + 1] = { "<key>", false }` (LSP) or `vim.keymap.del()` (global)
+- **LazyVim extras**: Managed in `lazyvim.json`, enable/disable with `:LazyExtras`
+- **Custom commands**: Define in plugin config or autocmds (see neo-tree copy_selector)
+- **Conditional loading**: Use `event`, `ft`, `cmd`, `keys` in plugin spec for lazy-loading
+- **Which-key integration**: Set `desc` on all keymaps for auto-discovery
+
+## Common Pitfalls
+
+- Don't modify LazyVim core files directly - override via plugin specs
+- Always unmap conflicting LazyVim defaults before reassigning (prevents race conditions)
+- Use `vim.schedule()` in autocmds when changing UI/highlights
+- Check `lazy-lock.json` into git to ensure reproducible plugin versions
+- Set `NVIM_PYTHON_PATH` env var for Python LSP/plugins (see options.lua)
