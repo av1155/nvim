@@ -48,10 +48,10 @@ return {
                 wk.add({
                     { "<leader>o", group = "opencode", mode = {"n", "v"}, icon = { icon = " ", color = "orange" } },
 
-                    { "<leader>og", "<cmd>Opencode<cr>", desc = "Toggle", icon = { icon = " ", color = "orange" }, mode = { "n", "v" } },
+                    { "<leader>oo", "<cmd>Opencode<cr>", desc = "Toggle", icon = { icon = " ", color = "orange" }, mode = { "n", "v" } },
                     { "<leader>oi", function() require("opencode.api").open_input() end, desc = "Open input", icon = { icon = " ", color = "cyan" }, mode = { "n", "v" } },
                     { "<leader>oI", function() require("opencode.api").open_input_new_session() end, desc = "Open input (new session)", icon = { icon = "󰐕 ", color = "cyan" }, mode = { "n", "v" } },
-                    { "<leader>oo", function() require("opencode.api").open_output() end, desc = "Open output", icon = { icon = "󰈔", color = "cyan" } },
+                    { "<leader>og", function() require("opencode.api").open_output() end, desc = "Open output", icon = { icon = "󰈔", color = "cyan" } },
                     { "<leader>ot", function() require("opencode.api").toggle_focus() end, desc = "Toggle focus", icon = { icon = " ", color = "blue" } },
                     { "<leader>oq", function() require("opencode.api").close() end, desc = "Close", icon = { icon = "󰈆 ", color = "red" } },
                     { "<leader>ox", function() require("opencode.api").swap_position() end, desc = "Swap position", icon = { icon = " ", color = "blue" } },
