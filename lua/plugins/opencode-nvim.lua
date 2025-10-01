@@ -25,6 +25,8 @@ return {
                 default_global_keymaps = false,
                 keymap = {
                     window = {
+                        close = "q", -- Close UI windows
+                        stop = "<esc>", -- Stop opencode while it is running
                         select_child_session = "<leader>osS",
                     },
                 },
