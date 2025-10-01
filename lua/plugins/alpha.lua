@@ -123,6 +123,18 @@ return {
 
             require("alpha").setup(dashboard.opts)
 
+            vim.api.nvim_create_autocmd("WinResized", {
+                callback = function()
+                    local buf = vim.api.nvim_get_current_buf()
+                    if vim.bo[buf].filetype == "alpha" then
+                        local win = vim.api.nvim_get_current_win()
+                        if vim.api.nvim_win_is_valid(win) then
+                            pcall(vim.cmd.AlphaRedraw)
+                        end
+                    end
+                end,
+            })
+
             local function apply_lock(buf)
                 -- giant margins keep cursor centered; neutralize scroll actions
                 vim.wo[0].scrolloff = 999

@@ -13,48 +13,6 @@ This document summarizes the targeted, non-redundant tweaks discussed previously
 
 ---
 
-## 1) Projects Keymap
-
-File: `lua/config/keymaps.lua`
-
-Replace the mapping that points to the missing `:AddProject` with the Telescope Projects picker.
-
-```lua
--- Project list (provided by lazyvim.plugins.extras.util.project)
-map("n", "<leader>bA", "<cmd>Telescope projects<cr>", vim.tbl_extend("force", opts, { desc = "Projects" }))
-```
-
-Tip: If you prefer a different key, consider `<leader>fp` or `<leader>sp` to avoid conflicts with default buffer maps.
-
----
-
-## 2) Mason Post-Sync Autocmd
-
-File: `lua/config/autocmds.lua`
-
-Keep `:MasonUpdate` (refresh registries) and drop `:MasonUpdateAll` (full upgrades) during every Lazy sync.
-
-```lua
--- Run Mason registry update after Lazy finishes syncing (lightweight)
-vim.api.nvim_create_autocmd("User", {
-    group = vim.api.nvim_create_augroup("AlphaLazyThenMason", { clear = true }),
-    pattern = "LazySync",
-    callback = function()
-        vim.schedule(function()
-            vim.cmd("MasonUpdate")
-            -- Removed: vim.cmd("MasonUpdateAll")  -- too heavy to run on every sync
-        end)
-    end,
-})
-```
-
-Notes:
-
-- `MasonUpdate` (mason.nvim): updates registries/index; safe to run often.
-- `MasonUpdateAll` (mason-extra-cmds): upgrades installed packages; run manually when desired.
-
----
-
 ## 3) Highlight Persistence
 
 File: `lua/config/autocmds.lua`

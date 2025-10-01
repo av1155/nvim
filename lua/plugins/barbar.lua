@@ -18,10 +18,11 @@ return {
             "lewis6991/gitsigns.nvim",
         },
         opts = {
-            -- configurations go here
             animation = true,
             insert_at_start = false,
             auto_hide = false,
+            exclude_ft = { "alpha" },
+            exclude_name = { "" },
             sidebar_filetypes = {
                 ["neo-tree"] = { event = "BufWipeout" },
             },

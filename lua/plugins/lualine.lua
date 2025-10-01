@@ -153,10 +153,8 @@ return {
                     section_separators = { left = "", right = "" },
                     disabled_filetypes = {
                         statusline = {
+                            "alpha",
                             "neo-tree",
-                            "alpha",
-                            "Avante",
-                            "alpha",
                         },
                         winbar = {},
                     },

@@ -333,16 +333,16 @@ Custom status column with folding, line numbers, and git signs.
 - **Fold column**: UFO integration with custom icons
 - **Line numbers**: Absolute numbering
 - **Git signs**: Gitsigns integration with click handlers
-  - Left click: Preview hunk
-  - Ctrl + Left click: Reset hunk
-  - Right click: Stage hunk
-  - Middle click: Reset hunk
+    - Left click: Preview hunk
+    - Ctrl + Left click: Reset hunk
+    - Right click: Stage hunk
+    - Middle click: Reset hunk
 - **UFO folding**: nvim-ufo for improved fold handling
-  - Custom fold virtual text showing line count
-  - Providers: treesitter, indent
-  - `zR`: Open all folds
-  - `zM`: Close all folds
-  - Custom fold icons: foldopen , foldclose
+    - Custom fold virtual text showing line count
+    - Providers: treesitter, indent
+    - `zR`: Open all folds
+    - `zM`: Close all folds
+    - Custom fold icons: foldopen , foldclose
 - **Gitsigns**: Rounded border preview
 - Disabled for alpha filetype
 
@@ -658,21 +658,21 @@ consistent colors across themes. These overrides affect:
 - **nvim-dap-virtual-text**: Custom colors for debug virtual text (error, info,
   changed states)
 - **barbar**: All buffer states with custom colors
-  - Current buffer: Orange foreground (#ef9e76)
-  - Current index: Pink (#ff5189)
-  - Inactive buffers: Muted gray (#6c7087)
-  - Alternate buffers: Orange (#ef9e76)
-  - Visible buffers: Blue (#8caaee)
-  - Git status: Green (added), Pink (deleted), Yellow (changed)
-  - Diagnostics: Error (pink), Warn (yellow), Info (cyan), Hint (teal)
+    - Current buffer: Orange foreground (#ef9e76)
+    - Current index: Pink (#ff5189)
+    - Inactive buffers: Muted gray (#6c7087)
+    - Alternate buffers: Orange (#ef9e76)
+    - Visible buffers: Blue (#8caaee)
+    - Git status: Green (added), Pink (deleted), Yellow (changed)
+    - Diagnostics: Error (pink), Warn (yellow), Info (cyan), Hint (teal)
 - **cursor**: CursorLine (#3a3c47) and Visual selection (#775d46)
 - **neo-tree**: Tab separators, dotfile colors (#A8A8A8)
 - **completion (blink.cmp)**: VS Code-inspired colors
-  - Constructor/Class: Orange (#f28b25)
-  - Method/Function: Purple (#C586C0)
-  - Variables/Fields: Blue (#9CDCFE)
-  - Match text: Bright blue (#18a2fe, bold)
-  - Menu: Gray (#777d86)
+    - Constructor/Class: Orange (#f28b25)
+    - Method/Function: Purple (#C586C0)
+    - Variables/Fields: Blue (#9CDCFE)
+    - Match text: Bright blue (#18a2fe, bold)
+    - Menu: Gray (#777d86)
 - **aerial**: Symbol outline colors matching VS Code theme
 - **spelling**: Undercurl with salmon color (#ffbba6)
 - **LSP inlay hints**: Subtle gray (#8f939b)
