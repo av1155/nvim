@@ -54,6 +54,7 @@ optimizations. For LazyVim's base features, refer to the [official documentation
       - [markdown-preview.nvim (`lua/plugins/markdown-preview.lua`)](#markdown-previewnvim-luapluginsmarkdown-previewlua)
       - [opencode-nvim.lua (`lua/plugins/opencode-nvim.lua`)](#opencode-nvimlua-luapluginsopencode-nvimlua)
       - [opencode-terminal.lua (`lua/plugins/opencode-terminal.lua`)](#opencode-terminallua-luapluginsopencode-terminallua)
+      - [mason.nvim (`lua/plugins/mason.lua`)](#masonnvim-luapluginsmasonlua)
   - [Keymaps](#keymaps)
     - [Unmapped LazyVim Defaults](#unmapped-lazyvim-defaults)
     - [Kitty Terminal Integration](#kitty-terminal-integration)
@@ -121,13 +122,28 @@ optimal keybind support.
 
 ## Configuration Overview
 
-| Category      | Location                  |
-| ------------- | ------------------------- |
-| **Options**   | `lua/config/options.lua`  |
-| **Keymaps**   | `lua/config/keymaps.lua`  |
-| **Autocmds**  | `lua/config/autocmds.lua` |
-| **Plugins**   | `lua/plugins/*.lua`       |
-| **Utilities** | `lua/util/*.lua`          |
+| Category       | Location                  |
+| -------------- | ------------------------- |
+| **Options**    | `lua/config/options.lua`  |
+| **Keymaps**    | `lua/config/keymaps.lua`  |
+| **Autocmds**   | `lua/config/autocmds.lua` |
+| **Lazy Setup** | `lua/config/lazy.lua`     |
+| **Plugins**    | `lua/plugins/*.lua`       |
+| **Utilities**  | `lua/util/*.lua`          |
+
+---
+
+## Lazy.nvim Configuration
+
+Custom lazy.nvim setup in `lua/config/lazy.lua`:
+
+- **UI customizations**:
+  - Backdrop: 100 (opaque background)
+  - Border: rounded
+  - Size: 80% width and height
+- **Auto-checker**: Enabled with notifications for plugin updates
+- **Performance**: Disabled plugins (gzip, tarPlugin, tohtml, tutor, zipPlugin)
+- **Colorscheme fallbacks**: tokyonight, habamax
 
 ---
 
@@ -333,16 +349,16 @@ Custom status column with folding, line numbers, and git signs.
 - **Fold column**: UFO integration with custom icons
 - **Line numbers**: Absolute numbering
 - **Git signs**: Gitsigns integration with click handlers
-    - Left click: Preview hunk
-    - Ctrl + Left click: Reset hunk
-    - Right click: Stage hunk
-    - Middle click: Reset hunk
+- Left click: Preview hunk
+- Ctrl + Left click: Reset hunk
+- Right click: Stage hunk
+- Middle click: Reset hunk
 - **UFO folding**: nvim-ufo for improved fold handling
-    - Custom fold virtual text showing line count
-    - Providers: treesitter, indent
-    - `zR`: Open all folds
-    - `zM`: Close all folds
-    - Custom fold icons: foldopen , foldclose
+- Custom fold virtual text showing line count
+- Providers: treesitter, indent
+- `zR`: Open all folds
+- `zM`: Close all folds
+- Custom fold icons: foldopen , foldclose
 - **Gitsigns**: Rounded border preview
 - Disabled for alpha filetype
 
@@ -429,6 +445,14 @@ SST OpenCode integration for AI-powered development.
 > [**DISABLED**]
 
 Alternative OpenCode integration.
+
+#### mason.nvim (`lua/plugins/mason.lua`)
+
+Mason configuration with extra commands and UI customization.
+
+- Rounded border UI
+- Dependency: Zeioth/mason-extra-cmds for additional commands
+- Supports `MasonUpdateAll` command for batch updates
 
 ---
 
@@ -540,6 +564,7 @@ map alt+down      send_text all \x1b[H      # ⌥ + ↓ (start of line)
 | `<leader>fP` | Normal | Browse plugin files          |
 | `<leader>f/` | Normal | Fuzzy find in current buffer |
 | `<leader>fp` | Normal | Projects picker              |
+| `<leader>fw` | Normal | Find words in all files (rg) |
 
 ### LSP/Code
 
@@ -619,6 +644,11 @@ All OpenCode keybinds are under `<leader>o` prefix.
 | `<leader>oum` | Normal | List MCP servers           |
 | `<leader>ouc` | Normal | Run user command           |
 | `<leader>ous` | Normal | Stop execution             |
+| `<leader>ouu` | Normal | Undo last action           |
+| `<leader>our` | Normal | Redo last action           |
+| `<leader>ouk` | Normal | Compact session            |
+| `<leader>oul` | Normal | Share session              |
+| `<leader>ouL` | Normal | Unshare session            |
 
 ### Quit/Session
 
@@ -626,6 +656,7 @@ All OpenCode keybinds are under `<leader>o` prefix.
 | ------------ | ------ | ------------------------------- |
 | `<leader>qq` | Normal | Quit window (with confirmation) |
 | `<leader>qQ` | Normal | Quit all (with confirmation)    |
+| `Ctrl-q`     | Normal | Quit all (with confirmation)    |
 
 ---
 
@@ -658,21 +689,21 @@ consistent colors across themes. These overrides affect:
 - **nvim-dap-virtual-text**: Custom colors for debug virtual text (error, info,
   changed states)
 - **barbar**: All buffer states with custom colors
-    - Current buffer: Orange foreground (#ef9e76)
-    - Current index: Pink (#ff5189)
-    - Inactive buffers: Muted gray (#6c7087)
-    - Alternate buffers: Orange (#ef9e76)
-    - Visible buffers: Blue (#8caaee)
-    - Git status: Green (added), Pink (deleted), Yellow (changed)
-    - Diagnostics: Error (pink), Warn (yellow), Info (cyan), Hint (teal)
+  - Current buffer: Orange foreground (#ef9e76)
+  - Current index: Pink (#ff5189)
+  - Inactive buffers: Muted gray (#6c7087)
+  - Alternate buffers: Orange (#ef9e76)
+  - Visible buffers: Blue (#8caaee)
+  - Git status: Green (added), Pink (deleted), Yellow (changed)
+  - Diagnostics: Error (pink), Warn (yellow), Info (cyan), Hint (teal)
 - **cursor**: CursorLine (#3a3c47) and Visual selection (#775d46)
 - **neo-tree**: Tab separators, dotfile colors (#A8A8A8)
 - **completion (blink.cmp)**: VS Code-inspired colors
-    - Constructor/Class: Orange (#f28b25)
-    - Method/Function: Purple (#C586C0)
-    - Variables/Fields: Blue (#9CDCFE)
-    - Match text: Bright blue (#18a2fe, bold)
-    - Menu: Gray (#777d86)
+  - Constructor/Class: Orange (#f28b25)
+  - Method/Function: Purple (#C586C0)
+  - Variables/Fields: Blue (#9CDCFE)
+  - Match text: Bright blue (#18a2fe, bold)
+  - Menu: Gray (#777d86)
 - **aerial**: Symbol outline colors matching VS Code theme
 - **spelling**: Undercurl with salmon color (#ffbba6)
 - **LSP inlay hints**: Subtle gray (#8f939b)
