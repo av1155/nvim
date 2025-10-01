@@ -14,9 +14,7 @@ return {
         local wk = require("which-key")
         wk.add({
             { "<leader>o", group = "opencode", icon = { icon = "", color = "orange" }, mode = { "n", "v" } },
-        })
 
-        wk.add({
             { "<leader>ot", desc = "Toggle embedded", icon = { icon = "", color = "yellow" }, mode = "n" },
             { "<leader>oA", desc = "Ask", icon = { icon = "", color = "green" }, mode = "n" },
             { "<leader>oa", desc = "Ask about this", icon = { icon = "", color = "green" }, mode = "n" },

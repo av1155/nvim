@@ -5,6 +5,19 @@
 return {
     {
         "sudo-tee/opencode.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "folke/snacks.nvim",
+            "saghen/blink.cmp",
+            {
+                "MeanderingProgrammer/render-markdown.nvim",
+                opts = {
+                    anti_conceal = { enabled = false },
+                    file_types = { "markdown", "opencode_output" },
+                },
+                ft = { "markdown", "Avante", "copilot-chat", "opencode_output" },
+            },
+        },
         config = function()
             require("opencode").setup({
                 preferred_picker = "snacks",
@@ -31,7 +44,7 @@ return {
             if ok then
                 -- stylua: ignore
                 wk.add({
-                    { "<leader>o", group = "opencode", icon = { icon = " ", color = "orange" } },
+                    { "<leader>o", group = "opencode", mode = {"n", "v"}, icon = { icon = " ", color = "orange" } },
 
                     { "<leader>og", "<cmd>Opencode<cr>", desc = "Toggle", icon = { icon = " ", color = "orange" }, mode = { "n", "v" } },
                     { "<leader>oi", function() require("opencode.api").open_input() end, desc = "Open input", icon = { icon = " ", color = "cyan" }, mode = { "n", "v" } },
@@ -73,19 +86,5 @@ return {
                 })
             end
         end,
-
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            "folke/snacks.nvim",
-            "saghen/blink.cmp",
-            {
-                "MeanderingProgrammer/render-markdown.nvim",
-                opts = {
-                    anti_conceal = { enabled = false },
-                    file_types = { "markdown", "opencode_output" },
-                },
-                ft = { "markdown", "Avante", "copilot-chat", "opencode_output" },
-            },
-        },
     },
 }

@@ -20,17 +20,6 @@ function M.run(force)
     local last_real = real_listed_count() == 1
 
     if last_real then
-        if not force and vim.bo[cur].modified then
-            local name = vim.fn.expand("%:p") ~= "" and vim.fn.expand("%:p") or "[No Name]"
-            local choice = vim.fn.confirm(("Save changes to %s?"):format(name), "&Yes\n&No\n&Cancel", 1)
-            if choice == 1 then
-                pcall(function()
-                    vim.cmd.write()
-                end)
-            elseif choice == 3 then
-                return
-            end
-        end
         local ok_alpha, alpha = pcall(require, "alpha")
         if ok_alpha then
             alpha.start()

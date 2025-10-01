@@ -45,15 +45,7 @@ unmap("n", "<leader>bo")
 unmap("n", "<leader>bd")
 unmap("n", "<leader>bD")
 unmap("n", "<leader>fn")
-unmap("n", "<leader>fp")
 unmap("n", "<leader>K")
-
---[[ -- CopilotChat defaults (disabled in plugin spec, but unmap for safety)
-unmap({ "n", "v" }, "<leader>aa")
-unmap({ "n", "v" }, "<leader>ax")
-unmap({ "n", "v" }, "<leader>aq")
-unmap({ "n", "v" }, "<leader>ap")
- ]]
 
 -- stylua: ignore start
 
@@ -130,7 +122,7 @@ end, vim.tbl_extend("force", opts, { desc = "Force close (Alpha if last)" }))
 map("n", "<leader>bn", "<Cmd>enew<CR>", vim.tbl_extend("force", opts, { desc = "New File" }))
 
 -- Project add
-map("n", "<leader>bA", "<cmd>AddProject<cr>", vim.tbl_extend("force", opts, { desc = "Add Project" }))
+map("n", "<leader>bA", "<cmd>AddProject<cr>", vim.tbl_extend("force", opts, { desc = "Add current dir as project" }))
 
 --------------------------------------------------------------------------------
 -- 4) External tools: Yazi file manager (in a floating terminal)
@@ -152,8 +144,13 @@ end
 -- 5) Editing helpers
 --------------------------------------------------------------------------------
 
--- Search & replace (current buffer) and Save without formatting
-map("n", "<leader>W",  ":noautocmd w<CR>",       vim.tbl_extend("force", opts, { desc = "Save without formatting" }))
+-- Save without formatting
+map("n", "<leader>W",  ":noautocmd w<CR>", vim.tbl_extend("force", opts, { desc = "Save without formatting" }))
+
+-- Find words with ripgrep
+if vim.fn.executable("rg") == 1 then
+    map("n", "<leader>fw", function() require("snacks").picker.grep() end, vim.tbl_extend("force", opts, { desc = "Find words in all files" }))
+end
 
 --------------------------------------------------------------------------------
 -- 6) Clipboard / Cut / Text objects
@@ -181,6 +178,9 @@ map({ "n", "v" }, "=", "<C-x>", vim.tbl_extend("force", opts, { desc = "Decremen
 --------------------------------------------------------------------------------
 -- 7) Quit & Sessions remap (confirming)
 --------------------------------------------------------------------------------
+
+-- Quit with Ctrl-q
+map("n", "<C-q>", "<cmd>confirm qall<CR>",       vim.tbl_extend("force", opts, { desc = "Quit Neovim" }))
 
 -- Simple quit on <leader>q
 map("n", "<leader>qq", "<cmd>confirm q<CR>",     vim.tbl_extend("force", opts, { desc = "Quit window" }))

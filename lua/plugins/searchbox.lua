@@ -6,7 +6,6 @@ return {
         -- stylua: ignore
         keys = {
             {"<leader>s.", ":SearchBoxReplace<CR>", desc = "Search and Replace on Current Buffer", mode = "n", silent = true, noremap = true},
-
         },
     },
 }
