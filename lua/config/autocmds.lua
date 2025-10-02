@@ -166,9 +166,6 @@ do
 
         -- ============ LSP INLAY HINTS ============
         LspInlayHint = { fg = "#8f939b" },
-
-        -- ============ SIDEKICK TERMINAL ============
-        SidekickChat = { link = "Normal" },
     }
 
     local function apply_overrides()

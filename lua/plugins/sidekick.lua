@@ -9,6 +9,9 @@ return {
                 },
                 win = {
                     wo = {},
+                    keys = {
+                        stopinsert = false,
+                    },
                 },
             },
         },
@@ -17,9 +20,17 @@ return {
             { "<leader>an", false },  -- disable LazyVim's deprecated binding
             {
                 "<A-a>",
-                function() require("sidekick.cli").toggle({ name = "opencode", focus = true }) end,
+                function()
+                    local cli = require("sidekick.cli")
+                    local terminals = cli.get_terminals({ filter = { running = true } })
+                    if #terminals > 0 then
+                        cli.toggle()
+                    else
+                        cli.toggle({ name = "opencode", focus = true })
+                    end
+                end,
                 mode = { "n", "t" },
-                desc = "Toggle Sidekick OpenCode",
+                desc = "Toggle Sidekick CLI",
                 silent = true,
                 noremap = true,
             },
