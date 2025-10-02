@@ -8,16 +8,17 @@ return {
                     enabled = false,
                 },
                 win = {
-                    wo = {},
                     keys = {
                         stopinsert = false,
+                    },
+                    split = {
+                        width = 70,
                     },
                 },
             },
         },
         -- stylua: ignore
         keys = {
-            { "<leader>an", false },  -- disable LazyVim's deprecated binding
             {
                 "<A-a>",
                 function()
