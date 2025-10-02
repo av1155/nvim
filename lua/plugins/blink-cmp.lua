@@ -6,12 +6,15 @@ return {
             keymap = {
                 preset = "none", -- avoid preset collisions
 
-                -- Tab cycles, then snippet jump, then literal <Tab>
+                -- Tab cycles, then snippet jump, then NES, then literal <Tab>
                 ["<Tab>"] = {
                     function(cmp)
                         return cmp.select_next({ auto_insert = false, on_ghost_text = true })
                     end,
                     "snippet_forward",
+                    function()
+                        return require("sidekick").nes_jump_or_apply()
+                    end,
                     "fallback",
                 },
                 ["<S-Tab>"] = {
