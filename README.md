@@ -34,9 +34,11 @@ optimizations. For LazyVim's base features, refer to the [official documentation
       - [tiny-code-action.lua (`lua/plugins/tiny-code-action.lua`)](#tiny-code-actionlua-luapluginstiny-code-actionlua)
       - [illuminate.lua (`lua/plugins/illuminate.lua`)](#illuminatelua-luapluginsilluminatelua)
       - [hovercraft.lua (`lua/plugins/hovercraft.lua`)](#hovercraftlua-luapluginshovercraftlua)
+      - [goto-preview.lua (`lua/plugins/goto-preview.lua`)](#goto-previewlua-luapluginsgoto-previewlua)
     - [AI/Code Generation](#aicode-generation)
       - [avante.nvim (`lua/plugins/avante.lua`)](#avantenvim-luapluginsavantelua)
       - [copilot-chat.nvim (`lua/plugins/copilot-chat.lua`)](#copilot-chatnvim-luapluginscopilot-chatlua)
+      - [sidekick.nvim (`lua/plugins/sidekick.lua`)](#sidekicknvim-luapluginssidekicklua)
     - [UI Enhancements](#ui-enhancements)
       - [lualine.nvim (`lua/plugins/lualine.lua`)](#lualinenvim-luapluginslualinelua)
       - [noice.nvim (`lua/plugins/noice.lua`)](#noicenvim-luapluginsnoicelua)
@@ -225,7 +227,7 @@ External file manager in floating terminal.
 
 Completion engine with custom keybinds and behavior.
 
-- `Tab`/`Shift-Tab`: Cycle completions without auto-inserting
+- `Tab`/`Shift-Tab`: Cycle completions, snippet jump, fallback
 - `Enter`: Accept completion
 - `Ctrl-j`/`Ctrl-k`: Alternative cycling keys
 - Arrow keys disabled for completion navigation
@@ -279,6 +281,15 @@ Enhanced hover documentation with enter-to-focus capability.
 - Rounded border style
 - Loaded on LspAttach event
 
+#### goto-preview.lua (`lua/plugins/goto-preview.lua`)
+
+Inline LSP navigation with floating preview windows.
+
+- Preview definitions, references, implementations without leaving context
+- Rounded border style (90% width, 85% height)
+- Stack height: 40% for multi-level navigation
+- Integrates with lsp-config for all `g*` navigation keys
+
 ### AI/Code Generation
 
 #### avante.nvim (`lua/plugins/avante.lua`)
@@ -307,6 +318,17 @@ GitHub Copilot chat interface with custom keybinds.
 - Unmaps default `<leader>a[a|x|q|p]` to avoid conflicts with Avante
 - Grouped under `<leader>a` in which-key with icon
 - Overrides plugin defaults to enforce these `<leader>a` mappings
+
+#### sidekick.nvim (`lua/plugins/sidekick.lua`)
+
+OpenCode CLI integration with Copilot Next Edit Suggestions (NES).
+
+- Layout: Float (90% width, 85% height, rounded border)
+- `Alt-a` (normal): Toggle OpenCode terminal (focus on open)
+- `Alt-a` (terminal): Return to editor
+- `Alt-Tab` (insert/normal): Jump to/apply Next Edit Suggestion
+- Telemetry disabled
+- Terminal reuse: Opens existing or creates new focused terminal
 
 ### UI Enhancements
 
@@ -570,6 +592,12 @@ map alt+down      send_text all \x1b[H      # ⌥ + ↓ (start of line)
 
 | Key          | Mode          | Action                           |
 | ------------ | ------------- | -------------------------------- |
+| `gd`         | Normal        | Definition preview               |
+| `gr`         | Normal        | References preview               |
+| `gI`         | Normal        | Implementation preview           |
+| `gy`         | Normal        | Type definition preview          |
+| `gD`         | Normal        | Declaration preview              |
+| `gP`         | Normal        | Close all preview windows        |
 | `gh`         | Normal        | Show hover or enter hover popup  |
 | `<leader>ca` | Normal/Visual | Code action (tiny-code-action)   |
 | `<leader>cA` | Normal        | Source action (tiny-code-action) |
@@ -606,12 +634,15 @@ map alt+down      send_text all \x1b[H      # ⌥ + ↓ (start of line)
 
 ### AI/Copilot
 
-| Key          | Mode          | Action             |
-| ------------ | ------------- | ------------------ |
-| `<leader>aa` | Normal/Visual | Toggle CopilotChat |
-| `<leader>ax` | Normal/Visual | Clear CopilotChat  |
-| `<leader>aq` | Normal/Visual | Quick chat         |
-| `<leader>ap` | Normal/Visual | Prompt actions     |
+| Key          | Mode          | Action                           |
+| ------------ | ------------- | -------------------------------- |
+| `<leader>aa` | Normal/Visual | Toggle CopilotChat               |
+| `<leader>ax` | Normal/Visual | Clear CopilotChat                |
+| `<leader>aq` | Normal/Visual | Quick chat                       |
+| `<leader>ap` | Normal/Visual | Prompt actions                   |
+| `Alt-a`      | Normal        | Toggle OpenCode (Sidekick)       |
+| `Alt-a`      | Terminal      | Return to editor                 |
+| `Alt-Tab`    | Insert/Normal | Goto/Apply Next Edit Suggestion  |
 
 ### OpenCode
 
