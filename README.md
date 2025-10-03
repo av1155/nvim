@@ -36,8 +36,6 @@ optimizations. For LazyVim's base features, refer to the [official documentation
       - [hovercraft.lua (`lua/plugins/hovercraft.lua`)](#hovercraftlua-luapluginshovercraftlua)
       - [goto-preview.lua (`lua/plugins/goto-preview.lua`)](#goto-previewlua-luapluginsgoto-previewlua)
     - [AI/Code Generation](#aicode-generation)
-      - [avante.nvim (`lua/plugins/avante.lua`)](#avantenvim-luapluginsavantelua)
-      - [copilot-chat.nvim (`lua/plugins/copilot-chat.lua`)](#copilot-chatnvim-luapluginscopilot-chatlua)
       - [sidekick.nvim (`lua/plugins/sidekick.lua`)](#sidekicknvim-luapluginssidekicklua)
     - [UI Enhancements](#ui-enhancements)
       - [lualine.nvim (`lua/plugins/lualine.lua`)](#lualinenvim-luapluginslualinelua)
@@ -53,9 +51,7 @@ optimizations. For LazyVim's base features, refer to the [official documentation
       - [guess-indent.lua (`lua/plugins/guess-indent.lua`)](#guess-indentlua-luapluginsguess-indentlua)
       - [mini-animate.lua (`lua/plugins/mini-animate.lua`)](#mini-animatelua-luapluginsmini-animatelua)
       - [codesnap.lua (`lua/plugins/codesnap.lua`)](#codesnaplua-luapluginscodesnaplua)
-      - [markdown-preview.nvim (`lua/plugins/markdown-preview.lua`)](#markdown-previewnvim-luapluginsmarkdown-previewlua)
-      - [opencode-nvim.lua (`lua/plugins/opencode-nvim.lua`)](#opencode-nvimlua-luapluginsopencode-nvimlua)
-      - [opencode-terminal.lua (`lua/plugins/opencode-terminal.lua`)](#opencode-terminallua-luapluginsopencode-terminallua)
+      - [markdown-preview.nvim (`lua/plugins/markdown-preview.nvim`)](#markdown-previewnvim-luapluginsmarkdown-previewlua)
       - [mason.nvim (`lua/plugins/mason.lua`)](#masonnvim-luapluginsmasonlua)
   - [Keymaps](#keymaps)
     - [Unmapped LazyVim Defaults](#unmapped-lazyvim-defaults)
@@ -69,8 +65,7 @@ optimizations. For LazyVim's base features, refer to the [official documentation
     - [Markdown](#markdown)
     - [Yanky](#yanky)
     - [Search](#search)
-    - [AI/Copilot](#aicopilot)
-    - [OpenCode](#opencode)
+    - [AI/Sidekick](#aisidekick)
     - [Quit/Session](#quitsession)
   - [Options](#options)
   - [Autocmds](#autocmds)
@@ -292,33 +287,6 @@ Inline LSP navigation with floating preview windows.
 
 ### AI/Code Generation
 
-#### avante.nvim (`lua/plugins/avante.lua`)
-
-> [**DISABLED**]
-
-AI-powered code assistant using Claude or Moonshot.
-
-- Primary provider: Claude (sonnet-4-20250514)
-- Alternative provider: Moonshot (kimi-k2-0711-preview)
-- `<leader>aa`: Ask Avante (normal/visual)
-- Selector: snacks picker
-- Input: snacks input provider
-- Supports image pasting with img-clip.nvim
-- Custom instructions file: `avante.md`
-- Temperature: 0.75, Max tokens: 20480 (Claude) / 32768 (Moonshot)
-
-#### copilot-chat.nvim (`lua/plugins/copilot-chat.lua`)
-
-GitHub Copilot chat interface with custom keybinds.
-
-- `<leader>aa`: Toggle CopilotChat
-- `<leader>ax`: Clear chat history
-- `<leader>aq`: Quick chat prompt
-- `<leader>ap`: Prompt actions
-- Unmaps default `<leader>a[a|x|q|p]` to avoid conflicts with Avante
-- Grouped under `<leader>a` in which-key with icon
-- Overrides plugin defaults to enforce these `<leader>a` mappings
-
 #### sidekick.nvim (`lua/plugins/sidekick.lua`)
 
 OpenCode CLI integration with Copilot Next Edit Suggestions (NES).
@@ -452,21 +420,6 @@ Live Markdown preview in your web browser.
 
 - `<leader>cp`: Open Markdown preview (Markdown buffers only)
 - Command: `:MarkdownPreview`
-
-#### opencode-nvim.lua (`lua/plugins/opencode-nvim.lua`)
-
-SST OpenCode integration for AI-powered development.
-
-- Preferred picker: snacks
-- Preferred completion: blink
-- Default global keymaps disabled (custom keymaps defined in keymaps section)
-- Render-markdown integration for opencode_output filetype
-
-#### opencode-terminal.lua (`lua/plugins/opencode-terminal.lua`)
-
-> [**DISABLED**]
-
-Alternative OpenCode integration.
 
 #### mason.nvim (`lua/plugins/mason.lua`)
 
@@ -632,50 +585,13 @@ map alt+down      send_text all \x1b[H      # ⌥ + ↓ (start of line)
 | ------------ | ------ | ------------------------------------ |
 | `<leader>s.` | Normal | Search and replace on current buffer |
 
-### AI/Copilot
+### AI/Sidekick
 
-| Key       | Mode          | Action                          |
-| --------- | ------------- | ------------------------------- |
-| `Alt-a`   | Normal        | Toggle OpenCode (Sidekick)      |
-| `Alt-a`   | Terminal      | Return to editor                |
-| `Alt-Tab` | Insert/Normal | Goto/Apply Next Edit Suggestion |
-
-### OpenCode
-
-All OpenCode keybinds are under `<leader>o` prefix.
-
-| Key           | Mode   | Action                     |
-| ------------- | ------ | -------------------------- |
-| `<leader>og`  | Normal | Toggle OpenCode            |
-| `<leader>oi`  | Normal | Open input                 |
-| `<leader>oI`  | Normal | Open input (new session)   |
-| `<leader>oo`  | Normal | Open output                |
-| `<leader>ot`  | Normal | Toggle focus               |
-| `<leader>oq`  | Normal | Close                      |
-| `<leader>ox`  | Normal | Swap position              |
-| `<leader>oss` | Normal | Select session             |
-| `<leader>osS` | Normal | Select child session       |
-| `<leader>omb` | Normal | Build mode                 |
-| `<leader>omp` | Normal | Plan mode                  |
-| `<leader>oms` | Normal | Select agent               |
-| `<leader>op`  | Normal | Configure provider         |
-| `<leader>odo` | Normal | Open diff                  |
-| `<leader>odn` | Normal | Next file                  |
-| `<leader>odp` | Normal | Previous file              |
-| `<leader>odc` | Normal | Close diff                 |
-| `<leader>ora` | Normal | Revert all (last prompt)   |
-| `<leader>ort` | Normal | Revert this file (last)    |
-| `<leader>orA` | Normal | Revert all (session)       |
-| `<leader>orT` | Normal | Revert this file (session) |
-| `<leader>oui` | Normal | Initialize AGENTS.md       |
-| `<leader>oum` | Normal | List MCP servers           |
-| `<leader>ouc` | Normal | Run user command           |
-| `<leader>ous` | Normal | Stop execution             |
-| `<leader>ouu` | Normal | Undo last action           |
-| `<leader>our` | Normal | Redo last action           |
-| `<leader>ouk` | Normal | Compact session            |
-| `<leader>oul` | Normal | Share session              |
-| `<leader>ouL` | Normal | Unshare session            |
+| Key          | Mode          | Action                          |
+| ------------ | ------------- | ------------------------------- |
+| `Alt-a`      | Normal        | Toggle OpenCode (Sidekick)      |
+| `Alt-a`      | Terminal      | Return to editor                |
+| `Alt-Tab`    | Insert/Normal | Goto/Apply Next Edit Suggestion |
 
 ### Quit/Session
 
