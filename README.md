@@ -395,6 +395,9 @@ Enhanced search and replace UI.
 Auto-detects indentation settings per file.
 
 - Automatically adjusts `shiftwidth` and `tabstop` based on file content
+- Respects `.editorconfig` files when present (does not override)
+- Excludes UI buffers: help, dashboard, neo-tree, Trouble, lazy, mason, notify, toggleterm
+- Ideal for working across projects with different indent conventions
 
 #### mini-animate.lua (`lua/plugins/mini-animate.lua`)
 
