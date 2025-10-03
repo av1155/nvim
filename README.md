@@ -634,15 +634,11 @@ map alt+down      send_text all \x1b[H      # ⌥ + ↓ (start of line)
 
 ### AI/Copilot
 
-| Key          | Mode          | Action                           |
-| ------------ | ------------- | -------------------------------- |
-| `<leader>aa` | Normal/Visual | Toggle CopilotChat               |
-| `<leader>ax` | Normal/Visual | Clear CopilotChat                |
-| `<leader>aq` | Normal/Visual | Quick chat                       |
-| `<leader>ap` | Normal/Visual | Prompt actions                   |
-| `Alt-a`      | Normal        | Toggle OpenCode (Sidekick)       |
-| `Alt-a`      | Terminal      | Return to editor                 |
-| `Alt-Tab`    | Insert/Normal | Goto/Apply Next Edit Suggestion  |
+| Key       | Mode          | Action                          |
+| --------- | ------------- | ------------------------------- |
+| `Alt-a`   | Normal        | Toggle OpenCode (Sidekick)      |
+| `Alt-a`   | Terminal      | Return to editor                |
+| `Alt-Tab` | Insert/Normal | Goto/Apply Next Edit Suggestion |
 
 ### OpenCode
 
