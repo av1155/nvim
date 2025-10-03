@@ -35,7 +35,7 @@ return {
                         cli.toggle({ name = "opencode", focus = true })
                     end
                 end,
-                mode = { "n", "t" },
+                mode = { "n", "i", "t" },
                 desc = "Toggle Sidekick CLI",
                 silent = true,
                 noremap = true,
