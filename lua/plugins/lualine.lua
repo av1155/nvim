@@ -135,6 +135,33 @@ local function wide(min)
     end
 end
 
+local function copilot_attached()
+    local ok = package.loaded["copilot"] or pcall(require, "copilot")
+    if not ok then
+        return false
+    end
+    local clients = vim.lsp.get_clients({ name = "copilot", bufnr = 0 })
+    return clients and #clients > 0
+end
+
+local function toggle_copilot_for_buf()
+    if copilot_attached() then
+        vim.cmd("Copilot detach") -- buffer-local
+        vim.notify("Copilot (blink) OFF for this buffer", vim.log.levels.INFO)
+    else
+        -- ensure Copilot is started, then attach to this buffer
+        pcall(function()
+            require("copilot")
+        end)
+        vim.cmd("Copilot attach")
+        vim.notify("Copilot (blink) ON for this buffer", vim.log.levels.INFO)
+    end
+end
+
+local function copilot_icon()
+    return copilot_attached() and "" or ""
+end
+
 return {
     {
         "nvim-lualine/lualine.nvim",
@@ -290,6 +317,23 @@ return {
                                 return snacks.profiler.status()
                             end
                         end)(),
+
+                        -- Copilot status
+                        {
+                            copilot_icon,
+                            padding = { left = 1, right = 1 },
+                            color = function()
+                                return { fg = copilot_attached() and "#6CC644" or "#6371A4" }
+                            end,
+                            cond = function()
+                                return vim.fn.exists(":Copilot") == 2 -- only show if copilot.lua is available
+                            end,
+                            on_click = function()
+                                if vim.bo.buftype == "" then
+                                    toggle_copilot_for_buf()
+                                end
+                            end,
+                        },
                     },
 
                     lualine_y = {
