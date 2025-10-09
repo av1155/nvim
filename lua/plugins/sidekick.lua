@@ -28,8 +28,9 @@ return {
                 "<A-a>",
                 function()
                     local cli = require("sidekick.cli")
-                    local terminals = cli.get_terminals({ filter = { running = true } })
-                    if #terminals > 0 then
+                    local State = require("sidekick.cli.state")
+                    local sessions = State.get({ attached = true })
+                    if #sessions > 0 then
                         cli.toggle()
                     else
                         cli.toggle({ name = "opencode", focus = true })
