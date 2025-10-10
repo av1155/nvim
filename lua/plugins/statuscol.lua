@@ -19,10 +19,9 @@ return {
         },
     },
 
-    { "kevinhwang91/promise-async" },
-
     {
         "kevinhwang91/nvim-ufo",
+        dependencies = { "kevinhwang91/promise-async" },
         opts = {
             provider_selector = function()
                 return { "treesitter", "indent" }
@@ -109,7 +108,17 @@ return {
                 setopt = true,
                 ft_ignore = { "alpha" },
                 segments = {
-                    { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
+                    {
+                        sign = {
+                            namespace = { "dap" },
+                            name = { "Dap.*" },
+                            maxwidth = 1,
+                            colwidth = 1,
+                            auto = false,
+                            fillchar = " ",
+                        },
+                        click = "v:lua.ScSa",
+                    },
                     { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
                     {
                         sign = {
@@ -132,10 +141,16 @@ return {
                     Lnum = git_click,
                     gitsigns = git_click,
 
-                    -- DISABLED DAP CLICKS
-                    DapBreakpointRejected = false,
-                    DapBreakpoint = false,
-                    DapBreakpointCondition = false,
+                    -- DAP breakpoint clicks (toggle breakpoint on click)
+                    DapBreakpointRejected = function()
+                        require("dap").toggle_breakpoint()
+                    end,
+                    DapBreakpoint = function()
+                        require("dap").toggle_breakpoint()
+                    end,
+                    DapBreakpointCondition = function()
+                        require("dap").toggle_breakpoint()
+                    end,
                 },
             }
         end,
