@@ -6,7 +6,8 @@ return {
             mode = "toggleterm",
             focus = true,
             startinsert = true,
-            project_path = vim.fn.expand("~/.config/nvim/projects.json"),
+            project_path = vim.fn.expand("~/.config/nvim/lua/plugins/code_runner/projects.json"),
+            filetype_path = vim.fn.expand("~/.config/nvim/lua/plugins/code_runner/filetypes.json"),
         },
         config = function(_, opts)
             require("code_runner").setup(opts)

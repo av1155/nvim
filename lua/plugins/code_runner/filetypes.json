@@ -1,0 +1,4 @@
+{
+    "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",
+    "go": "cd $dir && go run $fileName"
+}
