@@ -12,6 +12,19 @@ return {
                     },
                 },
             },
+            presets = {
+                lsp_doc_border = true,
+            },
+            hover = {
+                enabled = true,
+                silent = false, -- set to true to not show a message if hover is not available
+            },
+            signature = {
+                enabled = true,
+                auto_open = {
+                    enabled = true,
+                },
+            },
             routes = {
                 -- skip img-clip warning when using cmd+v
                 { filter = { event = "notify", find = "Content is not an image" }, opts = { skip = true } },

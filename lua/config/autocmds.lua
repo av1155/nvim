@@ -25,6 +25,12 @@ do
     end
 
     local overrides = {
+        -- =================== BLINK-CMP =======================
+        BlinkCmpMenu = fix({ bg = "" }),
+        BlinkCmpDoc = fix({ bg = "" }),
+        BlinkCmpMenuBorder = { link = "FloatBorder" },
+        BlinkCmpDocBorder = { link = "FloatBorder" },
+
         -- =============== NVIM-DAP-VIRTUAL-TEXT ====================
         NvimDapVirtualText = fix({ fg = "#b58900", italic = true }),
         NvimDapVirtualTextError = fix({ fg = "#dc322f", bold = true, underline = true }),

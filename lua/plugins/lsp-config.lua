@@ -27,9 +27,16 @@ return {
             keys[#keys + 1] = { "<leader>ca", false, mode = "n" }
             keys[#keys + 1] = { "<leader>ca", false, mode = "v" }
             keys[#keys + 1] = { "<leader>cA", false, mode = "n" }
-            keys[#keys + 1] = { "gK", false }
 
-            -- MAP GOTO-PREVIEW LSP KEYBINDS
+            -- MAP LSP KEYBINDS
+            keys[#keys + 1] = {
+                "gh",
+                function()
+                    vim.lsp.buf.hover()
+                end,
+                desc = "Hover",
+            }
+
             keys[#keys + 1] = {
                 "gd",
                 function()

@@ -1,34 +1,9 @@
 return {
     {
         "saghen/blink.cmp",
-        opts = function(_, opts)
-            opts.keymap = {
-                preset = "none",
-
-                ["<Tab>"] = {
-                    function(cmp)
-                        return cmp.select_next({ auto_insert = false, on_ghost_text = true })
-                    end,
-                    "snippet_forward",
-                    "fallback",
-                },
-                ["<S-Tab>"] = {
-                    function(cmp)
-                        return cmp.select_prev({ auto_insert = false, on_ghost_text = true })
-                    end,
-                    "snippet_backward",
-                    "fallback",
-                },
-
-                ["<C-j>"] = { "select_next", "fallback" },
-                ["<C-k>"] = { "select_prev", "fallback" },
-                ["<Up>"] = false,
-                ["<Down>"] = false,
-
-                ["<CR>"] = { "accept", "fallback" },
-            }
-
-            opts.completion = {
+        opts = {
+            signature = { enabled = false },
+            completion = {
                 list = {
                     selection = {
                         preselect = false,
@@ -38,22 +13,38 @@ return {
                 },
                 menu = {
                     border = "rounded",
-                    winhighlight = "Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,CursorLine:BlinkCmpDocCursorLine,Search:None",
+                    draw = {
+                        columns = {
+                            { "label", "label_description", gap = 1 },
+                            { "kind_icon", "kind" },
+                        },
+                    },
                 },
                 documentation = {
+                    auto_show = true,
+                    auto_show_delay_ms = 100,
                     window = { border = "rounded" },
                 },
-            }
-
-            opts.sources = opts.sources or {}
-            opts.sources.providers = opts.sources.providers or {}
-            opts.sources.providers.copilot = vim.tbl_deep_extend("force", opts.sources.providers.copilot or {}, {
-                enabled = function()
-                    return vim.b.copilot_enabled == true
-                end,
-            })
-
-            return opts
-        end,
+            },
+            sources = {
+                providers = {
+                    copilot = {
+                        enabled = function()
+                            return vim.b.copilot_enabled == true
+                        end,
+                    },
+                },
+            },
+            keymap = {
+                preset = "none",
+                ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
+                ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
+                ["<C-j>"] = { "select_next", "fallback" },
+                ["<C-k>"] = { "select_prev", "fallback" },
+                ["<Up>"] = false,
+                ["<Down>"] = false,
+                ["<CR>"] = { "accept", "fallback" },
+            },
+        },
     },
 }
