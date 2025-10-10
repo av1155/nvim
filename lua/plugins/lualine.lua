@@ -135,31 +135,22 @@ local function wide(min)
     end
 end
 
-local function copilot_attached()
-    local ok = package.loaded["copilot"] or pcall(require, "copilot")
-    if not ok then
-        return false
-    end
-    local clients = vim.lsp.get_clients({ name = "copilot", bufnr = 0 })
-    return clients and #clients > 0
+local function copilot_enabled()
+    return vim.b.copilot_enabled == true
 end
 
 local function toggle_copilot_for_buf()
-    if copilot_attached() then
-        vim.cmd("Copilot detach") -- buffer-local
-        vim.notify("Copilot (blink) OFF for this buffer", vim.log.levels.INFO)
+    if copilot_enabled() then
+        vim.b.copilot_enabled = false
+        vim.notify("Copilot (blink) DISABLED for this buffer", vim.log.levels.INFO)
     else
-        -- ensure Copilot is started, then attach to this buffer
-        pcall(function()
-            require("copilot")
-        end)
-        vim.cmd("Copilot attach")
-        vim.notify("Copilot (blink) ON for this buffer", vim.log.levels.INFO)
+        vim.b.copilot_enabled = true
+        vim.notify("Copilot (blink) ENABLED for this buffer", vim.log.levels.INFO)
     end
 end
 
 local function copilot_icon()
-    return copilot_attached() and "" or ""
+    return copilot_enabled() and "" or ""
 end
 
 return {
@@ -167,7 +158,7 @@ return {
         "nvim-lualine/lualine.nvim",
         dependencies = {
             "nvim-tree/nvim-web-devicons",
-            "AndreM222/copilot-lualine",
+            -- "AndreM222/copilot-lualine",
             "nvim-telescope/telescope.nvim",
             "nvim-lua/plenary.nvim",
             "neovim/nvim-lspconfig",
@@ -323,10 +314,10 @@ return {
                             copilot_icon,
                             padding = { left = 1, right = 1 },
                             color = function()
-                                return { fg = copilot_attached() and "#6CC644" or "#6371A4" }
+                                return { fg = copilot_enabled() and "#6CC644" or "#6371A4" }
                             end,
                             cond = function()
-                                return vim.fn.exists(":Copilot") == 2 -- only show if copilot.lua is available
+                                return vim.fn.exists(":Copilot") == 2
                             end,
                             on_click = function()
                                 if vim.bo.buftype == "" then

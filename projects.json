@@ -1,0 +1,7 @@
+{
+    "~/Developer/Dockitect/": {
+        "name": "Dockitect",
+        "description": "Typescript Next.js webapp",
+        "command": "pnpm run dev"
+    }
+}

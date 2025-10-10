@@ -1,12 +1,10 @@
 return {
     {
         "saghen/blink.cmp",
-        opts = {
-            -- Keymaps
-            keymap = {
-                preset = "none", -- avoid preset collisions
+        opts = function(_, opts)
+            opts.keymap = {
+                preset = "none",
 
-                -- Tab cycles, then snippet jump, then fallback
                 ["<Tab>"] = {
                     function(cmp)
                         return cmp.select_next({ auto_insert = false, on_ghost_text = true })
@@ -22,18 +20,15 @@ return {
                     "fallback",
                 },
 
-                -- Optional: extra cycling keys, arrows disabled
                 ["<C-j>"] = { "select_next", "fallback" },
                 ["<C-k>"] = { "select_prev", "fallback" },
                 ["<Up>"] = false,
                 ["<Down>"] = false,
 
-                -- Accept with Enter
                 ["<CR>"] = { "accept", "fallback" },
-            },
+            }
 
-            -- Make cycling not insert text until you confirm
-            completion = {
+            opts.completion = {
                 list = {
                     selection = {
                         preselect = false,
@@ -48,7 +43,17 @@ return {
                 documentation = {
                     window = { border = "rounded" },
                 },
-            },
-        },
+            }
+
+            opts.sources = opts.sources or {}
+            opts.sources.providers = opts.sources.providers or {}
+            opts.sources.providers.copilot = vim.tbl_deep_extend("force", opts.sources.providers.copilot or {}, {
+                enabled = function()
+                    return vim.b.copilot_enabled == true
+                end,
+            })
+
+            return opts
+        end,
     },
 }
