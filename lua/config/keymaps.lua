@@ -25,6 +25,7 @@
 --   5) Editing helpers (Search/Replace, Save w/o format)
 --   6) Clipboard / Cut & Text objects
 --   7) Quit & Sessions
+--   7) Go: if err != nil helper
 --------------------------------------------------------------------------------
 
 -- Standard locals
@@ -187,5 +188,13 @@ map("n", "<leader>qq", "<cmd>confirm q<CR>",     vim.tbl_extend("force", opts, {
 
 -- Quit ALL on <leader>QQ
 map("n", "<leader>qQ", "<cmd>confirm qall<CR>",  vim.tbl_extend("force", opts, { desc = "Quit All" }))
+
+--------------------------------------------------------------------------------
+-- 8) Go: if err != nil helper
+--------------------------------------------------------------------------------
+
+map("n", "<leader>ce", function()
+  require("util.go_iferr").insert()
+end, vim.tbl_extend("force", opts, { desc = "Go: Insert if err != nil" }))
 
 -- stylua: ignore end
