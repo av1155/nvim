@@ -33,10 +33,12 @@ optimizations. For LazyVim's base features, refer to the [official documentation
       - [tiny-inline-diagnostic.lua (`lua/plugins/tiny-inline-diagnostic.lua`)](#tiny-inline-diagnosticlua-luapluginstiny-inline-diagnosticlua)
       - [tiny-code-action.lua (`lua/plugins/tiny-code-action.lua`)](#tiny-code-actionlua-luapluginstiny-code-actionlua)
       - [illuminate.lua (`lua/plugins/illuminate.lua`)](#illuminatelua-luapluginsilluminatelua)
-      - [hovercraft.lua (`lua/plugins/hovercraft.lua`)](#hovercraftlua-luapluginshovercraftlua)
       - [goto-preview.lua (`lua/plugins/goto-preview.lua`)](#goto-previewlua-luapluginsgoto-previewlua)
     - [AI/Code Generation](#aicode-generation)
+      - [copilot.lua (`lua/plugins/copilot.lua`)](#copilotlua-luapluginscopilotlua)
       - [sidekick.nvim (`lua/plugins/sidekick.lua`)](#sidekicknvim-luapluginssidekicklua)
+    - [Code Execution](#code-execution)
+      - [code-runner.lua (`lua/plugins/code-runner.lua`)](#code-runnerlua-luapluginscode-runnerlua)
     - [UI Enhancements](#ui-enhancements)
       - [lualine.nvim (`lua/plugins/lualine.lua`)](#lualinenvim-luapluginslualinelua)
       - [noice.nvim (`lua/plugins/noice.lua`)](#noicenvim-luapluginsnoicelua)
@@ -61,6 +63,7 @@ optimizations. For LazyVim's base features, refer to the [official documentation
     - [External Tools](#external-tools)
     - [File Navigation](#file-navigation)
     - [LSP/Code](#lspcode)
+    - [Code Execution](#code-execution-1)
     - [Comments/Snapshots](#commentssnapshots)
     - [Markdown](#markdown)
     - [Yanky](#yanky)
@@ -74,6 +77,7 @@ optimizations. For LazyVim's base features, refer to the [official documentation
     - [Auto-Update Mason After Lazy Sync](#auto-update-mason-after-lazy-sync)
   - [Custom Utilities](#custom-utilities)
     - [close_or_alpha.lua (`lua/util/close_or_alpha.lua`)](#close_or_alphalua-luautilclose_or_alphalua)
+    - [go_iferr.lua (`lua/util/go_iferr.lua`)](#go_iferrlua-luautilgo_iferrlua)
   - [License](#license)
   - [Credits](#credits)
 
@@ -130,6 +134,29 @@ optimal keybind support.
 
 ---
 
+## LazyVim Extras
+
+This configuration uses **38 LazyVim extras** (managed in `lazyvim.json`). These provide base functionality for languages, tools, and features. Custom overrides and new plugins are in `lua/plugins/`.
+
+**Enabled extras:**
+
+- **AI**: copilot, sidekick
+- **Languages** (20+): ansible, clangd, cmake, docker, git, go, java, json, markdown, python, sql, tailwind, terraform, toml, typescript, yaml
+- **DAP**: core, nlua
+- **Editor**: aerial, illuminate, inc-rename, neo-tree
+- **Formatting**: black, prettier
+- **Test**: core
+- **UI**: alpha, edgy, mini-animate, treesitter-context
+- **Util**: dot, mini-hipatterns, project
+
+Run `:LazyExtras` to view/manage extras. See [LazyVim docs](https://www.lazyvim.org/extras) for all available extras.
+
+**Plugin architecture:**
+- `lazyvim.json` = Base features (38 LazyVim extras)
+- `lua/plugins/` = Custom plugins + overrides to extras (e.g., `copilot.lua` overrides telemetry)
+
+---
+
 ## Lazy.nvim Configuration
 
 Custom lazy.nvim setup in `lua/config/lazy.lua`:
@@ -147,6 +174,11 @@ Custom lazy.nvim setup in `lua/config/lazy.lua`:
 ## Custom Plugins
 
 All custom plugins are in `lua/plugins/`. LazyVim automatically loads these specs.
+
+**Note:** Some plugins are present but disabled (via `if true then return {} end`):
+- `avante.lua` - AI pair programming assistant (disabled)
+- `opencode-nvim.lua` - OpenCode plugin integration (disabled)
+- `opencode-terminal.lua` - Alternative OpenCode terminal implementation (disabled)
 
 ### UI/Dashboard
 
@@ -220,7 +252,7 @@ External file manager in floating terminal.
 
 #### blink.cmp (`lua/plugins/blink-cmp.lua`)
 
-Completion engine with custom keybinds and behavior.
+Completion engine with custom keybinds and Copilot integration.
 
 - `Tab`/`Shift-Tab`: Cycle completions, snippet jump, fallback
 - `Enter`: Accept completion
@@ -229,6 +261,11 @@ Completion engine with custom keybinds and behavior.
 - Rounded borders on completion menu and docs
 - Ghost text enabled on selection
 - Preset disabled to avoid conflicts
+- **Copilot provider**: Conditionally enabled via `vim.b.copilot_enabled`
+  - Only provides completions when buffer-level toggle is enabled
+  - See lualine section for toggle control
+- **Signature help disabled**: Prevents duplicate popups with noice.nvim
+  - LSP signature handled by noice instead
 
 #### lsp-config.lua (`lua/plugins/lsp-config.lua`)
 
@@ -236,6 +273,7 @@ LSP configuration with custom diagnostics and keybinds.
 
 - Virtual text disabled (using tiny-inline-diagnostic instead)
 - Custom diagnostic icons (error/warn/info/hint)
+- `gh`: LSP hover documentation (native `vim.lsp.buf.hover()` routed through noice)
 - `<leader>ca`: Code action with preview (uses tiny-code-action)
 - `<leader>cA`: Source action with preview
 - Underline enabled for diagnostics
@@ -268,14 +306,6 @@ Highlights other occurrences of word under cursor.
 - Disabled for specific filetypes: alpha, avante, aerial, lazy, neo-tree,
   toggleterm, help, Trouble
 
-#### hovercraft.lua (`lua/plugins/hovercraft.lua`)
-
-Enhanced hover documentation with enter-to-focus capability.
-
-- `gh`: Show hover info or enter popup if already visible
-- Rounded border style
-- Loaded on LspAttach event
-
 #### goto-preview.lua (`lua/plugins/goto-preview.lua`)
 
 Inline LSP navigation with floating preview windows.
@@ -287,6 +317,16 @@ Inline LSP navigation with floating preview windows.
 
 ### AI/Code Generation
 
+#### copilot.lua (`lua/plugins/copilot.lua`)
+
+GitHub Copilot integration with telemetry disabled.
+
+- Enabled via LazyVim extra: `lazyvim.plugins.extras.ai.copilot`
+- Telemetry disabled: `telemetryLevel = "off"`
+- Buffer-level toggle: `vim.b.copilot_enabled` controls per-buffer state
+- Integration with blink.cmp (conditional provider)
+- See lualine section for clickable status indicator
+
 #### sidekick.nvim (`lua/plugins/sidekick.lua`)
 
 OpenCode CLI integration with Copilot Next Edit Suggestions (NES).
@@ -297,6 +337,29 @@ OpenCode CLI integration with Copilot Next Edit Suggestions (NES).
 - `Alt-Tab` (insert/normal): Jump to/apply Next Edit Suggestion
 - Telemetry disabled
 - Terminal reuse: Opens existing or creates new focused terminal
+
+### Code Execution
+
+#### code-runner.lua (`lua/plugins/code-runner.lua`)
+
+Code execution plugin with toggleterm integration.
+
+- Plugin: `CRAG666/code_runner.nvim`
+- Output mode: toggleterm (floating terminal)
+- Focus on open, start in insert mode
+- **Filetype configurations** (`lua/plugins/code_runner/filetypes.json`):
+  - Java: `cd $dir && javac $fileName && java $fileNameWithoutExt`
+  - Go: `cd $dir && go run .`
+- **Project configurations** (`lua/plugins/code_runner/projects.json`):
+  - Per-directory custom run commands
+  - Example: Dockitect project with `pnpm run dev`
+- **Keybindings**:
+  - `<leader>rr`: Run code
+  - `<leader>rf`: Run file
+  - `<leader>rp`: Run project
+  - `<leader>rc`: Configure filetypes
+  - `<leader>rP`: Configure projects
+  - `<leader>rm*`: Run mode (term/float/tab/toggleterm/buf)
 
 ### UI Enhancements
 
@@ -314,16 +377,26 @@ Custom statusline with bubbles theme and interactive click handlers.
 - **Lazy updates**: Shows pending plugin updates
 - **DAP status**: Shows debugger status when active
 - **Snacks profiler**: Shows profiler status when enabled
+- **Copilot status**: Interactive per-buffer toggle
+  - Shows `` (green) when enabled, `` (gray) when disabled
+  - Click to toggle Copilot for current buffer
+  - Displays notification on toggle
+  - Only visible when Copilot is installed
 - Theme: custom bubbles with transparent backgrounds
 - Disabled for: neo-tree, alpha, Avante buffers
 - Responsive: Hides components on narrow windows (<100 cols)
 
 #### noice.nvim (`lua/plugins/noice.lua`)
 
-Enhanced UI for messages, cmdline, and popups.
+Enhanced UI for messages, cmdline, popups, and LSP documentation.
 
-- Cmdline: popup view positioned at 30% vertical, 50% horizontal
-- Routes: Filters out img-clip "Content is not an image" warnings
+- **Cmdline**: popup view positioned at 30% vertical, 50% horizontal
+- **LSP integration**:
+  - `lsp_doc_border = true`: Rounded borders for LSP documentation
+  - Hover enabled with auto-open
+  - Signature help enabled with auto-open
+  - Routes native LSP hover and signature through noice UI
+- **Routes**: Filters out img-clip "Content is not an image" warnings
   and Mason update notifications
 
 #### edgy.nvim (`lua/plugins/edgy.lua`)
@@ -334,21 +407,23 @@ Window layout manager for sidebars/panels.
 
 #### statuscol.nvim (`lua/plugins/statuscol.lua`)
 
-Custom status column with folding, line numbers, and git signs.
+Custom status column with DAP breakpoints, line numbers, and git signs.
 
-- **Fold column**: UFO integration with custom icons
-- **Line numbers**: Absolute numbering
-- **Git signs**: Gitsigns integration with click handlers
-- Left click: Preview hunk
-- Ctrl + Left click: Reset hunk
-- Right click: Stage hunk
-- Middle click: Reset hunk
+- **DAP breakpoint column** (first column):
+  - Shows debugger breakpoint signs (DapBreakpoint, DapBreakpointRejected, DapBreakpointCondition)
+  - Click handlers: Click on any DAP sign to toggle breakpoint
+- **Line numbers** (second column): Absolute numbering
+- **Git signs** (third column): Gitsigns integration with click handlers
+  - Left click: Preview hunk
+  - Ctrl + Left click: Reset hunk
+  - Right click: Stage hunk
+  - Middle click: Reset hunk
 - **UFO folding**: nvim-ufo for improved fold handling
-- Custom fold virtual text showing line count
-- Providers: treesitter, indent
-- `zR`: Open all folds
-- `zM`: Close all folds
-- Custom fold icons: foldopen , foldclose
+  - Custom fold virtual text showing line count
+  - Providers: treesitter, indent
+  - `zR`: Open all folds
+  - `zM`: Close all folds
+  - Custom fold icons: foldopen , foldclose
 - **Gitsigns**: Rounded border preview
 - Disabled for alpha filetype
 
@@ -554,9 +629,25 @@ map alt+down      send_text all \x1b[H      # ⌥ + ↓ (start of line)
 | `gy`         | Normal        | Type definition preview          |
 | `gD`         | Normal        | Declaration preview              |
 | `gP`         | Normal        | Close all preview windows        |
-| `gh`         | Normal        | Show hover or enter hover popup  |
+| `gh`         | Normal        | LSP hover (via noice)            |
 | `<leader>ca` | Normal/Visual | Code action (tiny-code-action)   |
 | `<leader>cA` | Normal        | Source action (tiny-code-action) |
+| `<leader>ce` | Normal        | Go: Insert if err != nil         |
+
+### Code Execution
+
+| Key           | Mode   | Action                |
+| ------------- | ------ | --------------------- |
+| `<leader>rr`  | Normal | Run code              |
+| `<leader>rf`  | Normal | Run file              |
+| `<leader>rp`  | Normal | Run project           |
+| `<leader>rc`  | Normal | Configure filetypes   |
+| `<leader>rP`  | Normal | Configure projects    |
+| `<leader>rmt` | Normal | Run (term)            |
+| `<leader>rmf` | Normal | Run (float)           |
+| `<leader>rmT` | Normal | Run (tab)             |
+| `<leader>rmo` | Normal | Run (toggleterm)      |
+| `<leader>rmb` | Normal | Run (buffer)          |
 
 ### Comments/Snapshots
 
@@ -700,6 +791,38 @@ last buffer.
 ```lua
 require("util.close_or_alpha").run(false)  -- Normal close
 require("util.close_or_alpha").run(true)   -- Force close
+```
+
+### go_iferr.lua (`lua/util/go_iferr.lua`)
+
+Smart Go error handling insertion utility inspired by go.nvim's iferr feature.
+
+**Features**:
+
+- Automatically installs `iferr` binary via `go install` if missing
+- Analyzes function signatures to generate appropriate zero-value returns
+- Intelligently detects return types (string→`""`, int→`0`, pointer→`nil`, etc.)
+- Inserts `if err != nil` block at cursor position with proper formatting
+- Auto-indents inserted code for clean formatting
+- Configurable vertical shift after insertion (default: 2 lines)
+
+**Usage**:
+
+- Keymap: `<leader>ce` (Go buffers only)
+- Place cursor after a function call that returns an error
+- Press `<leader>ce` to insert error handling block
+
+**Example**:
+
+```go
+// Before (cursor after this line):
+file, err := os.Open("file.txt")
+
+// After pressing <leader>ce:
+file, err := os.Open("file.txt")
+if err != nil {
+    return nil, err
+}
 ```
 
 ---
