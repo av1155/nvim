@@ -141,17 +141,17 @@ optimal keybind support.
 
 ### Summary
 
-| Category          | Extras                                                                                                                  | Count |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------- | ----: |
-| 🤖 **AI**         | copilot, sidekick                                                                                                       |     2 |
-| 🧩 **Coding**     | luasnip, yanky                                                                                                          |     2 |
-| 🐞 **DAP**        | core, nlua                                                                                                              |     2 |
-| ✍️ **Editor**     | aerial, illuminate, inc-rename, neo-tree                                                                                |     4 |
-| 🧼 **Formatting** | black, prettier                                                                                                         |     2 |
-| 🌐 **Languages**  | ansible, clangd, cmake, docker, git, go, java, json, markdown, python, sql, tailwind, terraform, toml, typescript, yaml |    16 |
-| 🧪 **Test**       | core                                                                                                                    |     1 |
-| 🎛 **UI**         | alpha, edgy, mini-animate, treesitter-context                                                                           |     4 |
-| 🛠 **Util**       | dot, mini-hipatterns, project                                                                                           |     3 |
+| Category       | Extras                                                                                                                  | Count |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------- | ----: |
+| **AI**         | copilot, sidekick                                                                                                       |     2 |
+| **Coding**     | luasnip, yanky                                                                                                          |     2 |
+| **DAP**        | core, nlua                                                                                                              |     2 |
+| **Editor**     | aerial, illuminate, inc-rename, neo-tree                                                                                |     4 |
+| **Formatting** | black, prettier                                                                                                         |     2 |
+| **Languages**  | ansible, clangd, cmake, docker, git, go, java, json, markdown, python, sql, tailwind, terraform, toml, typescript, yaml |    16 |
+| **Test**       | core                                                                                                                    |     1 |
+| **UI**         | alpha, edgy, mini-animate, treesitter-context                                                                           |     4 |
+| **Util**       | dot, mini-hipatterns, project                                                                                           |     3 |
 
 ---
 
