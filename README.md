@@ -63,7 +63,7 @@ optimizations. For LazyVim's base features, refer to the [official documentation
     - [External Tools](#external-tools)
     - [File Navigation](#file-navigation)
     - [LSP/Code](#lspcode)
-    - [Code Execution](#code-execution-1)
+    - [Code Execution](#code-execution)
     - [Comments/Snapshots](#commentssnapshots)
     - [Markdown](#markdown)
     - [Yanky](#yanky)
@@ -136,24 +136,29 @@ optimal keybind support.
 
 ## LazyVim Extras
 
-This configuration uses **38 LazyVim extras** (managed in `lazyvim.json`). These provide base functionality for languages, tools, and features. Custom overrides and new plugins are in `lua/plugins/`.
+> **36 extras enabled** (from `lazyvim.json`). Manage with `:LazyExtras`.  
+> Docs: <https://www.lazyvim.org/extras>
 
-**Enabled extras:**
+### Summary
 
-- **AI**: copilot, sidekick
-- **Languages** (20+): ansible, clangd, cmake, docker, git, go, java, json, markdown, python, sql, tailwind, terraform, toml, typescript, yaml
-- **DAP**: core, nlua
-- **Editor**: aerial, illuminate, inc-rename, neo-tree
-- **Formatting**: black, prettier
-- **Test**: core
-- **UI**: alpha, edgy, mini-animate, treesitter-context
-- **Util**: dot, mini-hipatterns, project
+| Category          | Extras                                                                                                                  | Count |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------- | ----: |
+| 🤖 **AI**         | copilot, sidekick                                                                                                       |     2 |
+| 🧩 **Coding**     | luasnip, yanky                                                                                                          |     2 |
+| 🐞 **DAP**        | core, nlua                                                                                                              |     2 |
+| ✍️ **Editor**     | aerial, illuminate, inc-rename, neo-tree                                                                                |     4 |
+| 🧼 **Formatting** | black, prettier                                                                                                         |     2 |
+| 🌐 **Languages**  | ansible, clangd, cmake, docker, git, go, java, json, markdown, python, sql, tailwind, terraform, toml, typescript, yaml |    16 |
+| 🧪 **Test**       | core                                                                                                                    |     1 |
+| 🎛 **UI**         | alpha, edgy, mini-animate, treesitter-context                                                                           |     4 |
+| 🛠 **Util**       | dot, mini-hipatterns, project                                                                                           |     3 |
 
-Run `:LazyExtras` to view/manage extras. See [LazyVim docs](https://www.lazyvim.org/extras) for all available extras.
+---
 
-**Plugin architecture:**
-- `lazyvim.json` = Base features (38 LazyVim extras)
-- `lua/plugins/` = Custom plugins + overrides to extras (e.g., `copilot.lua` overrides telemetry)
+### **Plugin architecture**
+
+- `lazyvim.json` — Base features (36 LazyVim extras)
+- `lua/plugins/` — Custom plugins & overrides
 
 ---
 
@@ -176,6 +181,7 @@ Custom lazy.nvim setup in `lua/config/lazy.lua`:
 All custom plugins are in `lua/plugins/`. LazyVim automatically loads these specs.
 
 **Note:** Some plugins are present but disabled (via `if true then return {} end`):
+
 - `avante.lua` - AI pair programming assistant (disabled)
 - `opencode-nvim.lua` - OpenCode plugin integration (disabled)
 - `opencode-terminal.lua` - Alternative OpenCode terminal implementation (disabled)
@@ -378,7 +384,7 @@ Custom statusline with bubbles theme and interactive click handlers.
 - **DAP status**: Shows debugger status when active
 - **Snacks profiler**: Shows profiler status when enabled
 - **Copilot status**: Interactive per-buffer toggle
-  - Shows `` (green) when enabled, `` (gray) when disabled
+  - Shows `(green) when enabled,` (gray) when disabled
   - Click to toggle Copilot for current buffer
   - Displays notification on toggle
   - Only visible when Copilot is installed
@@ -634,20 +640,20 @@ map alt+down      send_text all \x1b[H      # ⌥ + ↓ (start of line)
 | `<leader>cA` | Normal        | Source action (tiny-code-action) |
 | `<leader>ce` | Normal        | Go: Insert if err != nil         |
 
-### Code Execution
+### Code Execution Mappings
 
-| Key           | Mode   | Action                |
-| ------------- | ------ | --------------------- |
-| `<leader>rr`  | Normal | Run code              |
-| `<leader>rf`  | Normal | Run file              |
-| `<leader>rp`  | Normal | Run project           |
-| `<leader>rc`  | Normal | Configure filetypes   |
-| `<leader>rP`  | Normal | Configure projects    |
-| `<leader>rmt` | Normal | Run (term)            |
-| `<leader>rmf` | Normal | Run (float)           |
-| `<leader>rmT` | Normal | Run (tab)             |
-| `<leader>rmo` | Normal | Run (toggleterm)      |
-| `<leader>rmb` | Normal | Run (buffer)          |
+| Key           | Mode   | Action              |
+| ------------- | ------ | ------------------- |
+| `<leader>rr`  | Normal | Run code            |
+| `<leader>rf`  | Normal | Run file            |
+| `<leader>rp`  | Normal | Run project         |
+| `<leader>rc`  | Normal | Configure filetypes |
+| `<leader>rP`  | Normal | Configure projects  |
+| `<leader>rmt` | Normal | Run (term)          |
+| `<leader>rmf` | Normal | Run (float)         |
+| `<leader>rmT` | Normal | Run (tab)           |
+| `<leader>rmo` | Normal | Run (toggleterm)    |
+| `<leader>rmb` | Normal | Run (buffer)        |
 
 ### Comments/Snapshots
 
@@ -681,11 +687,11 @@ map alt+down      send_text all \x1b[H      # ⌥ + ↓ (start of line)
 
 ### AI/Sidekick
 
-| Key          | Mode          | Action                          |
-| ------------ | ------------- | ------------------------------- |
-| `Alt-a`      | Normal        | Toggle OpenCode (Sidekick)      |
-| `Alt-a`      | Terminal      | Return to editor                |
-| `Alt-Tab`    | Insert/Normal | Goto/Apply Next Edit Suggestion |
+| Key       | Mode          | Action                          |
+| --------- | ------------- | ------------------------------- |
+| `Alt-a`   | Normal        | Toggle OpenCode (Sidekick)      |
+| `Alt-a`   | Terminal      | Return to editor                |
+| `Alt-Tab` | Insert/Normal | Goto/Apply Next Edit Suggestion |
 
 ### Quit/Session
 
