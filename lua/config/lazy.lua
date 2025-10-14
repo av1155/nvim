@@ -31,17 +31,17 @@ require("lazy").setup({
         -- version = "*", -- try installing the latest stable version for plugins that support semver
     },
     install = { colorscheme = { "tokyonight", "habamax" } },
-    -- concurrency = (function()
-    --     local handle = io.popen("cat /proc/device-tree/model 2>/dev/null")
-    --     if handle then
-    --         local model = handle:read("*a")
-    --         handle:close()
-    --         if model and model:match("Raspberry Pi") then
-    --             return 8
-    --         end
-    --     end
-    --     return nil -- use lazy.nvim default
-    -- end)(),
+    concurrency = (function()
+        local handle = io.popen("cat /proc/device-tree/model 2>/dev/null")
+        if handle then
+            local model = handle:read("*a")
+            handle:close()
+            if model and model:match("Raspberry Pi") then
+                return 8
+            end
+        end
+        return nil -- use lazy.nvim default
+    end)(),
     ui = {
         backdrop = 100,
         border = "rounded",
