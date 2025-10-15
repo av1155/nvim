@@ -3,6 +3,13 @@ return {
     opts = {
         close_if_last_window = true,
 
+        default_component_configs = {
+            indent = {
+                expander_collapsed = "",
+                expander_expanded = "",
+            },
+        },
+
         commands = {
             copy_selector = function(state)
                 local node = state.tree:get_node()
