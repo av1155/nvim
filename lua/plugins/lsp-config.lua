@@ -40,12 +40,7 @@ return {
             keys[#keys + 1] = {
                 "gm",
                 function()
-                    local hover = require("hovercraft")
-                    if hover.is_visible() then
-                        hover.enter_popup()
-                    else
-                        hover.hover()
-                    end
+                    require("util.man_hover").show()
                 end,
                 desc = "Man Page",
             }
