@@ -14,40 +14,31 @@ function M.show()
         return
     end
 
-    local buf = vim.api.nvim_create_buf(false, true)
-    vim.api.nvim_buf_set_lines(buf, 0, -1, false, output)
-    vim.bo[buf].filetype = "man"
-    vim.bo[buf].modifiable = false
-
-    local max_line_width = 0
-    for _, line in ipairs(output) do
-        max_line_width = math.max(max_line_width, vim.fn.strdisplaywidth(line))
-    end
-
-    local content_width = math.max(40, math.min(max_line_width + 4, vim.o.columns - 4))
-    local content_height = math.max(10, math.min(#output, vim.o.lines - 4))
-
-    local width = math.min(content_width, vim.o.columns - 4)
-    local height = math.min(content_height, vim.o.lines - 4)
-
-    local opts = {
-        relative = "editor",
-        width = width,
-        height = height,
-        row = math.floor((vim.o.lines - height) / 2),
-        col = math.floor((vim.o.columns - width) / 2),
-        style = "minimal",
+    local _, winid = vim.lsp.util.open_floating_preview(output, "man", {
+        max_height = 25,
+        focus_id = "man_page",
+        focusable = true,
         border = "rounded",
-    }
+        offset_x = -1,
+    })
 
-    local win = vim.api.nvim_open_win(buf, true, opts)
+    if winid then
+        local bufnr = vim.api.nvim_win_get_buf(winid)
+        local source_bufnr = vim.w[winid].man_page
 
-    vim.wo[win].wrap = true
-    vim.wo[win].linebreak = true
+        local function close_and_return()
+            if source_bufnr and vim.api.nvim_buf_is_valid(source_bufnr) then
+                vim.api.nvim_win_close(winid, true)
+                local source_win = vim.fn.bufwinid(source_bufnr)
+                if source_win ~= -1 then
+                    vim.api.nvim_set_current_win(source_win)
+                end
+            else
+                vim.api.nvim_win_close(winid, true)
+            end
+        end
 
-    local close_keys = { "q", "<Esc>" }
-    for _, key in ipairs(close_keys) do
-        vim.keymap.set("n", key, "<cmd>close<cr>", { buffer = buf, nowait = true, silent = true })
+        vim.keymap.set("n", "q", close_and_return, { buffer = bufnr, nowait = true, silent = true })
     end
 end
 
