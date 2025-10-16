@@ -181,11 +181,6 @@ return {
                     lualine_a = {
                         {
                             "mode",
-                            on_click = function()
-                                if vim.bo.buftype == "" then
-                                    vim.cmd("Telescope man_pages")
-                                end
-                            end,
                             separator = { left = "" },
                             right_padding = 2,
                         },
@@ -194,22 +189,12 @@ return {
                     lualine_b = {
                         {
                             "filename",
-                            on_click = function()
-                                if vim.bo.buftype == "" then
-                                    vim.cmd("Telescope buffers")
-                                end
-                            end,
                         },
 
                         {
                             "branch",
                             icon = "",
                             color = { fg = "#c6c6c6" },
-                            on_click = function()
-                                if vim.bo.buftype == "" then
-                                    vim.cmd("Telescope git_branches")
-                                end
-                            end,
                         },
                     },
 
