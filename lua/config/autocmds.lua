@@ -102,8 +102,10 @@ do
 
         -- ========================= WIN-SEPARATOR ======================
         WinSeparator = fix({ fg = "", bg = "" }),
+        EdgyWinSep = fix({ fg = "#45475a", bg = "" }),
 
         -- ================ NEO-TREE ============================
+        NeoTreeWinSeparator = fix({ fg = "#45475a", bg = "" }),
         NeoTreeTabSeparatorInactive = { fg = "#313244", bg = "#1e1e2e" },
         NeoTreeTabSeparatorActive = { fg = "#45475a", bg = "#1e1e2e" },
         NeoTreeDotfile = fix({ fg = "#A8A8A8", bg = "" }),
