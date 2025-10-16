@@ -47,6 +47,7 @@ unmap("n", "<leader>bd")
 unmap("n", "<leader>bD")
 unmap("n", "<leader>fn")
 unmap("n", "<leader>K")
+unmap("n", "<leader>|")
 
 -- stylua: ignore start
 
@@ -124,6 +125,12 @@ map("n", "<leader>bn", "<Cmd>enew<CR>", vim.tbl_extend("force", opts, { desc = "
 
 -- Project add
 map("n", "<leader>bA", "<cmd>AddProject<cr>", vim.tbl_extend("force", opts, { desc = "Add current dir as project" }))
+
+--------------------------------------------------------------------------------
+-- Window management
+--------------------------------------------------------------------------------
+
+map("n", "<leader>\\", "<C-W>v", vim.tbl_extend("force", opts, { desc = "Split Window Right" }))
 
 --------------------------------------------------------------------------------
 -- 4) External tools: Yazi file manager (in a floating terminal)

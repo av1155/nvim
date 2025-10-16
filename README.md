@@ -533,6 +533,7 @@ The following LazyVim defaults have been unmapped:
 | `<leader>fn` | New file              | Moved to `<leader>bn`           |
 | `<leader>fp` | Find config files     | Reassigned to projects          |
 | `<leader>K`  | Keywordprg            | Not needed                      |
+| `<leader>\|` | Split window right    | Remapped to `<leader>\`         |
 | `<Space>`    | Move right            | Prevent leader race conditions  |
 
 ### Kitty Terminal Integration
@@ -607,6 +608,12 @@ map alt+down      send_text all \x1b[H      # ⌥ + ↓ (start of line)
 | `Shift-Tab` | Visual        | Indent left (keep selection)         |
 | `+`         | Normal/Visual | Increment number (replaces `Ctrl-a`) |
 | `=`         | Normal/Visual | Decrement number (replaces `Ctrl-x`) |
+
+### Window Management
+
+| Key          | Mode   | Action             |
+| ------------ | ------ | ------------------ |
+| `<leader>\`` | Normal | Split window right |
 
 ### External Tools
 

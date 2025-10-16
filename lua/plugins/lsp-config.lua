@@ -38,6 +38,19 @@ return {
             }
 
             keys[#keys + 1] = {
+                "gm",
+                function()
+                    local hover = require("hovercraft")
+                    if hover.is_visible() then
+                        hover.enter_popup()
+                    else
+                        hover.hover()
+                    end
+                end,
+                desc = "Man Page",
+            }
+
+            keys[#keys + 1] = {
                 "gd",
                 function()
                     require("goto-preview").goto_preview_definition({})
