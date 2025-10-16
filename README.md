@@ -78,6 +78,7 @@ optimizations. For LazyVim's base features, refer to the [official documentation
   - [Custom Utilities](#custom-utilities)
     - [close_or_alpha.lua (`lua/util/close_or_alpha.lua`)](#close_or_alphalua-luautilclose_or_alphalua)
     - [go_iferr.lua (`lua/util/go_iferr.lua`)](#go_iferrlua-luautilgo_iferrlua)
+    - [man_hover.lua (`lua/util/man_hover.lua`)](#man_hoverlua-luautilman_hoverlua)
   - [License](#license)
   - [Credits](#credits)
 
