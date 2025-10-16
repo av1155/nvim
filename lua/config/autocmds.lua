@@ -100,6 +100,9 @@ do
         CursorLine = { bg = "#3a3c47" },
         Visual = { bg = "#775d46" },
 
+        -- ========================= WIN-SEPARATOR ======================
+        WinSeparator = fix({ fg = "", bg = "" }),
+
         -- ================ NEO-TREE ============================
         NeoTreeTabSeparatorInactive = { fg = "#313244", bg = "#1e1e2e" },
         NeoTreeTabSeparatorActive = { fg = "#45475a", bg = "#1e1e2e" },
