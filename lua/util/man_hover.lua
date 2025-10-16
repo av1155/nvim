@@ -19,8 +19,16 @@ function M.show()
     vim.bo[buf].filetype = "man"
     vim.bo[buf].modifiable = false
 
-    local width = math.min(100, vim.o.columns - 4)
-    local height = math.min(40, vim.o.lines - 4)
+    local max_line_width = 0
+    for _, line in ipairs(output) do
+        max_line_width = math.max(max_line_width, vim.fn.strdisplaywidth(line))
+    end
+
+    local content_width = math.max(40, math.min(max_line_width + 4, vim.o.columns - 4))
+    local content_height = math.max(10, math.min(#output, vim.o.lines - 4))
+
+    local width = math.min(content_width, vim.o.columns - 4)
+    local height = math.min(content_height, vim.o.lines - 4)
 
     local opts = {
         relative = "editor",
