@@ -643,6 +643,7 @@ map alt+down      send_text all \x1b[H      # ⌥ + ↓ (start of line)
 | `gD`         | Normal        | Declaration preview              |
 | `gP`         | Normal        | Close all preview windows        |
 | `gh`         | Normal        | LSP hover (via noice)            |
+| `gm`         | Normal        | Man page hover popup             |
 | `<leader>ca` | Normal/Visual | Code action (tiny-code-action)   |
 | `<leader>cA` | Normal        | Source action (tiny-code-action) |
 | `<leader>ce` | Normal        | Go: Insert if err != nil         |
@@ -837,6 +838,49 @@ if err != nil {
     return nil, err
 }
 ```
+
+### man_hover.lua (`lua/util/man_hover.lua`)
+
+LSP-style man page viewer that shows Unix manual pages in a smart floating popup.
+
+**Features**:
+
+- **Smart positioning**: Uses `vim.lsp.util.open_floating_preview()` for cursor-relative placement
+- **Automatic edge handling**: Positions below cursor (or above if more space), handles screen edges
+- **Scrollable content**: Max height of 25 lines with smooth scrolling for longer pages
+- **Interactive**: Click inside popup to select/copy text without closing
+- **Focus toggle**: Press `gm` twice to jump into the popup for navigation
+- **Smart close**: Press `q` to close and return cursor to original position
+- **Auto-close**: Closes automatically when cursor moves in source buffer
+
+**Usage**:
+
+- Keymap: `gm` (global, all modes)
+- Place cursor on a word/command/function
+- Press `gm` to view its man page
+- Press `gm` again to jump into popup for scrolling/selection
+- Press `q` to close and return to code
+
+**Supported Languages/Tools**:
+
+- **C/C++**: Standard library functions, system calls (`printf`, `malloc`, `pthread_*`)
+- **Shell**: Bash, Zsh, Fish commands and builtins
+- **POSIX APIs**: Networking, file I/O, process management
+- **CLI tools**: Any tool with man pages (git, make, grep, sed, awk, curl, etc.)
+- **System programming**: Perfect for low-level development
+
+**Example**:
+
+```c
+// Hover over 'printf' and press 'gm'
+printf("Hello, world!\n");
+// → Shows man 3 printf in floating popup
+
+// Click inside popup to select/copy text
+// Press 'q' to close and return to code
+```
+
+**Note**: For modern languages (JavaScript, Rust, Go, Java), use LSP hover (`gh`) instead, as they don't use Unix man pages.
 
 ---
 
