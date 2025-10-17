@@ -1,14 +1,45 @@
 return {
     {
-        "CRAG666/code_runner.nvim",
+        "av1155/code_runner.nvim",
+        branch = "fix/toggleterm-quote-handling",
         dependencies = { "akinsho/toggleterm.nvim" },
-        opts = {
-            mode = "toggleterm",
-            focus = true,
-            startinsert = true,
-            project_path = vim.fn.expand("~/.config/nvim/lua/plugins/code_runner/projects.json"),
-            filetype_path = vim.fn.expand("~/.config/nvim/lua/plugins/code_runner/filetypes.json"),
-        },
+        opts = function()
+            local function prompt_args_runner(base_cmd)
+                return function()
+                    vim.ui.input({ prompt = "Arguments (leave empty for none): " }, function(input)
+                        if not input then
+                            return
+                        end
+
+                        local cmd = base_cmd
+                        if input ~= "" then
+                            cmd = cmd .. " " .. input
+                        end
+
+                        require("code_runner.commands").run_from_fn(cmd)
+                    end)
+                end
+            end
+
+            return {
+                mode = "toggleterm",
+                focus = true,
+                startinsert = true,
+                -- stylua: ignore
+                filetype = {
+                    -- Arguments Not Prompted
+                    go = "cd $dir && go run .",
+
+                    -- Arguments Prompted
+                    c = prompt_args_runner(
+                        "cd $dir && gcc -Wall $fileName -o /tmp/$fileNameWithoutExt && /tmp/$fileNameWithoutExt"
+                    ),
+                    java = prompt_args_runner(
+                        "cd $dir && javac $fileName && java $fileNameWithoutExt"
+                    ),
+                },
+            }
+        end,
         config = function(_, opts)
             require("code_runner").setup(opts)
 
