@@ -51,7 +51,7 @@ return {
                     { "<leader>rr", "<cmd>RunCode<cr>",            desc = "Run code",             icon = { icon = "",  color = "green" } },
                     { "<leader>rf", "<cmd>RunFile<cr>",            desc = "Run file",             icon = { icon = "󰈔",  color = "orange" } },
                     { "<leader>rp", "<cmd>RunProject<cr>",         desc = "Run project",          icon = { icon = "",  color = "cyan" } },
-                    { "<leader>rc", "<cmd>CRFiletype<cr>",         desc = "Configure filetypes",  icon = { icon = "󰈔",  color = "blue" } },
+                    -- { "<leader>rc", "<cmd>CRFiletype<cr>",         desc = "Configure filetypes",  icon = { icon = "󰈔",  color = "blue" } },
                     { "<leader>rP", "<cmd>CRProjects<cr>",         desc = "Configure projects",   icon = { icon = "󰙵",  color = "blue" } },
 
                     { "<leader>rm", group = "run mode",            icon = { icon = "", color = "purple" } },
