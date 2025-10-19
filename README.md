@@ -24,7 +24,7 @@ optimizations. For LazyVim's base features, refer to the [official documentation
   - [LazyVim Extras](#lazyvim-extras)
     - [Summary](#summary)
     - [**Plugin architecture**](#plugin-architecture)
-  - [Lazy.nvim Configuration](#lazyvimnvim-configuration)
+  - [Lazy.nvim Configuration](#lazynvim-configuration)
   - [Custom Plugins](#custom-plugins)
     - [UI/Dashboard](#uidashboard)
       - [alpha.nvim (`lua/plugins/alpha.lua`)](#alphanvim-luapluginsalphalua)
