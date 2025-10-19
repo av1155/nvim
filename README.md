@@ -231,6 +231,7 @@ Enhanced file finder with custom layout and additional pickers.
 
 File explorer with custom copy command, focus restore, and auto-close behavior.
 
+- Custom expanders: ``(collapsed), ``(expanded)
 - `Y` key: Smart copy selector (filename, path, CWD path, HOME path, URI)
 - Copy selector restores Neo-tree focus and cursor after picking option
 - `P` key: Floating preview with image support (uses snacks)
@@ -354,17 +355,16 @@ Code execution plugin with toggleterm integration.
 - Plugin: `CRAG666/code_runner.nvim`
 - Output mode: toggleterm (floating terminal)
 - Focus on open, start in insert mode
-- **Filetype configurations** (`lua/plugins/code_runner/filetypes.json`):
-  - Java: `cd $dir && javac $fileName && java $fileNameWithoutExt`
-  - Go: `cd $dir && go run .`
+- **Filetype configurations**: Inline opts (C, C++, Rust, Java, Go, Python, JavaScript, TypeScript, Ruby, Lua, Shell, Zig, Kotlin)
+  - Compiled languages: Auto-detects compile + run workflow
+  - Interpreted languages: Direct execution
 - **Project configurations** (`lua/plugins/code_runner/projects.json`):
   - Per-directory custom run commands
-  - Example: Dockitect project with `pnpm run dev`
 - **Keybindings**:
+  - `<leader>ra`: Run with args (prompts for compiler flags + runtime args)
   - `<leader>rr`: Run code
   - `<leader>rf`: Run file
   - `<leader>rp`: Run project
-  - `<leader>rc`: Configure filetypes
   - `<leader>rP`: Configure projects
   - `<leader>rm*`: Run mode (term/float/tab/toggleterm/buf)
 
@@ -372,15 +372,15 @@ Code execution plugin with toggleterm integration.
 
 #### lualine.nvim (`lua/plugins/lualine.lua`)
 
-Custom statusline with bubbles theme and interactive click handlers.
+Custom statusline with bubbles theme and selective interactive components.
 
-- **Mode indicator**: Click to open man pages
-- **Filename**: Click to open buffer picker
-- **Branch**: Click to open git branches
-- **Diagnostics**: Click to open Trouble workspace diagnostics
-- **LSP status**: Shows active LSP clients (click for LspInfo), hides copilot
+- **Mode indicator**: Shows current mode (Normal/Insert/Visual/etc.)
+- **Filename**: Current buffer filename
+- **Branch**: Git branch with `` icon
+- **Diagnostics**: Error/warn/info/hint counts (click to open Trouble workspace diagnostics)
+- **LSP status**: Active LSP clients (click for LspInfo), hides copilot
 - **Python interpreter**: Shows active pyenv environment name
-- **Diff stats**: Click to open git status picker (Snacks or Telescope)
+- **Diff stats**: Git added/modified/removed (click to open git status picker)
 - **Lazy updates**: Shows pending plugin updates
 - **DAP status**: Shows debugger status when active
 - **Snacks profiler**: Shows profiler status when enabled
@@ -390,7 +390,7 @@ Custom statusline with bubbles theme and interactive click handlers.
   - Displays notification on toggle
   - Only visible when Copilot is installed
 - Theme: custom bubbles with transparent backgrounds
-- Disabled for: neo-tree, alpha, Avante buffers
+- Disabled for: neo-tree, alpha
 - Responsive: Hides components on narrow windows (<100 cols)
 
 #### noice.nvim (`lua/plugins/noice.lua`)
@@ -411,6 +411,7 @@ Enhanced UI for messages, cmdline, popups, and LSP documentation.
 Window layout manager for sidebars/panels.
 
 - `exit_when_last = true`: Closes sidebar when last window
+- Custom window separator highlight for sidebar distinction
 
 #### statuscol.nvim (`lua/plugins/statuscol.lua`)
 
@@ -503,6 +504,7 @@ Code screenshot generator with macOS window bar.
 
 Live Markdown preview in your web browser.
 
+- Default theme: light
 - `<leader>cp`: Open Markdown preview (Markdown buffers only)
 - Command: `:MarkdownPreview`
 
@@ -651,18 +653,18 @@ map alt+down      send_text all \x1b[H      # ⌥ + ↓ (start of line)
 
 ### Code Execution Mappings
 
-| Key           | Mode   | Action              |
-| ------------- | ------ | ------------------- |
-| `<leader>rr`  | Normal | Run code            |
-| `<leader>rf`  | Normal | Run file            |
-| `<leader>rp`  | Normal | Run project         |
-| `<leader>rc`  | Normal | Configure filetypes |
-| `<leader>rP`  | Normal | Configure projects  |
-| `<leader>rmt` | Normal | Run (term)          |
-| `<leader>rmf` | Normal | Run (float)         |
-| `<leader>rmT` | Normal | Run (tab)           |
-| `<leader>rmo` | Normal | Run (toggleterm)    |
-| `<leader>rmb` | Normal | Run (buffer)        |
+| Key           | Mode   | Action                             |
+| ------------- | ------ | ---------------------------------- |
+| `<leader>ra`  | Normal | Run with args (compiler + runtime) |
+| `<leader>rr`  | Normal | Run code                           |
+| `<leader>rf`  | Normal | Run file                           |
+| `<leader>rp`  | Normal | Run project                        |
+| `<leader>rP`  | Normal | Configure projects                 |
+| `<leader>rmt` | Normal | Run (term)                         |
+| `<leader>rmf` | Normal | Run (float)                        |
+| `<leader>rmT` | Normal | Run (tab)                          |
+| `<leader>rmo` | Normal | Run (toggleterm)                   |
+| `<leader>rmb` | Normal | Run (buffer)                       |
 
 ### Comments/Snapshots
 
@@ -749,6 +751,10 @@ consistent colors across themes. These overrides affect:
   - Git status: Green (added), Pink (deleted), Yellow (changed)
   - Diagnostics: Error (pink), Warn (yellow), Info (cyan), Hint (teal)
 - **cursor**: CursorLine (#3a3c47) and Visual selection (#775d46)
+- **window separators**:
+  - WinSeparator: Transparent (#45475a for Edgy/Neo-tree sidebars)
+  - EdgyWinSep: Gray separator for edgy.nvim sidebars
+  - NeoTreeWinSeparator: Gray separator for neo-tree windows
 - **neo-tree**: Tab separators, dotfile colors (#A8A8A8)
 - **completion (blink.cmp)**: VS Code-inspired colors
   - Constructor/Class: Orange (#f28b25)
