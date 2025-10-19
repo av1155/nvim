@@ -14,10 +14,17 @@ optimizations. For LazyVim's base features, refer to the [official documentation
 
 <!--toc:start-->
 
+<details>
+<summary>Table of Contents</summary>
+
 - [💤 LazyVim Configuration](#-lazyvim-configuration)
   - [Quick Start](#quick-start)
     - [Post-install tips](#post-install-tips)
   - [Configuration Overview](#configuration-overview)
+  - [LazyVim Extras](#lazyvim-extras)
+    - [Summary](#summary)
+    - [**Plugin architecture**](#plugin-architecture)
+  - [Lazy.nvim Configuration](#lazyvimnvim-configuration)
   - [Custom Plugins](#custom-plugins)
     - [UI/Dashboard](#uidashboard)
       - [alpha.nvim (`lua/plugins/alpha.lua`)](#alphanvim-luapluginsalphalua)
@@ -60,10 +67,11 @@ optimizations. For LazyVim's base features, refer to the [official documentation
     - [Kitty Terminal Integration](#kitty-terminal-integration)
     - [Buffer Management](#buffer-management)
     - [Editing](#editing)
+    - [Window Management](#window-management)
     - [External Tools](#external-tools)
     - [File Navigation](#file-navigation)
     - [LSP/Code](#lspcode)
-    - [Code Execution](#code-execution)
+    - [Code Execution Mappings](#code-execution-mappings)
     - [Comments/Snapshots](#commentssnapshots)
     - [Markdown](#markdown)
     - [Yanky](#yanky)
@@ -81,6 +89,8 @@ optimizations. For LazyVim's base features, refer to the [official documentation
     - [man_hover.lua (`lua/util/man_hover.lua`)](#man_hoverlua-luautilman_hoverlua)
   - [License](#license)
   - [Credits](#credits)
+
+</details>
 
 <!--toc:end-->
 <!-- prettier-ignore-end -->
