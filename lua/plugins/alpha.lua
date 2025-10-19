@@ -95,17 +95,17 @@ return {
                 return math.floor(vim.o.lines * p)
             end
             dashboard.opts.layout = {
-                { type = "padding", val = pad(0.045) },
+                { type = "padding", val = pad(0.01) },
                 dashboard.section.header,
-                { type = "padding", val = pad(0.03) },
+                { type = "padding", val = pad(0.02) },
                 dashboard.section.greeting,
                 { type = "padding", val = pad(0.04) },
                 dashboard.section.buttons,
                 { type = "padding", val = pad(0.02) },
                 dashboard.section.footer,
-                { type = "padding", val = pad(0.03) },
+                { type = "padding", val = pad(0.02) },
                 dashboard.section.fortune,
-                { type = "padding", val = pad(0.03) },
+                { type = "padding", val = pad(0.01) },
             }
 
             return dashboard
