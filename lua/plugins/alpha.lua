@@ -84,9 +84,13 @@ return {
 
             -- quotes section
             local fortune = require("fortune")
+            local fortune_lines = fortune.get_fortune()
+            local filtered_lines = vim.tbl_filter(function(line)
+                return not line:match("^%s*%-") and line ~= ""
+            end, fortune_lines)
             dashboard.section.fortune = {
                 type = "text",
-                val = fortune.get_fortune(),
+                val = filtered_lines,
                 opts = { position = "center", hl = "MyQuoteText" },
             }
 
@@ -95,7 +99,7 @@ return {
                 return math.floor(vim.o.lines * p)
             end
             dashboard.opts.layout = {
-                { type = "padding", val = pad(0.01) },
+                { type = "padding", val = pad(0.052) },
                 dashboard.section.header,
                 { type = "padding", val = pad(0.02) },
                 dashboard.section.greeting,
@@ -212,10 +216,13 @@ return {
                         ms
                     )
 
-                    -- refresh the fortune at the same time
                     local ok, fortune = pcall(require, "fortune")
                     if ok then
-                        dashboard.section.fortune.val = fortune.get_fortune()
+                        local fortune_lines = fortune.get_fortune()
+                        local filtered_lines = vim.tbl_filter(function(line)
+                            return not line:match("^%s*%-") and line ~= ""
+                        end, fortune_lines)
+                        dashboard.section.fortune.val = filtered_lines
                     end
 
                     pcall(vim.cmd.AlphaRedraw)
