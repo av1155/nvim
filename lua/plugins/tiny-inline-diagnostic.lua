@@ -5,6 +5,7 @@ return {
         priority = 1000,
         config = function()
             require("tiny-inline-diagnostic").setup({
+
                 -- Style preset for diagnostic messages
                 -- Available options: "modern", "classic", "minimal", "powerline", "ghost", "simple", "nonerdfont", "amongus"
                 preset = "modern",
@@ -16,6 +17,9 @@ return {
                 transparent_cursorline = true,
 
                 options = {
+                    -- Events to attach diagnostics to buffers
+                    overwrite_events = { "LspAttach", "BufEnter" },
+
                     -- Add messages to diagnostics when multiline diagnostics are enabled
                     -- If set to false, only signs will be displayed
                     add_messages = false,

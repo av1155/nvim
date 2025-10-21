@@ -9,21 +9,21 @@ return {
                 startinsert = true,
                 -- stylua: ignore
                 filetype = {
-                    c = "cd $dir && gcc -Wall $fileName -o /tmp/$fileNameWithoutExt && /tmp/$fileNameWithoutExt",
-                    cpp = "cd $dir && g++ -Wall $fileName -o /tmp/$fileNameWithoutExt && /tmp/$fileNameWithoutExt",
-                    rust = "cd $dir && rustc $fileName -o /tmp/$fileNameWithoutExt && /tmp/$fileNameWithoutExt",
-                    java = "cd $dir && javac $fileName && java $fileNameWithoutExt",
-                    zig = "cd $dir && zig build-exe $fileName -femit-bin=/tmp/$fileNameWithoutExt && /tmp/$fileNameWithoutExt",
-                    python = "cd $dir && python3 -u $fileName",
-                    javascript = "cd $dir && node $fileName",
-                    typescript = "cd $dir && ts-node --transpileOnly $fileName",
-                    ruby = "cd $dir && ruby $fileName",
-                    lua = "cd $dir && lua $fileName",
-                    sh = "cd $dir && bash $fileName",
-                    bash = "cd $dir && bash $fileName",
-                    zsh = "cd $dir && zsh $fileName",
-                    go = "cd $dir && go run .",
-                    kotlin = "cd $dir && kotlinc -script $fileName --",
+                    c = 'cd "$dir" && gcc -Wall "$fileName" -o /tmp/$fileNameWithoutExt && /tmp/$fileNameWithoutExt',
+                    cpp = 'cd "$dir" && g++ -Wall "$fileName" -o /tmp/$fileNameWithoutExt && /tmp/$fileNameWithoutExt',
+                    rust = 'cd "$dir" && rustc "$fileName" -o /tmp/$fileNameWithoutExt && /tmp/$fileNameWithoutExt',
+                    java = 'cd "$dir" && javac "$fileName" && java $fileNameWithoutExt',
+                    zig = 'cd "$dir" && zig build-exe "$fileName" -femit-bin=/tmp/$fileNameWithoutExt && /tmp/$fileNameWithoutExt',
+                    python = 'cd "$dir" && python3 -u "$fileName"',
+                    javascript = 'cd "$dir" && node "$fileName"',
+                    typescript = 'cd "$dir" && ts-node --transpileOnly "$fileName"',
+                    ruby = 'cd "$dir" && ruby "$fileName"',
+                    lua = 'cd "$dir" && lua "$fileName"',
+                    sh = 'cd "$dir" && bash "$fileName"',
+                    bash = 'cd "$dir" && bash "$fileName"',
+                    zsh = 'cd "$dir" && zsh "$fileName"',
+                    go = 'cd "$dir" && go run .',
+                    kotlin = 'cd "$dir" && kotlinc -script "$fileName" --',
                 },
             }
         end,
@@ -42,73 +42,73 @@ return {
 
                         local configs = {
                             c = {
-                                compile_cmd = "cd $dir && gcc $compiler_args $fileName -o /tmp/$fileNameWithoutExt",
+                                compile_cmd = 'cd "$dir" && gcc $compiler_args "$fileName" -o /tmp/$fileNameWithoutExt',
                                 run_cmd = "/tmp/$fileNameWithoutExt $runtime_args",
                                 needs_compile = true,
                                 default_compiler_args = "-Wall"
                             },
                             cpp = {
-                                compile_cmd = "cd $dir && g++ $compiler_args $fileName -o /tmp/$fileNameWithoutExt",
+                                compile_cmd = 'cd "$dir" && g++ $compiler_args "$fileName" -o /tmp/$fileNameWithoutExt',
                                 run_cmd = "/tmp/$fileNameWithoutExt $runtime_args",
                                 needs_compile = true,
                                 default_compiler_args = "-Wall -std=c++17"
                             },
                             rust = {
-                                compile_cmd = "cd $dir && rustc $compiler_args $fileName -o /tmp/$fileNameWithoutExt",
+                                compile_cmd = 'cd "$dir" && rustc $compiler_args "$fileName" -o /tmp/$fileNameWithoutExt',
                                 run_cmd = "/tmp/$fileNameWithoutExt $runtime_args",
                                 needs_compile = true,
                                 default_compiler_args = ""
                             },
                             java = {
-                                compile_cmd = "cd $dir && javac $compiler_args $fileName",
-                                run_cmd = "cd $dir && java $fileNameWithoutExt $runtime_args",
+                                compile_cmd = 'cd "$dir" && javac $compiler_args "$fileName"',
+                                run_cmd = 'cd "$dir" && java $fileNameWithoutExt $runtime_args',
                                 needs_compile = true,
                                 default_compiler_args = ""
                             },
                             zig = {
-                                compile_cmd = "cd $dir && zig build-exe $compiler_args $fileName -femit-bin=/tmp/$fileNameWithoutExt",
+                                compile_cmd = 'cd "$dir" && zig build-exe $compiler_args "$fileName" -femit-bin=/tmp/$fileNameWithoutExt',
                                 run_cmd = "/tmp/$fileNameWithoutExt $runtime_args",
                                 needs_compile = true,
                                 default_compiler_args = ""
                             },
                             python = {
-                                run_cmd = "cd $dir && python3 -u $fileName $runtime_args",
+                                run_cmd = 'cd "$dir" && python3 -u "$fileName" $runtime_args',
                                 needs_compile = false
                             },
                             javascript = {
-                                run_cmd = "cd $dir && node $fileName $runtime_args",
+                                run_cmd = 'cd "$dir" && node "$fileName" $runtime_args',
                                 needs_compile = false
                             },
                             typescript = {
-                                run_cmd = "cd $dir && ts-node --transpileOnly $fileName $runtime_args",
+                                run_cmd = 'cd "$dir" && ts-node --transpileOnly "$fileName" $runtime_args',
                                 needs_compile = false
                             },
                             ruby = {
-                                run_cmd = "cd $dir && ruby $fileName $runtime_args",
+                                run_cmd = 'cd "$dir" && ruby "$fileName" $runtime_args',
                                 needs_compile = false
                             },
                             lua = {
-                                run_cmd = "cd $dir && lua $fileName $runtime_args",
+                                run_cmd = 'cd "$dir" && lua "$fileName" $runtime_args',
                                 needs_compile = false
                             },
                             sh = {
-                                run_cmd = "cd $dir && bash $fileName $runtime_args",
+                                run_cmd = 'cd "$dir" && bash "$fileName" $runtime_args',
                                 needs_compile = false
                             },
                             bash = {
-                                run_cmd = "cd $dir && bash $fileName $runtime_args",
+                                run_cmd = 'cd "$dir" && bash "$fileName" $runtime_args',
                                 needs_compile = false
                             },
                             zsh = {
-                                run_cmd = "cd $dir && zsh $fileName $runtime_args",
+                                run_cmd = 'cd "$dir" && zsh "$fileName" $runtime_args',
                                 needs_compile = false
                             },
                             go = {
-                                run_cmd = "cd $dir && go run . $runtime_args",
+                                run_cmd = 'cd "$dir" && go run . $runtime_args',
                                 needs_compile = false
                             },
                             kotlin = {
-                                run_cmd = "cd $dir && kotlinc -script $fileName -- $runtime_args",
+                                run_cmd = 'cd "$dir" && kotlinc -script "$fileName" -- $runtime_args',
                                 needs_compile = false
                             }
                         }
