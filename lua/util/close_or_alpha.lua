@@ -53,9 +53,7 @@ function M.run(force)
         if force then
             pcall(vim.api.nvim_buf_delete, cur_buf, { force = true })
         else
-            pcall(function()
-                vim.cmd("confirm bdelete")
-            end)
+            pcall(vim.api.nvim_buf_delete, cur_buf, { force = false })
         end
     elseif #normal_wins == 1 then
         local next_buf = find_next_normal_buffer(cur_buf)
