@@ -16,106 +16,99 @@ return {
                 severity_sort = true,
             })
 
-            local keys = require("lazyvim.plugins.lsp.keymaps").get()
+            -- Configure LSP keymaps using the new servers['*'] approach
+            opts.servers = opts.servers or {}
+            opts.servers["*"] = opts.servers["*"] or {}
+            opts.servers["*"].keys = {
+                -- UNMAP DEFAULT LSP KEYBINDS
+                { "gd", false },
+                { "gr", false },
+                { "gI", false },
+                { "gy", false },
+                { "gD", false },
+                { "<leader>ca", false, mode = "n" },
+                { "<leader>ca", false, mode = "v" },
+                { "<leader>cA", false, mode = "n" },
 
-            -- UNMAP DEFAULT LSP KEYBINDS
-            keys[#keys + 1] = { "gd", false }
-            keys[#keys + 1] = { "gr", false }
-            keys[#keys + 1] = { "gI", false }
-            keys[#keys + 1] = { "gy", false }
-            keys[#keys + 1] = { "gD", false }
-            keys[#keys + 1] = { "<leader>ca", false, mode = "n" }
-            keys[#keys + 1] = { "<leader>ca", false, mode = "v" }
-            keys[#keys + 1] = { "<leader>cA", false, mode = "n" }
+                -- MAP LSP KEYBINDS
+                {
+                    "gh",
+                    function()
+                        vim.lsp.buf.hover()
+                    end,
+                    desc = "Hover",
+                },
+                {
+                    "gm",
+                    function()
+                        require("util.man_hover").show()
+                    end,
+                    desc = "Man Page",
+                },
+                {
+                    "gd",
+                    function()
+                        require("goto-preview").goto_preview_definition({})
+                    end,
+                    desc = "Goto Definition (preview)",
+                },
+                {
+                    "gr",
+                    function()
+                        require("goto-preview").goto_preview_references({})
+                    end,
+                    desc = "References (preview)",
+                    nowait = true,
+                },
+                {
+                    "gI",
+                    function()
+                        require("goto-preview").goto_preview_implementation({})
+                    end,
+                    desc = "Goto Implementation (preview)",
+                },
+                {
+                    "gy",
+                    function()
+                        require("goto-preview").goto_preview_type_definition({})
+                    end,
+                    desc = "Goto Type Definition (preview)",
+                },
+                {
+                    "gD",
+                    function()
+                        require("goto-preview").goto_preview_declaration({})
+                    end,
+                    desc = "Goto Declaration (preview)",
+                },
+                {
+                    "gP",
+                    function()
+                        require("goto-preview").close_all_win()
+                    end,
+                    desc = "Close all preview windows",
+                },
 
-            -- MAP LSP KEYBINDS
-            keys[#keys + 1] = {
-                "gh",
-                function()
-                    vim.lsp.buf.hover()
-                end,
-                desc = "Hover",
+                -- MAP TINY-CODE-ACTION KEYBINDS
+                {
+                    "<leader>ca",
+                    function()
+                        require("tiny-code-action").code_action({})
+                    end,
+                    desc = "Code Action (preview)",
+                    mode = { "n", "v" },
+                },
+                {
+                    "<leader>cA",
+                    function()
+                        require("tiny-code-action").code_action({
+                            context = { only = { "source" } },
+                        })
+                    end,
+                    desc = "Source Action (preview)",
+                    mode = { "n" },
+                },
             }
-
-            keys[#keys + 1] = {
-                "gm",
-                function()
-                    require("util.man_hover").show()
-                end,
-                desc = "Man Page",
-            }
-
-            keys[#keys + 1] = {
-                "gd",
-                function()
-                    require("goto-preview").goto_preview_definition({})
-                end,
-                desc = "Goto Definition (preview)",
-            }
-
-            keys[#keys + 1] = {
-                "gr",
-                function()
-                    require("goto-preview").goto_preview_references({})
-                end,
-                desc = "References (preview)",
-                nowait = true,
-            }
-
-            keys[#keys + 1] = {
-                "gI",
-                function()
-                    require("goto-preview").goto_preview_implementation({})
-                end,
-                desc = "Goto Implementation (preview)",
-            }
-
-            keys[#keys + 1] = {
-                "gy",
-                function()
-                    require("goto-preview").goto_preview_type_definition({})
-                end,
-                desc = "Goto Type Definition (preview)",
-            }
-
-            keys[#keys + 1] = {
-                "gD",
-                function()
-                    require("goto-preview").goto_preview_declaration({})
-                end,
-                desc = "Goto Declaration (preview)",
-            }
-
-            keys[#keys + 1] = {
-                "gP",
-                function()
-                    require("goto-preview").close_all_win()
-                end,
-                desc = "Close all preview windows",
-            }
-
-            -- MAP TINY-CODE-ACTION KEYBINDS
-            keys[#keys + 1] = {
-                "<leader>ca",
-                function()
-                    require("tiny-code-action").code_action({})
-                end,
-                desc = "Code Action (preview)",
-                mode = { "n", "v" },
-            }
-
-            keys[#keys + 1] = {
-                "<leader>cA",
-                function()
-                    require("tiny-code-action").code_action({
-                        context = { only = { "source" } },
-                    })
-                end,
-                desc = "Source Action (preview)",
-                mode = { "n" },
-            }
-
-            opts.keys = keys
         end,
     },
 }
