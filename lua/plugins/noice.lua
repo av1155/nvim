@@ -29,6 +29,9 @@ return {
                 -- skip img-clip warning when using cmd+v
                 { filter = { event = "notify", find = "Content is not an image" }, opts = { skip = true } },
 
+                -- skip Snacks Picker "No results found" warning (shows when using tiny-code-action with no actions available)
+                { filter = { event = "notify", kind = "warn", find = "No results found for" }, opts = { skip = true } },
+
                 { -- Mason / registry / update chatter (info only)
                     filter = {
                         event = "notify",
