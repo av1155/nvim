@@ -15,14 +15,27 @@ return {
             presets = {
                 lsp_doc_border = true,
             },
-            hover = {
-                enabled = true,
-                silent = false, -- set to true to not show a message if hover is not available
-            },
-            signature = {
-                enabled = true,
-                auto_open = {
+            lsp = {
+                hover = {
                     enabled = true,
+                    silent = false, -- set to true to not show a message if hover is not available
+                },
+                signature = {
+                    enabled = true,
+                    auto_open = {
+                        enabled = true,
+                    },
+                    opts = {
+                        size = {
+                            max_height = 25, -- Limit height to n lines
+                            max_width = 90, -- Limit width to n columns
+                        },
+                        border = {
+                            style = "rounded",
+                            padding = { 0, 1 },
+                        },
+                        scrollbar = true, -- Show scrollbar for truncated content
+                    },
                 },
             },
             routes = {
