@@ -177,6 +177,14 @@ do
 
         -- ============ LSP INLAY HINTS ============
         LspInlayHint = { fg = "#8f939b" },
+
+        -- ============ ALPHA DASHBOARD ============
+        MyHeaderHighlight = fix({ fg = "#88C0D0", bg = "" }),
+        MyGreetingHighlight = fix({ fg = "#81A1C1", bg = "" }),
+        MyButtonsHighlight = fix({ fg = "#D8DEE9", bg = "" }),
+        MyAlphaShortcut = { fg = "#A3BE8C", bold = true },
+        MyFooterHighlight = fix({ fg = "#EBCB8B", bg = "" }),
+        MyQuoteText = { fg = "#8FBCBB", italic = true },
     }
 
     local function apply_overrides()

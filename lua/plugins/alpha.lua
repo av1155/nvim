@@ -1,9 +1,52 @@
-vim.api.nvim_set_hl(0, "MyHeaderHighlight", { fg = "#88C0D0", bg = "" })
-vim.api.nvim_set_hl(0, "MyGreetingHighlight", { fg = "#81A1C1", bg = "" })
-vim.api.nvim_set_hl(0, "MyButtonsHighlight", { fg = "#D8DEE9", bg = "" })
-vim.api.nvim_set_hl(0, "MyAlphaShortcut", { fg = "#A3BE8C", bold = true })
-vim.api.nvim_set_hl(0, "MyFooterHighlight", { fg = "#EBCB8B", bg = "" })
-vim.api.nvim_set_hl(0, "MyQuoteText", { fg = "#8FBCBB", italic = true })
+-- Strip author attribution from formatted fortune output.
+-- fortune.nvim's format_line() removes the "- " prefix from author
+-- lines and right-justifies them with leading spaces, so the naive
+-- "^%s*%-" pattern cannot match. Instead we detect right-justified
+-- lines (many leading spaces) and trim surrounding whitespace lines.
+local function strip_attribution(lines)
+    while #lines > 0 and lines[#lines]:match("^%s*$") do
+        table.remove(lines)
+    end
+    if #lines > 0 and #lines[#lines]:match("^(%s*)") > 2 then
+        table.remove(lines)
+    end
+    while #lines > 0 and lines[#lines]:match("^%s*$") do
+        table.remove(lines)
+    end
+    while #lines > 0 and lines[1]:match("^%s*$") do
+        table.remove(lines, 1)
+    end
+    return lines
+end
+
+-- Compute the rendered line count of a single alpha layout section.
+local function section_height(s)
+    if s.type == "padding" then
+        return s.val
+    end
+    if s.type == "group" then
+        local n = type(s.val) == "table" and #s.val or 0
+        local sp = (s.opts and s.opts.spacing) or 0
+        return n + sp * math.max(0, n - 1)
+    end
+    local v = s.val
+    if type(v) == "string" then
+        return 1
+    end
+    if type(v) == "table" then
+        return #v
+    end
+    return 1
+end
+
+-- Set layout[1] (top padding) so the content is vertically centered.
+local function center_layout(layout)
+    local total = 0
+    for i = 2, #layout do
+        total = total + section_height(layout[i])
+    end
+    layout[1].val = math.max(0, math.floor((vim.o.lines - total) / 2))
+end
 
 return {
     {
@@ -82,39 +125,41 @@ return {
                 })
             end)
 
-            -- quotes section
+            -- quotes section (strip author attribution to save vertical space)
             local fortune = require("fortune")
-            local fortune_lines = fortune.get_fortune()
-            local filtered_lines = vim.tbl_filter(function(line)
-                return not line:match("^%s*%-") and line ~= ""
-            end, fortune_lines)
+            local fortune_lines = strip_attribution(fortune.get_fortune())
             dashboard.section.fortune = {
                 type = "text",
-                val = filtered_lines,
+                val = fortune_lines,
                 opts = { position = "center", hl = "MyQuoteText" },
             }
 
-            -- layout
-            local function pad(p)
-                return math.floor(vim.o.lines * p)
-            end
+            -- layout (top padding is computed by center_layout)
             dashboard.opts.layout = {
-                { type = "padding", val = pad(0.052) },
+                { type = "padding", val = 0 },
                 dashboard.section.header,
-                { type = "padding", val = pad(0.02) },
+                { type = "padding", val = 1 },
                 dashboard.section.greeting,
-                { type = "padding", val = pad(0.04) },
+                { type = "padding", val = 2 },
                 dashboard.section.buttons,
-                { type = "padding", val = pad(0.02) },
+                { type = "padding", val = 1 },
                 dashboard.section.footer,
-                { type = "padding", val = pad(0.02) },
+                { type = "padding", val = 1 },
                 dashboard.section.fortune,
-                { type = "padding", val = pad(0.01) },
             }
+            center_layout(dashboard.opts.layout)
 
             return dashboard
         end,
         config = function(_, dashboard)
+            -- Set alpha highlight groups after colorscheme has loaded
+            vim.api.nvim_set_hl(0, "MyHeaderHighlight", { fg = "#88C0D0", bg = "NONE" })
+            vim.api.nvim_set_hl(0, "MyGreetingHighlight", { fg = "#81A1C1", bg = "NONE" })
+            vim.api.nvim_set_hl(0, "MyButtonsHighlight", { fg = "#D8DEE9", bg = "NONE" })
+            vim.api.nvim_set_hl(0, "MyAlphaShortcut", { fg = "#A3BE8C", bold = true })
+            vim.api.nvim_set_hl(0, "MyFooterHighlight", { fg = "#EBCB8B", bg = "NONE" })
+            vim.api.nvim_set_hl(0, "MyQuoteText", { fg = "#8FBCBB", italic = true })
+
             if vim.o.filetype == "lazy" then
                 vim.cmd.close()
                 vim.api.nvim_create_autocmd("User", {
@@ -132,6 +177,7 @@ return {
                 callback = function()
                     local buf = vim.api.nvim_get_current_buf()
                     if vim.bo[buf].filetype == "alpha" then
+                        center_layout(dashboard.opts.layout)
                         local win = vim.api.nvim_get_current_win()
                         if vim.api.nvim_win_is_valid(win) then
                             pcall(vim.cmd.AlphaRedraw)
@@ -218,13 +264,10 @@ return {
 
                     local ok, fortune = pcall(require, "fortune")
                     if ok then
-                        local fortune_lines = fortune.get_fortune()
-                        local filtered_lines = vim.tbl_filter(function(line)
-                            return not line:match("^%s*%-") and line ~= ""
-                        end, fortune_lines)
-                        dashboard.section.fortune.val = filtered_lines
+                        dashboard.section.fortune.val = strip_attribution(fortune.get_fortune())
                     end
 
+                    center_layout(dashboard.opts.layout)
                     pcall(vim.cmd.AlphaRedraw)
                 end,
             })
