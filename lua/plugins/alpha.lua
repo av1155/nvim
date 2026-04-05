@@ -45,7 +45,7 @@ local function center_layout(layout)
     for i = 2, #layout do
         total = total + section_height(layout[i])
     end
-    layout[1].val = math.max(0, math.floor((vim.o.lines - total) / 2))
+    layout[1].val = math.max(0, math.floor((vim.o.lines - total) / 3))
 end
 
 return {
