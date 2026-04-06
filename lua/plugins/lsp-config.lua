@@ -19,7 +19,8 @@ return {
             -- Configure LSP keymaps using the new servers['*'] approach
             opts.servers = opts.servers or {}
             opts.servers["*"] = opts.servers["*"] or {}
-            opts.servers["*"].keys = {
+            local existing_keys = opts.servers["*"].keys or {}
+            local custom_keys = {
                 -- UNMAP DEFAULT LSP KEYBINDS
                 { "gd", false },
                 { "gr", false },
@@ -109,6 +110,7 @@ return {
                     mode = { "n" },
                 },
             }
+            opts.servers["*"].keys = vim.list_extend(existing_keys, custom_keys)
         end,
     },
 }
